@@ -3,10 +3,8 @@
                         DATA BASE RECORD LAYOUT
                              (MAA-FILE)
 
-INFORMATION EFFECTIVE DATE: 10/12/2017
-
-    RECORD FORMAT: FIXED
-    LOGICAL RECORD LENGTH: 919
+_date 10/12/2017
+_length 919
 
 
 FILE STRUCTURE DESCRIPTION:
@@ -98,6 +96,7 @@ T  E   G   R A   M B
              O   T
              N           FIELD DESCRIPTION
 
+[MAA1|maa1]
 ***********************************************************************
 
 ‘MAA1’ RECORD TYPE – BASE MISCELLANEOUS ACTIVITY AREA DATA
@@ -154,7 +153,7 @@ L	AN	0450	00445		MAA DESCRIPTION
 L	AN	0008	00895		MAA USE
 L	AN	0017	00903		BLANKS
 
-
+[MAA2|maa2]
 ***********************************************************************
 
 ‘MAA2’ RECORD TYPE – POLYGON COORDINATES
@@ -170,6 +169,7 @@ L	AN	0015	00037		MAA LONGITUDE (FORMATTED)
 L	AN	0012	00052		MAA LONGITUDE (SECONDS)
 L	AN	0856	00064		BLANKS
 
+[MAA3|maa3]
 ***********************************************************************
 
 ‘MAA3’ RECORD TYPE – TIMES OF USE
@@ -182,6 +182,7 @@ L	AN	0006	00005		MAA ID
 L	AN	0075	00011		TIMES OF USE DESCRIPTION
 L	AN	0834	00086		BLANKS
 
+[MAA4|maa4]
 ***********************************************************************
 
 ‘MAA4’ RECORD TYPE – USER GROUP
@@ -194,6 +195,7 @@ L	AN	0006	00005		MAA ID
 L	AN	0075	00011		MAA USER GROUP NAME
 L	AN	0834	00086		BLANKS
 
+[MAA5|maa5]
 ***********************************************************************
 
 ‘MAA5’ RECORD TYPE – CONTACT FACILITY DATA
@@ -212,6 +214,7 @@ R	N	0007	00071		MILITARY FREQUENCY
 L	AN	0001	00078		MILITARY CHART FLAG
 L	AN	0841	00079		BLANKS
 
+[MAA6|maa6]
 ***********************************************************************
 
 ‘MAA6’ RECORD TYPE – CHECK FOR NOTAMS
@@ -225,6 +228,7 @@ L	AN	0004	00011		CHECK FOR NOTAMS (ONLY APPLIES TO SPACE
 					LAUNCH ACTIVITY AREAS)
 L	AN	0905	00015		BLANKS
 
+[MAA7|maa7]
 ***********************************************************************
 
 ‘MAA7’ RECORD TYPE – BASE REMARKS TEXT

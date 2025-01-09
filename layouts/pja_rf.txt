@@ -1,3 +1,5 @@
+_date 02/06/2014
+_length 473
 
                           PARACHUTE JUMP AREA
                         DATA BASE RECORD LAYOUT
@@ -93,7 +95,7 @@ T  E   G   R A   M B
        H     I   N R
              O   T
              N           FIELD DESCRIPTION
-
+[PJA1|pja1]
 ***********************************************************************
 
 ‘PJA1’ RECORD TYPE – BASE AIRSPACE DATA
@@ -139,7 +141,7 @@ L AN 0008 00465  N/A     PJA USE
 L AN 0001 00473  N/A     VOLUME
 
 
-
+[PJA2|pja2]
 ***********************************************************************
 
 ‘PJA2’ RECORD TYPE – TIMES OF USE
@@ -152,6 +154,7 @@ R AN 0006 00005  DLID    PJA ID
 L AN 0075 00011  P25     TIMES OF USE DESCRIPTION
 L AN 0388 00086  N/A     BLANKS
 
+[PJA3|pja3]
 ***********************************************************************
 
 ‘PJA3’ RECORD TYPE – USER GROUP
@@ -165,7 +168,7 @@ L AN 0075 00011  P28     PJA USER GROUP NAME
 L AN 0075 00086  DLID    DESCRIPTION
 L AN 0313 00161  N/A     BLANKS
 
-
+[PJA4|pja4]
 ***********************************************************************
 
 ‘PJA4’ RECORD TYPE – CONTACT FACILITY DATA
@@ -187,6 +190,7 @@ L AN 0030 00085  DLID    SECTOR
 R  N 0020 00115  DLID    ALTITUDE
 L AN 0339 00135  N/A     BLANKS
 
+[PJA5|pja5]
 ***********************************************************************
 
 ‘PJA5’ RECORD TYPE – BASE REMARKS TEXT

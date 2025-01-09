@@ -1,4 +1,5 @@
-
+_date 6/17/2021
+_length 135
                       WEATHER REPORTING LOCATIONS
                         DATA BASE RECORD LAYOUT
                               (WXL-FILE)
@@ -45,6 +46,7 @@ GENERAL INFORMATION:
          WEATHER REPORTING LOCATION IDENTIFIER, ASSOCIATED CITY, AND 
          ASSOCIATED COUNTRY CODE.  
   
+[wxl]
 *********************************************************************  
   
             BASIC WEATHER REPORTING LOCATION DATA  

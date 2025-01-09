@@ -1,4 +1,5 @@
-
+_date 02/06/2014
+_length 223
                     STANDARD TERMINAL ARRIVAL FILE
                   STANDARD DEPARTURE PROCEDURE FILE
                           COMPLETE LISTING
@@ -107,6 +108,7 @@ GENERAL INFORMATION:
      1.  LEFT JUSTIFIED FIELDS HAVE TRAILING BLANKS
      2.  RIGHT JUSTIFIED FIELDS HAVE LEADING BLANKS
 
+[star]
 *********************************************************************
 
             STANDARD TERMINAL ARRIVAL (STAR) DATA

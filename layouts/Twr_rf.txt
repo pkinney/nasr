@@ -1,3 +1,5 @@
+_date 04/05/2012
+_length 1608
 
                    TERMINAL COMMUNICATIONS SERVICES
                         DATA BASE RECORD LAYOUT
@@ -126,7 +128,7 @@ DESCRIPTION OF THE RECORD TYPES
                  A.  TOWER/TERMINAL COMMUNICATIONS FACILITY  
                  B.  LANDING FACILITY/AIRPORT  
   
-  
+[TWR1|twr1]
 ***********************************************************************  
 *                                                                     *  
 *                    'TWR1' RECORD TYPE  BASE DATA                    *  
@@ -393,7 +395,7 @@ L AN 0026 00935  TA28    RADIO CALL OF FACILITY THAT TAKES OVER
                          (EX: LOS ANGELES CENTER)  
 L AN 0648 00961  NONE    BLANK
   
-   
+[TWR2|twr2]
 ************************************************************************  
 *                                                                      *  
 *                  'TWR2' OPERATION HOURS DATA                         *  
@@ -437,7 +439,7 @@ L AN 0200 01209  TA30    HOURS OF OPERATION OF SECONDARY DEPARTURE
 L AN 0200 01409  TA15    HOURS OF TOWER OPERATION IN LOCAL TIME  
                          (0800-2100)  
  
-   
+[TWR3|twr3]
 ************************************************************************  
 *                                                                      *  
 *         'TWR3' COMMUNICATIONS FREQUENCIES AND USE DATA               *  
@@ -533,6 +535,7 @@ L AN 0060 01335  TA13    FREQUENCY(S) FOR MASTER AIRPORT USE ONLY AND
                          (NOT TRUNCATED) (EX: 126.6 (150-360) RUNWAY 33)
 L AN 0214 01395  NONE    BLANK  
      
+[TWR4|twr4]
 ************************************************************************  
 *                                                                      *  
 *      'TWR4' SERVICES PROVIDED TO SATELLITE AIRPORT DATA              *  
@@ -555,6 +558,7 @@ L AN 0100 00009  TA35    MASTER AIRPORT SERVICES.
                          (EX: TC APCH CTL ON SECTORIZED FREQ'S)  
 L AN 1500 00109  NONE    BLANK  
      
+[TWR5|twr5]
 ************************************************************************  
 *                                                                      *  
 *       'TWR5' INDICATION OF RADAR OR TYPE OF RADAR DATA               *  
@@ -602,6 +606,7 @@ L AN 0200 00685  TA31    RADAR HOURS OF OPERATION(4)
                                      SURVEILLANCE RADAR.  
 L AN 0724 00885  NONE    BLANK  
      
+[TWR6|twr6]
 ************************************************************************  
 *                                                                      *  
 *      'TWR6' TERMINAL COMMUNICATIONS FACILITY REMARKS DATA            *  
@@ -627,7 +632,7 @@ L AN 0800 00014  NONE    TOWER REMARK TEXT
                           ARTCC ON FREQS 132.6/281.4 (MERWYN RCAG).)  
 L AN 0795 00814  NONE    BLANK  
   
-   
+[TWR7|twr7]
 ************************************************************************  
 *                                                                      *  
 *                 'TWR7' SATELLITE AIRPORT DATA                        *  
@@ -698,6 +703,7 @@ L AN 0050 00413  A2      MASTER AIRPORT NAME  (EX: EDWARDS AFB)
 L AN 0060 00463  ????    SATELLITE FREQUENCY (EX: 126.1) (NOT TRUNCATED)  
 L AN 1086 00523  NONE    BLANK  
 
+[TWR8|twr8]
 ************************************************************************  
 *                                                                      *  
 *           'TWR8' CLASS B/C/D/E AIRSPACE AND AIRSPACE HOURS DATA      *  
@@ -723,7 +729,7 @@ L AN 0300 00013  ????    AIRSPACE HOURS
                          (EX: 0800-1630 TUE-SAT)  
 L AN 1296 00313  NONE    BLANK  
 
-
+[TWR9|twr9]
 ************************************************************************  
 *                                                                      *  
 *           'TWR9' AUTOMATIC TERMINAL INFORMATION SYSTEM (ATIS) DATA   *  

@@ -32,6 +32,10 @@ defmodule NASR.Apt do
     line |> String.slice(start - 1, len) |> String.trim_leading()
   end
 
+  defp extract(line, {"L", "N", len, start}) do
+    line |> String.slice(start - 1, len) |> String.trim_trailing()
+  end
+
   defp extract(line, {"R", "N", len, start}) do
     line |> String.slice(start - 1, len) |> String.trim_leading()
   end

@@ -1,4 +1,5 @@
-
+_date 9/9/2021
+_length 805
                                 NAVAID
                         DATA BASE RECORD LAYOUT
                              (NAV-FILE)
@@ -91,7 +92,7 @@ GENERAL INFORMATION:
             EXAMPLE: LAT-     140811.070N
                      LONG-    27164.66W
 
-
+[NAV1|nav1]
 ****************************************************************
 
              'NAV1' RECORD TYPE - BASE DATA
@@ -552,7 +553,7 @@ L AN 0001 00804  N/A    HIWAS FLAG
 L AN 0001 00805  N/A    TRANSCRIBED WEATHER BROADCAST (TWEB) RESTRICTION
   			(Y, N, OR NULL)
 
-
+[NAV2|nav2]
 *********************************************************************
 *
 *            'NAV2' RECORD TYPE - NAVAID REMARKS
@@ -585,6 +586,7 @@ L AN 0600 00029  RMRKS   NAVAID REMARKS. FREE FORM TEXT
                          EX: DME UNUSBL 080T-125T BLW 10000FT)
 L AN 0177 00629  N/A     FILLER.
 
+[NAV3|nav3]
 *********************************************************************
 *
 *            'NAV3' RECORD TYPE - COMPULSORY AND NON-COMPULSORY
@@ -618,6 +620,7 @@ L AN 0720 00065  N/A     SPACE ALLOCATED FOR 20 MORE FIXES
 L AN 0021 00785  N/A     BLANKS.
 
 
+[NAV4|nav4]
 *********************************************************************
 *
 *            'NAV4' RECORD TYPE - HOLDING PATTERNs (HPF) ASSOCIATED
@@ -651,6 +654,7 @@ L AN 0664 00112          SPACE ALLOCATED FOR 8 MORE HOLDING PATTERNS.
                          AND 3 FOR PATTERN (NUMBER).
 L AN 0030 00776  N/A     BLANKS.
 
+[NAV5|nav5]
 ********************************************************************
 *
 *            'NAV5' RECORD TYPE - FAN MARKERS ASSOCIATED WITH NAVAID
@@ -677,6 +681,7 @@ L AN 0690 00059  N/A     SPACE ALLOCATED FOR 23 MORE FAN MARKERS
                                  24 FAN MARKERS)
 L AN 0057 00749  N/A     BLANKS
 
+[NAV6|nav6]
 ********************************************************************
 *
 * 'NAV6' RECORD TYPE - VOR RECEIVER CHECKPOINTS ASSOCIATED WITH NAVAID

@@ -4,10 +4,10 @@
                               (LID-FILE)
 
 
- INFORMATION EFFECTIVE DATE: 09/07/2023
+_date 09/07/2023
 
     RECORD FORMAT: FIXED
-    LOGICAL RECORD LENGTH: 1039
+_length 1039
 
 
 
@@ -61,7 +61,7 @@ T  E   G   R A   M B
        H     I   N R
              O   T
              N           FIELD DESCRIPTION
-
+[USA|usa]
 ***********************************************************************
 
            'USA' LOCATION IDENTIFIERS - RECORD DESCRIPTION FOLLOWS
@@ -216,6 +216,7 @@ L AN 0015 00568  II25    OTHER FACILITY - FACILITY TYPE
 L AN 0010 00583  N/A     EFFECTIVE DATE OF THIS INFORMATION (MM/DD/YYYY)
 L AN 0447 00593  N/A     BLANKS
 
+[DOD|dod]
 ***********************************************************************
 
            'DOD' LOCATION IDENTIFIERS - RECORD DESCRIPTION FOLLOWS

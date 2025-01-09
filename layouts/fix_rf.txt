@@ -1,5 +1,5 @@
-07/19/2018
-466
+_date 07/19/2018
+_length 466
 
 
 J  T   L   S L   E N
@@ -10,7 +10,7 @@ T  E   G   R A   M B
        H     I   N R
              O   T
              N           FIELD DESCRIPTION
-[fix1]
+[FIX1|fix1]
 *********************************************************************
 
             'FIX1' RECORD TYPE - BASE FIX DATA
@@ -88,7 +88,7 @@ L  AN0001 00274  NONE    SUA/ATCAA (Y = YES OR N = NO)
 
 L  AN0192 00275  NONE    BLANKS
 
-[fix2]
+[FIX2|fix2]
 ********************************************************************
 
      'FIX2' RECORD TYPE - FIX NAVAID MAKEUP TEXT
@@ -122,7 +122,7 @@ L  AN0023 00067  FX22    LOCATION-IDENTIFIER, FACILITY TYPE, AND RADIAL
 
 L AN0377 00090  NONE     BLANKS
 
-[fix3]
+[FIX3|fix3]
 ********************************************************************
 
      'FIX3' RECORD TYPE - FIX ILS MAKEUP TEXT
@@ -155,7 +155,7 @@ L  AN0023 00067  FX26    3 OR 4 LETTER IDENT*FACILITY TYPE*DIRECTION OR COURSE
 
 L  AN0377 00090  NONE    BLANKS
 
-[fix4]
+[FIX4|fix4]
 ********************************************************************
 
      'FIX4' RECORD TYPE - REMARKS TEXT
@@ -179,7 +179,7 @@ L  AN0100 00067  NONE    FIELD LABEL
 
 L  AN0300 00167  NONE    REMARK TEXT
 
-[fix5]
+[FIX5|fix5]
 ********************************************************************
 
      'FIX5' RECORD TYPE - CHARTING TYPES

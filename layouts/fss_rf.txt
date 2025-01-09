@@ -1,50 +1,7 @@
+_date 04/05/2012
+_length 17560
 
-
-                          FLIGHT SERVICE STATIONS
-                          DATA BASE RECORD LAYOUT
-                                (FSS-FILE)
-
-INFORMATION EFFECTIVE DATE: 04/05/2012
-
-    RECORD FORMAT: FIXED
-    LOGICAL RECORD LENGTH: 17560
-
-
-GENERAL INFORMATION:
-    1.  LEFT JUSTIFIED FIELDS HAVE TRAILING BLANKS
-    2.  RIGHT JUSTIFIED FIELDS HAVE LEADING BLANKS
-    3.  ELEMENT NUMBER IS FOR INTERNAL REFERENCE ONLY
-          AND NOT IN RECORD
-    4.  OWNER/OPERATOR ENCODE           DECODE
-          - CODE -                     - NAME -
-              A                     U. S. AIR FORCE
-              C                     U. S. COAST GUARD
-              D                     CANADIAN MINISTRY OF TRANSPORT
-              F                     FEDERAL AVIATION ADMIN
-              G                     FEDERAL GOV'T. - NOT U. S. A
-              N                     U. S. NAVY
-              O                     OTHER
-              P                     PRIVATE
-              R                     U. S. ARMY
-              X                     ROYAL CANADIAN AIR FORCE
-              Z                     UNKNOWN
-        STATUS - - ENCODE - -     - - DECODE - -
-        FSS/COM       A             OPERATIONAL-IFR
-        FSS/COM       B             OPNL-PART-TIME
-        FSS/COM       K             DCMSNG DELAYED
-
-    EACH RECORD ENDS WITH A CARRIAGE RETURN CHARACTER AND LINE FEED
-    CHARACTER (CR/LF). THIS LINE TERMINATOR IS NOT INCLUDED IN THE
-    LOGICAL RECORD LENGTH.
-
-    5.  A LIMITED NUMBER OF NON-US FACILITIES ARE INCLUDED IN THIS
-        FILE. SOME OF THESE, IN PARTICULAR THE CANADIAN FACILITIES, ARE
-        INCLUDED TO FACILITATE CARTOGRAPHIC REQUIREMENTS IN BORDER REGIONS.
-        THESE RECORDS ARE NOT GUARANTEED TO BE COMPLETE AND ARE NOT INCLUSIVE
-        OF ALL CANADIAN FACILITIES. THIS FILE SHOULD NOT BE CONSIDERED OFFICIAL
-        SOURCE FOR NON-US FACILITIES.
-
-
+[fss]
 *********************************************************************************
 NOTE:  A continuation record is added to accommodate additional occurrences
 of the F21 - communications outlet identification, F22 - Navaid Identifier

@@ -1,4 +1,6 @@
-`
+_date 07/19/2018
+_length 344
+
                             PREFERRED ROUTE
                         DATA BASE RECORD LAYOUT
                               (PFR-FILE)
@@ -67,6 +69,7 @@ GENERAL INFORMATION:
          These "Route IDs" are local conventions of the respective TRACONs. 
 
 
+[PFR1|pfr1]
 *********************************************************************
 
             'PFR1' RECORD TYPE - BASE ROUTE DATA
@@ -132,7 +135,7 @@ L AN 0040 00305  N/A     DESTINATION CITY
                          NON-COMMON (EITHER DIRECTION)
                          INLAND NAV FAC OR FIX > DESTINATION
 
-
+[PFR2|pfr2]
 ********************************************************************
 
      'PFR2' RECORD TYPE - PREFERRED ROUTE SEGMENT DESCRIPTION

@@ -1,12 +1,5 @@
-
-                                  ILS
-                       DATA BASE RECORD LAYOUT
-                             (ILS-FILE)
-
-INFORMATION EFFECTIVE DATE: 04/05/2012
-
-    RECORD FORMAT: FIXED
-    LOGICAL RECORD LENGTH: 378
+_date 04/05/2012
+_length 378
 
 
 FILE STRUCTURE DESCRIPTION:
@@ -94,6 +87,7 @@ GENERAL INFORMATION:
              EXAMPLE :  LAT-   140811.070N
                         LONG-  271674.660W
 
+[ILS1|ils1]
 *********************************************************************
 
             'ILS1' RECORD TYPE - BASE DATA
@@ -168,6 +162,7 @@ L AN 0003 00288  I24     THE MAGNETIC VARIATION AT THE ILS FACILITY.
                          (EX: 09E)
 L AN 0088 00291  N/A     BLANK.
 
+[ILS2|ils2]
 *********************************************************************
 
             'ILS2' RECORD TYPE - LOCALIZER DATA
@@ -264,7 +259,7 @@ L AN 0002 00176          LOCALIZER SERVICES CODE
 
 L AN 0201 00178  N/A     BLANK.
 
-
+[ILS3|ils3]
 *********************************************************************
 
             'ILS3' RECORD TYPE - GLIDE SLOPE DATA
@@ -361,7 +356,7 @@ R  N 0008 00161  I108    ELEVATION OF RUNWAY AT POINT ADJACENT TO THE
                          MSL) (EX:  210.5)
 L AN 0210 00169  N/A     BLANK.
 
-
+[ILS4|ils4]
 *********************************************************************
 
      'ILS4' RECORD TYPE - DISTANCE MEASURING EQUIPMENT (DME) DATA
@@ -449,6 +444,7 @@ R  N 0007 00138  I104    DISTANCE OF DME
 L AN 0234 00145  N/A     BLANK.
 
 
+[ILS5|ils5]
 *********************************************************************
 
             'ILS5' RECORD TYPE - MARKER BEACON DATA
@@ -553,7 +549,7 @@ L AN 0022 00211          LOW POWERED NDB STATUS OF MARKER BEACON
 L AN 0030 00233          SERVICE PROVIDED BY MARKER.
 L AN 0116 00263  N/A     BLANK.
 
-
+[ILS6|ils6]
 ********************************************************************
 
      'ILS6' RECORD TYPE - INSTRUMENT LANDING SYSTEM REMARKS

@@ -1,154 +1,7 @@
+_date 6/17/2021
+length 314
 
-                   AIRWAY DATA BASE RECORD LAYOUT
-                              (AWY-FILE)
-
-INFORMATION EFFECTIVE DATE: 6/17/2021
-RECORD FORMAT: FIXED
-LOGICAL RECORD LENGTH: 314
-
-
-
-FILE STRUCTURE DESCRIPTION:
----------------------------
-    THERE ARE A VARIABLE NUMBER OF FIXED-LENGTH RECORDS FOR
-    EACH AIRWAY(AWY).  THE NUMBER OF RECORDS IS DETERMINED
-    BY THE NUMBER OF POINTS AND THE POINT TO POINT ASSOCIATED
-    INFORMATION DEFINING THE AWY.  THE AIRWAY FILE CONSISTS
-    OF INDIVIDUAL POINTS ALONG AN AIRWAY.  THESE POINTS MAY BE
-    NAVIGATION FACILITIES, NAMED FIXES, UNNAMED(NUMBERED)AIRWAY
-    CROSSINGS, UNNAMED TURNING POINTS, U.S. BORDERS, OR AIR TRAFFIC
-    CONTROL CENTER(ARTCC) BOUNDARY CROSSING POINTS.  DIRECTION
-    OF AIRWAY IS WEST TO EAST AND SOUTH TO NORTH.  LAST POINT
-    ON AIRWAY IS THE TERMINATION POINT.
-
-    EACH OF THE SIX RECORD TYPES IS IDENTIFIED BY A RECORD
-    TYPE INDICATOR (AWY1, AWY2.....AWY5, RMK), AWY DESIGNATION,
-    AWY TYPE, POINT SEQUENCE NUMBER (AWY RECORDS ONLY).
-    ALL POINTS AND POINT TO POINT DATA IS ARRANGED LOGICALLY
-    TO DEFINE THE AIRWAY.  GENERAL REMARK ('RMK') DATA FOLLOWS THE
-    DATA FOR THE LAST POINT TO POINT RECORD IN THE ROUTE.
-    THE FILE IS SORTED BY AIRWAY TYPE, AIRWAY DESIGNATION,
-    POINT SEQUENCE NUMBER, AND RECORD SEQUENCE NUMBER(INSURES
-    THAT MULTIPLE RECORDS OF A SPECIFIC TYPE ARE IN
-    POINT/REMARKS ORDER).
-
-    EACH RECORD ENDS WITH A CARRIAGE RETURN CHARACTER AND LINE FEED
-    CHARACTER (CR/LF). THIS LINE TERMINATOR IS NOT INCLUDED IN THE
-    LOGICAL RECORD LENGTH.
-
-
-DESCRIPTION OF THE RECORD TYPES:
---------------------------------
-
-    'AWY1' RECORD TYPE CONTAINS THE BASIC AND MINIMUM
-    ENROUTE ALTITUDE(MEA) DATA FOR EACH AIRWAY POINT/SEGMENT.
-    THERE IS ONE AWY1 RECORD FOR EACH AIRWAY POINT/SEGMENT.
-
-    'AWY2' RECORD TYPE CONTAINS THE AIRWAY POINT DESCRIPTION.
-    THERE IS ONE AWY2 RECORD FOR EACH AIRWAY POINT.
-
-    'AWY3' RECORD TYPE CONTAINS THE TO CHANGEOVER POINT NAVAID
-    DESCRIPTION (VOR AND JET AIRWAYS ONLY).
-    THERE IS ONE RECORD FOR EACH TO CHANGEOVER POINT NAVAID DESCRIPTION.
-
-    'AWY4' RECORD TYPE CONTAINS TEXTUAL INFORMATION REGARDING
-    REMARKS ABOUT THE AWY POINT DATA.  EACH AWY4 RECORD
-    CONTAINS ONE LINE OF TEXT.  THERE CAN BE 0 OR MORE AWY4
-    RECORDS.
-
-    'AWY5' RECORD TYPE CONTAINS TEXTUAL INFORMATION REGARDING
-    EXCEPTIONS TO THE STANDARD AWY CHANGEOVER POINT DATA.  EACH AWY5
-    RECORD CONTAINS ONE LINE OF TEXT.  THERE CAN BE 0 OR MORE AWY5
-    RECORDS.
-
-    'RMK ' RECORD TYPE CONTAINS TEXTUAL INFORMATION REGARDING
-    REMARKS ABOUT AN ENTIRE ROUTE AND NOT A SPECIFIC AIRWAY POINT.
-    THERE CAN BE 0 OR MORE RMK RECORDS FOR EACH AIRWAY.
-
-GENERAL INFORMATION:
---------------------
-
-     1.  LEFT JUSTIFIED FIELDS HAVE TRAILING BLANKS.
-     2.  RIGHT JUSTIFIED FIELDS HAVE LEADING ZEROS
-         EXCEPT WHEN RIGHT JUSTIFIED ALPHA/NUMERIC(R AN)
-         CONTAINS BLANKS.
-     3.  ELEMENT NUMBER IS FOR INTERNAL REFERENCE ONLY
-         AND NOT IN RECORD.
-     4.  THE UNIQUE RECORD KEY IS MADE UP OF THE AIRWAY DESIGNATION,
-         AIRWAY TYPE, AND THE AIRWAY POINT SEQUENCE NUMBER.
-         IT IS REPEATED ON EACH RECORD.
-     5.  PART95 DESCRIPTION - MINIMUM ENROUTE IFR ALTITUDES OVER
-         BELOW                PARTICULAR ROUTES AND INTERSECTIONS
-                              (AMENDMENTS PUBLISH EVERY 56 DAYS)
-                              (BOOK PUBLISHED SEMI-ANNUALLY)
-     6.  DLID  -   AIRWAY DESIGNATION BELOW -
-                   DESCRIPTION
-                   --------------------------------
-                   POSITION ONE(1)  ENCODE     DECODE
-                                    ------     ------------------
-                                    J       =  JET ROUTE(J804R)
-                                    V       =  VOR AIRWAY(V16,
-                                               V402 H, V444)
-                                    A       =  AMBER COLORED
-                                               AIRWAY(A16)
-                                    B       =  BLUE COLORED
-                                               AIRWAY(B9)
-                                    G       =  GREEN COLORED
-                                               AIRWAY(G13)
-                                    R       =  RED COLORED
-                                               AIRWAY(R39)
-                                    Q       =  GPS RNAV ROUTES (Q102)
-                                    T       =  GPS RNAV ROUTES (T238)
-
-     7.  DLID  -   AIRWAY TYPE BELOW -
-                   DESCRIPTION
-                   ---------------------------------
-                   POSITION SIX(6)  ENCODE     DECODE
-                                    ------     ------------------
-                                    A        = ALASKA AIRWAY
-                                    H        = HAWAII AIRWAY
-                                    BLANK    = U.S. FEDERAL AIRWAY
-
-     8.  NAVAID FACILITY TYPE BELOW -
-                   DESCRIPTION
-                   -----------------------------------------
-                   NDB/DME, NDB, VORTAC, VOR, VOR/DME, DME
-
-     9.  FIX TYPE(FX36) BELOW -
-
-                   DESCRIPTION
-                   ------------------------------------------
-                   ARTCC-BDRY, MIL-REP-PT, TURN-PT, AWY-INTXN,
-                   REP-PT, COORDN-FIX
-
-    10.  FIX TYPE PUBLICATION CATEGORY BELOW -
-              GROUP FOR REPORTS AND PUBLICATIONS AS FOLLOW:
-                 (USED FOR NAMED FIXES ONLY)
-                   DESCRIPTION
-                   ----------------------------------------
-                   FIX = (FIX OR MIL)
-
-    11.  NAVAID FACILITY/FIX STATE P. O. CODE BELOW - 59 = CANADA
-                                                      MX = MEXICO
-
-    12.  NAVAID FACILITY/FIX LATITUDE/LONGITUDE BELOW -
-    FORMAT VARIABLE, LEFT JUSTIFIED AS FOLLOWS -
-    DEGREES(NNN) - MINUTES(NN) - SECONDS(NN) (.) FRACTION(NNN) & DRTN(A)
-    ----------------------------------------------------------------
-     38-05-47.7N
-     092-33-10.4W
-     36-13-40.0N
-     090-02-10.0W
-
-J  T   L   S L   E N
-U  Y   E   T O   L U
-S  P   N   A C   E M
-T  E   G   R A   M B
-       T   T T   E E
-       H     I   N R
-             O   T
-             N           FIELD DESCRIPTION
-
+[AWY1|awy1]
 *********************************************************************
 
             'AWY1' RECORD TYPE - BASIC AND MINIMUM ENROUTE ALTITUDE
@@ -295,7 +148,7 @@ L AN 0001 00302  NONE    DOGLEG(Y/N) (A TURN POINT NOT AT A NAVAID - NOTE: GPS
 R  N 0005 00303  NONE    RNP FORMAT XX.XX
 R  N 0007 00308  N/A     RECORD SORT SEQUENCE NUMBER
 
-
+[AWY2|awy2]
 ********************************************************************
 
      'AWY2' RECORD TYPE - AIRWAY POINT DESCRIPTION
@@ -321,6 +174,8 @@ L AN 0040 00121  NONE    RESERVED(FROM POINT-PART95)
 L AN 0147 00161  N/A     BLANKS
 R  N 0007 00308  N/A     RECORD SORT SEQUENCE NUMBER
 
+[AWY3|awy3]
+
 ********************************************************************
 
      'AWY3' RECORD TYPE - CHANGEOVER TO POINT DESCRIPTION  - (NAVAIDS)
@@ -340,6 +195,7 @@ L AN 0014 00081  N5      NAVAID FACILITY LONGITUDE
 L AN 0213 00095  N/A     BLANKS
 R  N 0007 00308  N/A     RECORD SORT SEQUENCE NUMBER
 
+[AWY4|awy4]
 ********************************************************************
 
      'AWY4' RECORD TYPE - AIRWAY POINT REMARKS TEXT
@@ -354,6 +210,7 @@ L AN 0202 00016  N/A     REMARKS TEXT
 L AN 0090 00218  N/A     BLANKS
 R  N 0007 00308  N/A     RECORD SORT SEQUENCE NUMBER
 
+[AWY5|awy5]
 *******************************************************************
 
      'AWY5' RECORD TYPE - CHANGEOVER POINT EXCEPTION TEXT
@@ -368,6 +225,7 @@ L  N 0202 00016  N/A     REMARKS TEXT
 L AN 0090 00218  N/A     BLANKS
 R  N 0007 00308  N/A     RECORD SORT SEQUENCE NUMBER
 
+[RMK|awy_rmk]
 *******************************************************************
 
      'RMK ' RECORD TYPE - AIRWAY REMARK TEXT

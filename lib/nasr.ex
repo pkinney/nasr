@@ -1,7 +1,27 @@
 defmodule NASR do
-  @moduledoc """
-  Documentation for `NASR`.
-  """
+  @moduledoc false
+  def load do
+    dir = Path.join(__DIR__, "../layouts")
+
+    pairs =
+      dir
+      |> File.ls!()
+      |> Enum.filter(fn file -> String.ends_with?(file, ".txt") end)
+      |> Enum.map(fn f ->
+        cat = f |> String.split("_") |> List.first() |> String.upcase()
+        data_file = "#{cat}.txt"
+        layout_file = Path.join(dir, f)
+        {data_file, layout_file}
+      end)
+      |> IO.inspect()
+
+    Enum.each(pairs, fn {data_file, layout_file} ->
+      IO.inspect(layout_file)
+      layout = NASR.Layout.load(layout_file)
+      IO.inspect(data_file)
+      data_file |> load(layout) |> IO.inspect()
+    end)
+  end
 
   def load(file, layout) do
     zip_file_path = "./data/28DaySubscription_Effective_2024-12-26.zip"

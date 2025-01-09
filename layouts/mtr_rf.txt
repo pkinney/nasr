@@ -1,4 +1,5 @@
-
+_date 07/19/2018
+_length 519
                         MILITARY TRAINING ROUTE
                         DATA BASE RECORD LAYOUT
                               (MTR-FILE)
@@ -79,6 +80,7 @@ T  E   G   R A   M B
              O   T  
              N           FIELD DESCRIPTION  
   
+[MTR1|mtr1]
 *********************************************************************  
   
             'MTR1' RECORD TYPE - BASE ROUTE DATA  
@@ -102,7 +104,7 @@ L AN 0175 00264  MTR21   TIMES OF USE TEXT INFORMATION.
 L AN 0076 00439  N/A     BLANKS 
 R  N 0005 00515  N/A     SORT SEQUENCE NUMBER FOR RECORD  
   
-   
+[MTR2|mtr2]
 ********************************************************************  
   
      'MTR2' RECORD TYPE - STANDARD OPERATING PROCEDURES TEXT  
@@ -119,6 +121,7 @@ L AN 0402 00113  N/A     BLANKS
 R  N 0005 00515  N/A     SORT SEQUENCE NUMBER FOR RECORD  
   
    
+[MTR3|mtr3]
 ********************************************************************  
   
      'MTR3' RECORD TYPE - ROUTE WIDTH DESCRIPTION TEXT  
@@ -135,6 +138,7 @@ L AN 0402 00113  N/A     BLANKS
 R  N 0005 00515  N/A     RECORD SORT SEQUENCE NUMBER  
   
    
+[MTR4|mtr4]
 ********************************************************************  
   
      'MTR4' RECORD TYPE - TERRAIN FOLLOWING OPERATIONS TEXT  
@@ -150,7 +154,7 @@ L AN 0100 00013  MTR46   TERRAIN FOLLOWING OPERATIONS TEXT
 L AN 0402 00113  N/A     BLANKS  
 R  N 0005 00515  N/A     RECORD SORT SEQUENCE NUMBER  
   
-   
+[MTR5|mtr5]
 ********************************************************************  
   
      'MTR5' RECORD TYPE - ROUTE POINT DATA  
@@ -185,6 +189,7 @@ R AN 0014 00501  MTT5    LONGITUDE LOCATION OF POINT
 R  N 0005 00515  MTT21   RECORD SORT SEQUENCE NUMBER  
                          (SEGMENT SEQUENCE NUMBER FOR THIS POINT ALONG ROUTE)  
 
+[MTR6|mtr6]
 ********************************************************************  
   
      'MTR6' RECORD TYPE - AGENCY DATA  

@@ -27,3 +27,4 @@ nasr-*.tar
 
 .DS_Store
 /data
+/output

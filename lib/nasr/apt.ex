@@ -12,16 +12,20 @@ defmodule NASR.Apt do
     |> Stream.map(fn line -> decode_line(line, layout) end)
     |> Stream.reject(&is_nil(&1))
     |> Enum.to_list()
-    |> IO.inspect()
   end
 
   defp decode_line(line, layout) do
-    type = String.slice(line, 0, layout.key_length)
+    type_string = line |> String.slice(0, layout.key_length) |> String.trim()
+    type = Map.get(layout.types, type_string)
+
+    if type == nil do
+      IO.puts("Unknown type #{inspect(type_string)} in line: #{line}")
+    end
 
     layout.fields
-    |> Enum.filter(fn {heading, _, _, _, _, _} -> heading == Map.get(layout.types, type) end)
+    |> Enum.filter(fn {heading, _, _, _, _, _} -> heading == type end)
     |> Map.new(fn {_, just, type, len, start, key} -> {key, extract(line, {just, type, len, start})} end)
-    |> Map.put(:type, Map.get(layout.types, type))
+    |> Map.put(:type, type)
   end
 
   defp extract(line, {"L", "AN", len, start}) do

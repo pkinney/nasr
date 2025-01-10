@@ -1,7 +1,7 @@
 _date 12/1/2022
 _length 1531
 
-[APT|landing_facility_data]
+[APT|apt]
 ************************************************************************
 *          L A N D I N G   F A C I L I T Y   D A T A                   *
 ************************************************************************
@@ -567,7 +567,7 @@ L AN 0007 01211  NONE    ICAO IDENTIFIER
 L AN 0001 01218  NONE    MINIMUM OPERATIONAL NETWORK(MON)
 L AN 0313 01219  NONE    AIRPORT RECORD FILLER (BLANK)
 
-[ATT|facility_attendance_schedule_data]
+[ATT|apt_att]
 ************************************************************************
 *  F A C I L I T Y   A T T E N D A N C E   S C H E D U L E   D A T A   *
 ************************************************************************
@@ -606,7 +606,7 @@ L AN 0108 00019  A17     AIRPORT ATTENDANCE SCHEDULE (WHEN MINIMUM
 L AN 1405 00127  NONE    ATTENDANCE SCHEDULE RECORD FILLER (BLANK)
 
 
-[RWY|facility_runway_data]
+[RWY|apt_rwy]
 ************************************************************************
 *          F A C I L I T Y   R U N W A Y   D A T A                     *
 ************************************************************************
@@ -1249,7 +1249,7 @@ L AN 0010 01132  NONE    HOLD SHORT POINT LAT/LONG SOURCE DATE (MM/DD/YYYY)
 L AN 0390 01142  NONE    RUNWAY RECORD FILLER (BLANK)
 
 
-[ARS|runway_arresting_system_data]
+[ARS|apt_ars]
 ************************************************************************
 *       R U N W A Y   A R R E S T I N G   S Y S T E M   D A T A        *
 ************************************************************************
@@ -1294,7 +1294,7 @@ L AN 0009 00027  E60     TYPE OF AIRCRAFT ARRESTING DEVICE
 L AN 1496 00036  NONE    ARRESTING SYSTEM RECORD FILLER (BLANK)
 
 
-[RMK|facility_remark_data]
+[RMK|apt_rmk]
 ************************************************************************
 *          F A C I L I T Y   R E M A R K   D A T A                     *
 ************************************************************************

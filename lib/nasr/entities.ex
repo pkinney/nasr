@@ -1,4 +1,4 @@
-defmodule NASR.Apt do
+defmodule NASR.Entities do
   @moduledoc false
 
   def load(zip_file, apt_file, layout) do

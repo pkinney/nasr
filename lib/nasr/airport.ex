@@ -3,7 +3,7 @@ defmodule NASR.Airport do
   defstruct ~w(id
     type 
     name elevation nasr_site_number latitude longitude fuel_types runways remarks attendances ownership facility_use status ctaf
-  landing_fee towered commercial_services)a
+  landing_fee towered wx_station)a
 
   @type t() :: %__MODULE__{}
 
@@ -14,33 +14,20 @@ defmodule NASR.Airport do
       type: landing_facility_type(entry.landing_facility_type),
       name: Recase.to_title(entry.official_facility_name),
       nasr_site_number: entry.landing_facility_site_number,
-      latitude: convert_seconds_to_decimal(entry.airport_reference_point_longitude_seconds),
-      longitude: convert_seconds_to_decimal(entry.airport_reference_point_latitude_seconds),
+      latitude: NASR.convert_seconds_to_decimal(entry.airport_reference_point_longitude_seconds),
+      longitude: NASR.convert_seconds_to_decimal(entry.airport_reference_point_latitude_seconds),
       elevation: NASR.safe_str_to_float(entry.airport_elevation_nearest_tenth_of_a_foot_msl),
       ownership: convert_ownership(entry.airport_ownership_type),
       facility_use: convert_facility_use(entry.facility_use),
       status: convert_airport_status_code(entry.airport_status_code),
       fuel_types: convert_fuel_types(entry.fuel_types_available_for_public_use_at_the),
       ctaf: entry.common_traffic_advisory_frequency_ctaf,
-      landing_fee: convert_yn(entry.landing_fee_charged_to_non_commercial_users_of),
-      towered: convert_yn(entry.air_traffic_control_tower_located_on_airport),
-      commercial_services: NASR.safe_str_to_int(entry.commercial_services),
+      landing_fee: NASR.convert_yn(entry.landing_fee_charged_to_non_commercial_users_of),
+      towered: NASR.convert_yn(entry.air_traffic_control_tower_located_on_airport),
       runways: [],
       remarks: [],
       attendances: []
     }
-  end
-
-  defp convert_seconds_to_decimal(seconds) do
-    {seconds, dir} = Float.parse(seconds)
-    deg = seconds / 3600.0
-
-    case dir do
-      "N" -> deg
-      "S" -> -deg
-      "E" -> deg
-      "W" -> -deg
-    end
   end
 
   defp landing_facility_type("AIRPORT"), do: :airport
@@ -67,8 +54,4 @@ defmodule NASR.Airport do
   defp convert_fuel_types(<<fuel::binary-size(5)>> <> rest), do: [fuel | convert_fuel_types(rest)]
   defp convert_fuel_types(""), do: []
   defp convert_fuel_types(type), do: [type]
-
-  defp convert_yn("Y"), do: true
-  defp convert_yn("N"), do: false
-  defp convert_yn(_), do: nil
 end

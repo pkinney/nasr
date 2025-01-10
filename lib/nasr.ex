@@ -14,53 +14,9 @@ defmodule NASR do
     end)
   end
 
-  # def load do
-  #   dir = Path.join(__DIR__, "../layouts")
-  #
-  #   pairs =
-  #     dir
-  #     |> File.ls!()
-  #     |> Enum.filter(fn file -> String.ends_with?(file, ".txt") end)
-  #     |> Enum.map(fn f ->
-  #       cat = f |> String.split("_") |> List.first() |> String.upcase()
-  #       data_file = "#{cat}.txt"
-  #       layout_file = Path.join(dir, f)
-  #       {data_file, layout_file}
-  #     end)
-  #     |> IO.inspect()
-  #
-  #   Enum.each(pairs, fn {data_file, layout_file} ->
-  #     IO.inspect(layout_file)
-  #     layout = NASR.Layout.load(layout_file)
-  #     IO.inspect(data_file)
-  #     data_file |> load(layout) |> IO.inspect()
-  #   end)
-  # end
-
   def load(zip_file_path, file, layout) do
     {:ok, zip_file} = zip_file_path |> Unzip.LocalFile.open() |> Unzip.new()
-
-    NASR.Apt.load(zip_file, file, layout)
-  end
-
-  def build_airports(entities) do
-    airports =
-      entities
-      |> Enum.filter(fn entity -> entity.type == :landing_facility_data end)
-      |> Map.new(fn airport ->
-        {airport.landing_facility_site_number, NASR.Airport.new(airport)}
-      end)
-
-    airports =
-      entities
-      |> Enum.filter(fn entity -> entity.type == :facility_runway_data end)
-      |> Enum.reduce(airports, fn runway, airports ->
-        Map.update(airports, runway.landing_facility_site_number, %{}, fn airport ->
-          Map.update!(airport, :runways, &[NASR.Runway.new(runway) | &1])
-        end)
-      end)
-
-    IO.inspect(airports["23750.*A"])
+    NASR.Entities.load(zip_file, file, layout)
   end
 
   def safe_str_to_int(""), do: nil
@@ -82,4 +38,39 @@ defmodule NASR do
       true -> nil
     end
   end
+
+  def convert_seconds_to_decimal(seconds) do
+    {seconds, dir} = Float.parse(seconds)
+    deg = seconds / 3600.0
+
+    case dir do
+      "N" -> deg
+      "S" -> -deg
+      "E" -> deg
+      "W" -> -deg
+    end
+  end
+
+  def convert_dms_to_decimal(""), do: nil
+
+  def convert_dms_to_decimal(str) do
+    [deg, min, sec] = String.split(str, "-")
+    deg = safe_str_to_int(deg)
+    min = safe_str_to_int(min)
+
+    {sec, dir} = Float.parse(sec)
+
+    deg = deg + min / 60.0 + sec / 3600.0
+
+    case dir do
+      "N" -> deg
+      "S" -> -deg
+      "E" -> deg
+      "W" -> -deg
+    end
+  end
+
+  def convert_yn("Y"), do: true
+  def convert_yn("N"), do: false
+  def convert_yn(_), do: nil
 end

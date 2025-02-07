@@ -1,17 +1,68 @@
 defmodule NASR do
   @moduledoc false
-  def list_layouts do
-    dir = Path.join(__DIR__, "../layouts")
 
-    dir
+  require Logger
+
+  def list_layouts do
+    dir()
+    |> Path.join("layouts")
     |> File.ls!()
     |> Enum.filter(fn file -> String.ends_with?(file, ".txt") end)
     |> Enum.map(fn f ->
       cat = f |> String.split("_") |> List.first() |> String.upcase()
       data_file = "#{cat}.txt"
-      layout_file = Path.join(dir, f)
+      layout_file = Path.join(dir(), f)
       {cat, layout_file, data_file}
     end)
+  end
+
+  def stream do
+    stream(categories())
+  end
+
+  def stream(categories) when is_list(categories) do
+    zip_file_path = find_zip_file()
+
+    {:ok, zip_file} =
+      case zip_file_path do
+        nil -> {:ok, nil}
+        file -> file |> Unzip.LocalFile.open() |> Unzip.new()
+      end
+
+    categories
+    |> Enum.map(fn cat ->
+      if preprocessed?(cat) do
+        data_file = Path.join([dir(), "output", "#{cat}.data"])
+
+        Logger.debug("[#{__MODULE__}] Creating stream for #{cat} from preprocessed file #{data_file}...")
+
+        TermStream.deserialize(File.stream!(data_file, 512 * 1024, [:read, :binary]))
+      else
+        if zip_file == nil do
+          raise "no NARS zip file found in the data directory. Download the latest NASR zip file from https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription/ and place it in `#{Path.join([dir(), "data"])}"
+        end
+
+        layout_file = Path.join([dir(), "layouts", "#{cat}_rf.txt"])
+        data_file = "#{cat}.txt"
+
+        Logger.debug(
+          "[#{__MODULE__}] Creating stream for #{cat} from #{zip_file_path} with layout from #{layout_file}..."
+        )
+
+        layout = NASR.Layout.load(layout_file)
+        NASR.Entities.stream(zip_file, data_file, layout)
+      end
+    end)
+    |> Enum.reduce(nil, fn
+      a, nil -> a
+      a, b -> Stream.concat(a, b)
+    end)
+  end
+
+  def stream(zip_file_path, category), do: stream(zip_file_path, [category])
+
+  def categories do
+    Enum.map(list_layouts(), &elem(&1, 0))
   end
 
   def load(zip_file_path, file, layout) do
@@ -19,58 +70,30 @@ defmodule NASR do
     NASR.Entities.load(zip_file, file, layout)
   end
 
-  def safe_str_to_int(""), do: nil
+  def stream(zip_file_path, file, layout) do
+    {:ok, zip_file} = zip_file_path |> Unzip.LocalFile.open() |> Unzip.new()
+    NASR.Entities.stream(zip_file, file, layout)
+  end
 
-  def safe_str_to_int(str) do
-    cond do
-      String.match?(str, ~r/^\-?\d+$/) -> String.to_integer(str)
-      String.match?(str, ~r/^\-?\d+\.\d+$/) -> str |> String.to_float() |> trunc()
-      true -> nil
+  def preprocessed?(cat) do
+    File.exists?(Path.join([dir(), "output", "#{cat}.data"]))
+  end
+
+  def find_zip_file do
+    if File.exists?(Path.join([dir(), "data"])) do
+      dir()
+      |> Path.join("data")
+      |> File.ls!()
+      |> Enum.find(fn file -> String.starts_with?(file, "28DaySubscription") and String.ends_with?(file, ".zip") end)
+      |> then(fn
+        nil ->
+          nil
+
+        file ->
+          Path.join([dir(), "data", file])
+      end)
     end
   end
 
-  def safe_str_to_float(""), do: nil
-
-  def safe_str_to_float(str) do
-    cond do
-      String.match?(str, ~r/^\-?\d+$/) -> String.to_float(str)
-      String.match?(str, ~r/^\-?\d+\.\d+$/) -> String.to_float(str)
-      true -> nil
-    end
-  end
-
-  def convert_seconds_to_decimal(seconds) do
-    {seconds, dir} = Float.parse(seconds)
-    deg = seconds / 3600.0
-
-    case dir do
-      "N" -> deg
-      "S" -> -deg
-      "E" -> deg
-      "W" -> -deg
-    end
-  end
-
-  def convert_dms_to_decimal(""), do: nil
-
-  def convert_dms_to_decimal(str) do
-    [deg, min, sec] = String.split(str, "-")
-    deg = safe_str_to_int(deg)
-    min = safe_str_to_int(min)
-
-    {sec, dir} = Float.parse(sec)
-
-    deg = deg + min / 60.0 + sec / 3600.0
-
-    case dir do
-      "N" -> deg
-      "S" -> -deg
-      "E" -> deg
-      "W" -> -deg
-    end
-  end
-
-  def convert_yn("Y"), do: true
-  def convert_yn("N"), do: false
-  def convert_yn(_), do: nil
+  defp dir, do: :code.priv_dir(:nasr)
 end

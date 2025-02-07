@@ -1,4 +1,4 @@
-defmodule Nasr.MixProject do
+defmodule NASR.MixProject do
   use Mix.Project
 
   def project do
@@ -14,7 +14,8 @@ defmodule Nasr.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger]
+      extra_applications: [:logger],
+      mod: {NASR.Application, []}
     ]
   end
 
@@ -24,6 +25,7 @@ defmodule Nasr.MixProject do
       {:unzip, "~> 0.12.0"},
       {:nimble_csv, "~> 1.2"},
       {:recase, "~> 0.5"},
+      {:term_stream, "~> 0.1.0"},
       {:styler, "~> 1.0.0-rc.1", only: [:dev, :test], runtime: false}
     ]
   end

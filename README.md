@@ -1,21 +1,18 @@
 # Nasr
 
-**TODO: Add description**
+## Download FAA Data Releases
 
-## Installation
+- **NASR** - https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription/
+- **CIFP** - https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/cifp/download/
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `nasr` to your list of dependencies in `mix.exs`:
+## Usage
 
-```elixir
-def deps do
-  [
-    {:nasr, "~> 0.1.0"}
-  ]
-end
+### Improving Performance
+
+```bash
+mix nasr.preprocess
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/nasr>.
+This will read in the NASR data from the zip file, convert it to Elixir terms, and save those terms to a local file.
 
+Calling `NASR.stream/2` will selectively choose the raw zip file or the preprocessed files. Using the preprocessed file will increase the streaming speed up to \_\_\_\_%.

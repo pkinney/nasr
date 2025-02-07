@@ -1,5 +1,7 @@
 defmodule NASR.WxStation do
   @moduledoc false
+  import NASR.Utils
+
   defstruct [
     :landing_facility_site_number,
     :ident,
@@ -30,11 +32,11 @@ defmodule NASR.WxStation do
       telephone_number: entity.station_telephone_number,
       city: entity.station_city,
       state: entity.station_state_post_office_code_ex_il,
-      elevation: NASR.safe_str_to_int(entity.elevation),
-      commissioning_status: NASR.convert_yn(entity.commissioning_status),
-      navaid: NASR.convert_yn(entity.navaid_flag___wx_sensor_associated_with_navaid),
-      longitude: NASR.convert_dms_to_decimal(entity.station_longitude),
-      latitude: NASR.convert_dms_to_decimal(entity.station_latitude)
+      elevation: safe_str_to_int(entity.elevation),
+      commissioning_status: convert_yn(entity.commissioning_status),
+      navaid: convert_yn(entity.navaid_flag___wx_sensor_associated_with_navaid),
+      longitude: convert_dms_to_decimal(entity.station_longitude),
+      latitude: convert_dms_to_decimal(entity.station_latitude)
     }
   end
 end

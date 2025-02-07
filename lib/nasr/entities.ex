@@ -1,7 +1,7 @@
 defmodule NASR.Entities do
   @moduledoc false
 
-  def load(zip_file, apt_file, layout) do
+  def stream(zip_file, apt_file, layout) do
     zip_file
     |> Unzip.file_stream!(apt_file)
     |> Stream.map(fn c -> IO.iodata_to_binary(c) end)
@@ -11,7 +11,10 @@ defmodule NASR.Entities do
     end)
     |> Stream.map(fn line -> decode_line(line, layout) end)
     |> Stream.reject(&is_nil(&1))
-    |> Enum.to_list()
+  end
+
+  def load(zip_file, apt_file, layout) do
+    Enum.to_list(stream(zip_file, apt_file, layout))
   end
 
   defp decode_line(line, layout) do

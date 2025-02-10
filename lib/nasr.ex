@@ -3,6 +3,36 @@ defmodule NASR do
 
   require Logger
 
+  def stream_airports(opts \\ []) do
+    {:ok, stream} =
+      cond do
+        Keyword.has_key?(opts, :file) ->
+          # open the file stream from
+          open_zip(Keyword.get(opts, :file))
+
+        Keyword.has_key?(opts, :url) ->
+          url = Keyword.get(opts, :url)
+          # open the file stream from
+          file = download(url)
+          open_zip(file)
+      end
+
+    stream
+    |> raw_stream(["APT"])
+    |> Stream.filter(&(&1.type == :apt))
+    |> Stream.map(&NASR.Airport.new(&1))
+  end
+
+  defp open_zip(zip_file_path) do
+    zip_file_path |> Unzip.LocalFile.open() |> Unzip.new()
+  end
+
+  def download(url) do
+    {:ok, file} = Briefly.create()
+    Req.get!(url, into: File.stream!(file))
+    file
+  end
+
   def list_layouts do
     dir()
     |> Path.join("layouts")
@@ -16,19 +46,7 @@ defmodule NASR do
     end)
   end
 
-  def stream do
-    stream(categories())
-  end
-
-  def stream(categories) when is_list(categories) do
-    zip_file_path = find_zip_file()
-
-    {:ok, zip_file} =
-      case zip_file_path do
-        nil -> {:ok, nil}
-        file -> file |> Unzip.LocalFile.open() |> Unzip.new()
-      end
-
+  def raw_stream(zip_file, categories) when is_list(categories) do
     categories
     |> Enum.map(fn cat ->
       if preprocessed?(cat) do
@@ -45,9 +63,7 @@ defmodule NASR do
         layout_file = Path.join([dir(), "layouts", "#{cat}_rf.txt"])
         data_file = "#{cat}.txt"
 
-        Logger.debug(
-          "[#{__MODULE__}] Creating stream for #{cat} from #{zip_file_path} with layout from #{layout_file}..."
-        )
+        Logger.debug("[#{__MODULE__}] Creating stream for #{cat} with layout from #{layout_file}...")
 
         layout = NASR.Layout.load(layout_file)
         NASR.Entities.stream(zip_file, data_file, layout)

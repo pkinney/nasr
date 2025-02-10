@@ -62,7 +62,7 @@ defmodule NASR do
         end
 
         layout_file = Path.join([dir(), "layouts", "#{cat}_rf.txt"])
-        data_file = "#{cat}.txt"
+        data_file = "#{String.upcase(cat)}.txt"
 
         Logger.debug("[#{__MODULE__}] Creating stream for #{cat} with layout from #{layout_file}...")
 

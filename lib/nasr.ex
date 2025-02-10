@@ -48,6 +48,7 @@ defmodule NASR do
 
   def raw_stream(zip_file, categories) when is_list(categories) do
     categories
+    |> Enum.map(&String.downcase(&1))
     |> Enum.map(fn cat ->
       if preprocessed?(cat) do
         data_file = Path.join([dir(), "output", "#{cat}.data"])

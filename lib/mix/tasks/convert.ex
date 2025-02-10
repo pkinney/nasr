@@ -8,6 +8,49 @@ defmodule Mix.Tasks.Nasr.Convert do
     __MODULE__.compiled_run(args)
   end
 
+  def compiled_run([cat]) do
+    file = Path.join([File.cwd!(), "output", "#{String.upcase(cat)}.data"])
+
+    file
+    |> File.stream!(512, [:read, :binary])
+    |> Stream.chunk_while(
+      <<>>,
+      fn
+        data, acc ->
+          <<size::integer-size(32), chunk::binary>> = acc <> data
+
+          IO.inspect(byte_size(chunk), label: "chunk")
+          IO.inspect(byte_size(acc <> data), label: "data")
+          IO.inspect(size, label: "size")
+
+          if byte_size(chunk) >= size do
+            <<tr::binary-size(size), rest::binary>> = chunk
+            IO.inspect(rest)
+
+            {:cont, tr, rest}
+          else
+            {:cont, acc <> data}
+          end
+      end,
+      fn
+        <<size::integer-size(32), chunk::binary>> = acc ->
+          if byte_size(chunk) >= size do
+            <<tr::binary-size(size), rest::binary>> = chunk
+
+            {:cont, tr, rest}
+          else
+            {:cont, acc}
+          end
+
+        acc ->
+          {:cont, acc}
+      end
+    )
+    |> Stream.map(fn line -> :erlang.binary_to_term(line) end)
+    |> Stream.each(&IO.inspect/1)
+    |> Stream.run()
+  end
+
   def compiled_run(_args) do
     dir = File.cwd!()
 

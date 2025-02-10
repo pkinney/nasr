@@ -1,5 +1,5 @@
-defmodule Mix.Tasks.Nasr.Parse do
-  @moduledoc "tasks for parsing NASR files and generating elixir terms from the raw data"
+defmodule Mix.Tasks.Nasr.Preprocess do
+  @moduledoc "parses the raw NASR data into Elixir terms and creates preprocessed files that speed up streaming"
   use Mix.Task
 
   @impl Mix.Task
@@ -12,7 +12,9 @@ defmodule Mix.Tasks.Nasr.Parse do
     dir = File.cwd!()
     zip_file = get_zip(dir)
 
-    NASR.list_layouts() |> Enum.sort_by(&elem(&1, 0)) |> Enum.each(&do_parse(&1, zip_file))
+    NASR.list_layouts()
+    |> Enum.sort_by(&elem(&1, 0))
+    |> Enum.each(&do_parse(&1, zip_file))
   end
 
   def compiled_run([cat]) do
@@ -22,20 +24,28 @@ defmodule Mix.Tasks.Nasr.Parse do
   end
 
   def do_parse({cat, layout_file, data_file}, zip_file) do
-    IO.puts("Parsing #{cat} (data_file) from #{zip_file}...")
+    IO.puts("Parsing #{cat} from #{zip_file}...")
     dir = File.cwd!()
 
     :ok = File.mkdir_p(Path.join([dir, "output"]))
+
     layout = NASR.Layout.load(layout_file)
-    entities = NASR.load(zip_file, data_file, layout)
-    :ok = File.write!(Path.join([dir, "output", "#{cat}.data"]), :erlang.term_to_binary(entities))
+    output = File.stream!(Path.join([dir, "output", "#{cat}.data"]), [:write, :binary])
+
+    zip_file
+    |> NASR.stream(data_file, layout)
+    |> TermStream.serialize()
+    |> Stream.into(output)
+    |> Stream.run()
+
+    IO.puts("  Done")
   end
 
   defp get_zip(dir) do
     dir
     |> Path.join("data")
     |> File.ls!()
-    |> Enum.find(fn file -> String.ends_with?(file, ".zip") end)
+    |> Enum.find(fn file -> String.starts_with?(file, "28DaySubscription") and String.ends_with?(file, ".zip") end)
     |> case do
       nil ->
         raise "no NARS zip file found in the data directory. Download the latest NASR zip file from https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription/"

@@ -24,12 +24,16 @@ defmodule NASR do
   end
 
   defp open_zip(zip_file_path) do
+    Logger.info("[#{__MODULE__}] Opening zip file #{zip_file_path}")
     zip_file_path |> Unzip.LocalFile.open() |> Unzip.new()
   end
 
   def download(url) do
+    Logger.info("[#{__MODULE__}] Downloading #{url}")
+
     {:ok, file} = Briefly.create()
     Req.get!(url, into: File.stream!(file))
+    Logger.info("[#{__MODULE__}] Download complete")
     file
   end
 
@@ -47,13 +51,15 @@ defmodule NASR do
   end
 
   def raw_stream(zip_file, categories) when is_list(categories) do
+    Logger.info("[#{__MODULE__}] Streaming...")
+
     categories
     |> Enum.map(&String.downcase(&1))
     |> Enum.map(fn cat ->
       if preprocessed?(cat) do
         data_file = Path.join([dir(), "output", "#{cat}.data"])
 
-        Logger.debug("[#{__MODULE__}] Creating stream for #{cat} from preprocessed file #{data_file}...")
+        Logger.info("[#{__MODULE__}] Creating stream for #{cat} from preprocessed file #{data_file}...")
 
         TermStream.deserialize(File.stream!(data_file, 512 * 1024, [:read, :binary]))
       else
@@ -64,7 +70,7 @@ defmodule NASR do
         layout_file = Path.join([dir(), "layouts", "#{cat}_rf.txt"])
         data_file = "#{String.upcase(cat)}.txt"
 
-        Logger.debug("[#{__MODULE__}] Creating stream for #{cat} with layout from #{layout_file}...")
+        Logger.info("[#{__MODULE__}] Creating stream for #{cat} with layout from #{layout_file}...")
 
         layout = NASR.Layout.load(layout_file)
         NASR.Entities.stream(zip_file, data_file, layout)

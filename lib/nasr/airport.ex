@@ -5,7 +5,7 @@ defmodule NASR.Airport do
   defstruct ~w(code
     type 
     name elevation nasr_site_number latitude longitude fuel_types runways remarks attendances ownership facility_use status ctaf
-  landing_fee towered wx_station city state)a
+  landing_fee towered wx_station city state nasr_id)a
 
   @type t() :: %__MODULE__{}
 
@@ -15,7 +15,7 @@ defmodule NASR.Airport do
       code: entry.location_identifier,
       type: landing_facility_type(entry.landing_facility_type),
       name: Recase.to_title(entry.official_facility_name),
-      nasr_site_number: entry.landing_facility_site_number,
+      nasr_id: entry.landing_facility_site_number,
       latitude: convert_seconds_to_decimal(entry.airport_reference_point_latitude_seconds),
       longitude: convert_seconds_to_decimal(entry.airport_reference_point_longitude_seconds),
       elevation: safe_str_to_float(entry.airport_elevation_nearest_tenth_of_a_foot_msl),

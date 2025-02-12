@@ -19,8 +19,16 @@ defmodule NASR do
 
     stream
     |> raw_stream(["APT"])
-    |> Stream.filter(&(&1.type == :apt))
-    |> Stream.map(&NASR.Airport.new(&1))
+    |> Stream.map(fn entity ->
+      case entity.type do
+        :apt -> NASR.Airport.new(entity)
+        :apt_rwy -> NASR.Runway.new(entity)
+        :apt_rmk -> NASR.AirportRemark.new(entity)
+        :apt_att -> NASR.AirportAttendance.new(entity)
+        _ -> nil
+      end
+    end)
+    |> Stream.reject(&is_nil/1)
   end
 
   defp open_zip(zip_file_path) do

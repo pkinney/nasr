@@ -55,7 +55,7 @@ defmodule NASR.Airport do
   defp convert_airport_status_code("CI"), do: :closed_indefinitely
   defp convert_airport_status_code("CP"), do: :closed_permanently
 
-  defp convert_fuel_types(<<fuel::binary-size(5)>> <> rest), do: [fuel | convert_fuel_types(rest)]
+  defp convert_fuel_types(<<fuel::binary-size(5)>> <> rest), do: [String.trim(fuel) | convert_fuel_types(rest)]
   defp convert_fuel_types(""), do: []
-  defp convert_fuel_types(type), do: [type]
+  defp convert_fuel_types(type), do: [String.trim(type)]
 end

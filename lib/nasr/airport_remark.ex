@@ -3,7 +3,8 @@ defmodule NASR.AirportRemark do
 
   defstruct [
     :airport_nasr_id,
-    :text
+    :text,
+    :element
   ]
 
   @type t() :: %__MODULE__{}
@@ -12,7 +13,8 @@ defmodule NASR.AirportRemark do
   def new(entity) do
     %__MODULE__{
       airport_nasr_id: entity.landing_facility_site_number,
-      text: entity.remark_text
+      text: entity.remark_text,
+      element: entity.remark_element_name
     }
   end
 end

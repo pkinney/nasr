@@ -2,7 +2,7 @@ defmodule NASR.Runway do
   @moduledoc false
   import NASR.Utils
 
-  defstruct ~w(identifier airport_nasr_id width length surface surface_secondary condition)a
+  defstruct ~w(identifier airport_nasr_id width length surface surface_secondary condition edge_lights_intensity)a
 
   @type t() :: %__MODULE__{}
 
@@ -17,7 +17,8 @@ defmodule NASR.Runway do
       width: safe_str_to_int(entity.physical_runway_width_nearest_foot),
       surface: surface,
       surface_secondary: surface_secondary,
-      condition: condition
+      condition: condition,
+      edge_lights_intensity: convert_runway_lights_edge_intensity(entity.runway_lights_edge_intensity)
     }
   end
 
@@ -79,4 +80,11 @@ defmodule NASR.Runway do
   defp convert_condition("F"), do: :fair
   defp convert_condition("P"), do: :poor
   defp convert_condition("L"), do: :failed
+
+  defp convert_runway_lights_edge_intensity("HIGH"), do: :high
+  defp convert_runway_lights_edge_intensity("MED"), do: :medium
+  defp convert_runway_lights_edge_intensity("LOW"), do: :low
+  defp convert_runway_lights_edge_intensity("NSTD"), do: :non_standard
+  defp convert_runway_lights_edge_intensity("NONE"), do: :none
+  defp convert_runway_lights_edge_intensity(_), do: :unknown
 end

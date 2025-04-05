@@ -4,8 +4,43 @@ defmodule NASR.Airport do
 
   defstruct ~w(code
     type 
-    name elevation nasr_site_number latitude longitude fuel_types runways remarks attendances ownership facility_use status ctaf
-  landing_fee towered wx_station city state nasr_id)a
+    name
+    elevation
+    nasr_site_number 
+    latitude 
+    longitude 
+    fuel_types 
+    runways
+    remarks 
+    attendances
+    ownership 
+    facility_use
+    status 
+    ctaf
+    landing_fee
+    towered 
+    wx_station 
+    city 
+    state 
+    nasr_id
+    airframe_repair_service
+    powerplant_repair_service
+    icao_code
+    direction_from_city
+    distance_from_city
+    transient_storage_facilities
+    other_airport_services
+    activation_date
+    lighting_schedule
+    wind_indicator
+    owners_phone_number
+    manager
+    manager_phone_number
+    unicom
+    sectional
+    certification_type
+    wx_stations
+  )a
 
   @type t() :: %__MODULE__{}
 
@@ -13,6 +48,7 @@ defmodule NASR.Airport do
   def new(entry) do
     %__MODULE__{
       code: entry.location_identifier,
+      icao_code: entry.icao_identifier,
       type: landing_facility_type(entry.landing_facility_type),
       name: Recase.to_title(entry.official_facility_name),
       nasr_id: entry.landing_facility_site_number,
@@ -28,9 +64,25 @@ defmodule NASR.Airport do
       towered: convert_yn(entry.air_traffic_control_tower_located_on_airport),
       city: Recase.to_title(entry.associated_city_name),
       state: entry.associated_state_post_office_code,
+      airframe_repair_service: convert_repair_service(entry.airframe_repair_service_availability_type),
+      powerplant_repair_service: convert_repair_service(entry.power_plant_engine_repair_availability_type),
+      direction_from_city: entry.direction_of_airport_from_central_business,
+      distance_from_city: entry.distance_from_central_business_district_of,
+      transient_storage_facilities: convert_transient_storage_facilities(entry.transient_storage_facilities),
+      other_airport_services: entry.other_airport_services_available,
+      activation_date: convert_activation_date(entry.airport_activation_date_mm_yyyy),
+      lighting_schedule: entry.airport_lighting_schedule,
+      wind_indicator: convert_wind_indicator(entry.wind_indicator),
+      owners_phone_number: entry.owner_s_phone_number,
+      manager: entry.facility_manager_s_name,
+      manager_phone_number: entry.manager_s_phone_number,
+      unicom: entry.unicom_frequency_available_at_the_airport,
+      sectional: entry.aeronautical_sectional_chart_on_which_facility,
+      certification_type: entry.airport_arff_certification_type_and_date,
       runways: [],
       remarks: [],
-      attendances: []
+      attendances: [],
+      wx_stations: []
     }
   end
 
@@ -56,6 +108,39 @@ defmodule NASR.Airport do
   defp convert_airport_status_code("CP"), do: :closed_permanently
 
   defp convert_fuel_types(<<fuel::binary-size(5)>> <> rest), do: [String.trim(fuel) | convert_fuel_types(rest)]
+
   defp convert_fuel_types(""), do: []
   defp convert_fuel_types(type), do: [String.trim(type)]
+
+  defp convert_repair_service("MAJOR"), do: :major
+  defp convert_repair_service("MINOR"), do: :minor
+  defp convert_repair_service("NONE"), do: :none
+  defp convert_repair_service(_), do: :unknown
+
+  defp convert_transient_storage_facilities(list) do
+    list
+    |> String.split(",")
+    |> Enum.map(&String.trim/1)
+    |> Enum.map(fn
+      "TIE" -> :tie_downs
+      "BUOY" -> :buoys
+      "HGR" -> :hangars
+      _ -> :unknown
+    end)
+  end
+
+  defp convert_wind_indicator("Y"), do: :unlighted
+  defp convert_wind_indicator("Y-L"), do: :lighted
+  defp convert_wind_indicator("N"), do: :none
+  defp convert_wind_indicator(_), do: :unknown
+
+  defp convert_activation_date(""), do: nil
+  defp convert_activation_date(nil), do: nil
+
+  defp convert_activation_date(str) do
+    case Timex.parse(str, "{0M}/{YYYY}") do
+      {:ok, date} -> NaiveDateTime.to_date(date)
+      _ -> nil
+    end
+  end
 end

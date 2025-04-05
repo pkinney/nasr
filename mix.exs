@@ -27,7 +27,8 @@ defmodule NASR.MixProject do
       {:term_stream, "~> 0.1.0"},
       {:req, "~> 0.5.0"},
       {:briefly, "~> 0.5.1"},
-      {:styler, "~> 1.0.0-rc.1", only: [:dev, :test], runtime: false}
+      {:timex, "~> 3.7"},
+      {:styler, "~> 1.4", only: [:dev, :test], runtime: false}
     ]
   end
 end

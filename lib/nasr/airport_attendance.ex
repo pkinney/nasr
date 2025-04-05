@@ -1,7 +1,5 @@
 defmodule NASR.AirportAttendance do
   @moduledoc false
-  import NASR.Utils
-
   defstruct [
     :airport_nasr_id,
     :attendance,

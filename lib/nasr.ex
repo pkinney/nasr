@@ -18,7 +18,7 @@ defmodule NASR do
       end
 
     stream
-    |> raw_stream(["APT"])
+    |> raw_stream(["APT", "AWOS"])
     |> Stream.map(fn entity ->
       case entity.type do
         :apt -> NASR.Airport.new(entity)
@@ -56,6 +56,11 @@ defmodule NASR do
       layout_file = Path.join(dir(), f)
       {cat, layout_file, data_file}
     end)
+  end
+
+  def raw_stream(zip_file_path, categories) when is_binary(zip_file_path) do
+    {:ok, zip_file} = zip_file_path |> Unzip.LocalFile.open() |> Unzip.new()
+    raw_stream(zip_file, categories)
   end
 
   def raw_stream(zip_file, categories) when is_list(categories) do
@@ -115,7 +120,9 @@ defmodule NASR do
       dir()
       |> Path.join("data")
       |> File.ls!()
-      |> Enum.find(fn file -> String.starts_with?(file, "28DaySubscription") and String.ends_with?(file, ".zip") end)
+      |> Enum.find(fn file ->
+        String.starts_with?(file, "28DaySubscription") and String.ends_with?(file, ".zip")
+      end)
       |> then(fn
         nil ->
           nil

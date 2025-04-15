@@ -47,8 +47,7 @@ defmodule Mix.Tasks.Nasr.Convert do
       end
     )
     |> Stream.map(fn line -> :erlang.binary_to_term(line) end)
-    |> Stream.each(&IO.inspect/1)
-    |> Stream.run()
+    |> Enum.each(&IO.inspect/1)
   end
 
   def compiled_run(_args) do

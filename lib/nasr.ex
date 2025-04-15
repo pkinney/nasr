@@ -17,6 +17,8 @@ defmodule NASR do
           open_zip(file)
       end
 
+    classes = airport_classes(stream)
+
     stream
     |> raw_stream(["APT", "AWOS"])
     |> Stream.map(fn entity ->
@@ -29,6 +31,13 @@ defmodule NASR do
       end
     end)
     |> Stream.reject(&is_nil/1)
+    |> Stream.map(fn
+      %NASR.Airport{} = airport ->
+        Map.put(airport, :class, Map.get(classes, airport.nasr_id, :G))
+
+      entity ->
+        entity
+    end)
   end
 
   defp open_zip(zip_file_path) do
@@ -96,6 +105,55 @@ defmodule NASR do
   end
 
   def stream(zip_file_path, category), do: stream(zip_file_path, [category])
+
+  def airport_classes(stream) do
+    csv_file_in_zip =
+      stream
+      |> Unzip.list_entries()
+      |> Enum.filter(&(String.starts_with?(&1.file_name, "CSV_Data") && String.ends_with?(&1.file_name, ".zip")))
+      |> List.first()
+      |> then(fn
+        nil ->
+          raise "No CSV_Data zip file found in the NASR zip file"
+
+        file ->
+          file.file_name
+      end)
+
+    csv_filename = Briefly.create!()
+
+    :ok =
+      stream
+      |> Unzip.file_stream!(csv_file_in_zip)
+      |> Stream.into(File.stream!(csv_filename))
+      |> Stream.run()
+
+    {:ok, csv_unzip} =
+      csv_filename
+      |> Unzip.LocalFile.open()
+      |> Unzip.new()
+
+    [headers | lines] =
+      csv_unzip
+      |> Unzip.file_stream!("CLS_ARSP.csv")
+      |> Stream.map(fn c -> IO.iodata_to_binary(c) end)
+      |> NimbleCSV.RFC4180.to_line_stream()
+      |> NimbleCSV.RFC4180.parse_stream(skip_headers: false)
+      |> Enum.to_list()
+
+    lines
+    |> Enum.map(fn line -> headers |> Enum.zip(line) |> Map.new() end)
+    |> Enum.map(fn %{"SITE_NO" => site_no, "SITE_TYPE_CODE" => type_code} = line ->
+      Map.put(line, "SITE_ID", site_no <> "*" <> type_code)
+    end)
+    |> Map.new(fn
+      %{"SITE_ID" => site_id, "CLASS_B_AIRSPACE" => "Y"} -> {site_id, :B}
+      %{"SITE_ID" => site_id, "CLASS_C_AIRSPACE" => "Y"} -> {site_id, :C}
+      %{"SITE_ID" => site_id, "CLASS_D_AIRSPACE" => "Y"} -> {site_id, :D}
+      %{"SITE_ID" => site_id, "CLASS_E_AIRSPACE" => "Y"} -> {site_id, :E}
+      _ -> nil
+    end)
+  end
 
   def categories do
     Enum.map(list_layouts(), &elem(&1, 0))

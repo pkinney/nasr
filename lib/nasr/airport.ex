@@ -39,6 +39,7 @@ defmodule NASR.Airport do
     unicom
     sectional
     certification_type
+    class
     wx_stations
   )a
 
@@ -81,6 +82,7 @@ defmodule NASR.Airport do
       certification_type: entry.airport_arff_certification_type_and_date,
       runways: [],
       remarks: [],
+      class: :none,
       attendances: [],
       wx_stations: []
     }

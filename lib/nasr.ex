@@ -13,7 +13,7 @@ defmodule NASR do
         Keyword.has_key?(opts, :url) ->
           url = Keyword.get(opts, :url)
           # open the file stream from
-          file = download(url)
+          file = NASR.Utils.download(url)
           open_zip(file)
       end
 
@@ -43,15 +43,6 @@ defmodule NASR do
   defp open_zip(zip_file_path) do
     Logger.info("[#{__MODULE__}] Opening zip file #{zip_file_path}")
     zip_file_path |> Unzip.LocalFile.open() |> Unzip.new()
-  end
-
-  def download(url) do
-    Logger.info("[#{__MODULE__}] Downloading #{url}")
-
-    {:ok, file} = Briefly.create()
-    Req.get!(url, into: File.stream!(file))
-    Logger.info("[#{__MODULE__}] Download complete")
-    file
   end
 
   def list_layouts do

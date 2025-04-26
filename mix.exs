@@ -28,6 +28,7 @@ defmodule NASR.MixProject do
       {:req, "~> 0.5.0"},
       {:briefly, "~> 0.5.1"},
       {:timex, "~> 3.7"},
+      {:sweet_xml, "~> 0.7"},
       {:styler, "~> 1.4", only: [:dev, :test], runtime: false}
     ]
   end

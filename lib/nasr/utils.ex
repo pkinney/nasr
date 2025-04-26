@@ -1,10 +1,21 @@
 defmodule NASR.Utils do
   @moduledoc false
+  require Logger
+
   def list_files(dir) do
     dir
     |> File.ls!()
     |> Enum.filter(fn file -> String.ends_with?(file, ".zip") end)
     |> Enum.map(fn file -> Path.join(dir, file) end)
+  end
+
+  def download(url) do
+    Logger.info("[#{__MODULE__}] Downloading #{url}")
+
+    {:ok, file} = Briefly.create()
+    Req.get!(url, into: File.stream!(file))
+    Logger.info("[#{__MODULE__}] Download complete")
+    file
   end
 
   def safe_str_to_int(""), do: nil

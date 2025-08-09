@@ -34,7 +34,7 @@ defmodule NASR.Utils do
 
   def safe_str_to_float(str) do
     cond do
-      String.match?(str, ~r/^\-?\d+$/) -> String.to_float(str)
+      String.match?(str, ~r/^\-?\d+$/) -> String.to_integer(str) / 1
       String.match?(str, ~r/^\-?\d+\.\d+$/) -> String.to_float(str)
       true -> nil
     end

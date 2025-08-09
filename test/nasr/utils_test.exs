@@ -1,8 +1,6 @@
 defmodule NASR.UtilsTest do
   use ExUnit.Case
 
-  import ExUnit.CaptureLog
-
   describe "list_files/1" do
     test "lists only zip files in directory" do
       # Create a temporary directory

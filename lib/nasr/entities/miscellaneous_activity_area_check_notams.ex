@@ -17,9 +17,9 @@ defmodule NASR.Entities.MiscellaneousActivityAreaCheckNotams do
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: entry.record_type_indicator,
-      maa_id: entry.maa_id,
-      check_notams_text: entry.check_for_notams_information_text
+      record_type_indicator: entry.type_indicator,
+      maa_id: entry.id,
+      check_notams_text: entry.for_notams_only_applies_to_space
     }
   end
 end

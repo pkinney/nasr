@@ -19,8 +19,8 @@ defmodule NASR.Entities.AirRouteTrafficControlCenterFrequencyRemarksData do
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: entry.record_identifier,
-      id: entry.id,
+      record_type_indicator: entry.record_type_indicator,
+      id: entry.air_route_traffic_control_center_identifier,
       type: entry.type,
       raw_data: entry
     }

@@ -64,7 +64,6 @@ defmodule NASR.EntitiesTypeTest do
     Enum.each(NASR.Entities.entity_modules(), fn module_under_test ->
       test "entity module #{module_under_test} can be created from sample data", %{entity_samples: samples} do
         module = unquote(module_under_test)
-        IO.inspect(module)
         type = NASR.Entities.entity_to_type(module)
 
         samples

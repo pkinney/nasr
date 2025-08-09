@@ -20,7 +20,7 @@ defmodule NASR.Entities.AutomatedWeatherObservingSystemRemarks do
   def new(entry) do
     %__MODULE__{
       record_type_indicator: entry.record_type_indicator,
-      id: entry.id,
+      id: entry.wx_sensor_ident,
       type: entry.type,
       raw_data: entry
     }

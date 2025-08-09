@@ -22,7 +22,7 @@ defmodule NASR.Entities.NavigationAidVORCheckpoints do
       record_type_indicator: entry.record_type_indicator,
       navaid_facility_identifier: entry.navaid_facility_identifier,
       navaid_facility_type: entry.navaid_facitity_type_ex_vor_dme,
-      checkpoint_data: entry.vor_receiver_checkpoint_information_text
+      checkpoint_data: entry.narrative_description_associated_with
     }
   end
 end

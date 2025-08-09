@@ -27,7 +27,7 @@ defmodule NASR.Entities.AirwayPointRemarks do
       airway_designation: entry.airway_designation,
       airway_type: entry.airway_type,
       airway_point_sequence_number: safe_str_to_int(entry.airway_point_sequence_number),
-      airway_remarks_text: entry.airway_remarks_text,
+      airway_remarks_text: entry.remarks_text,
       record_sort_sequence_number: safe_str_to_int(entry.record_sort_sequence_number)
     }
   end

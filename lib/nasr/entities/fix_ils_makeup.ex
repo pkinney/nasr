@@ -22,10 +22,10 @@ defmodule NASR.Entities.FixILSMakeup do
   def new(entry) do
     %__MODULE__{
       record_type_indicator: entry.record_type_indicator,
-      fix_identifier: entry.fix_identifier_record_identifier,
-      fix_state_name: entry.fix_state_name_record_identifier,
-      icao_region_code: entry.icao_region_code_record_identifier,
-      ils_makeup_text: entry.ils_makeup_text
+      fix_identifier: entry.record_identifier_fix_name,
+      fix_state_name: entry.record_identifier_fix_state_name,
+      icao_region_code: entry.icao_region_code,
+      ils_makeup_text: entry."3_or_4_letter_ident_facility_type_direction_or_course"
     }
   end
 end

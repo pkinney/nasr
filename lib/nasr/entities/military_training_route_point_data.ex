@@ -40,16 +40,16 @@ defmodule NASR.Entities.MilitaryTrainingRoutePointData do
       record_type_indicator: entry.record_type_indicator,
       route_type: convert_route_type(entry.route_type),
       route_identifier: safe_str_to_int(entry.route_identifier),
-      point_sequence_number: safe_str_to_int(entry.point_sequence_number),
-      latitude_formatted: entry.latitude_formatted,
-      latitude_seconds: entry.latitude_seconds,
-      longitude_formatted: entry.longitude_formatted,
-      longitude_seconds: entry.longitude_seconds,
-      navaid_identifier: entry.navaid_identifier,
-      navaid_radial: safe_str_to_int(entry.navaid_radial),
-      navaid_distance: safe_str_to_float(entry.navaid_distance),
-      point_description_text: entry.point_description_text,
-      sort_sequence_number: safe_str_to_int(entry.sort_sequence_number)
+      point_sequence_number: entry.route_point_id_a_b_c_etc,
+      latitude_formatted: entry.latitude_location_of_point,
+      latitude_seconds: nil,
+      longitude_formatted: entry.longitude_location_of_point,
+      longitude_seconds: nil,
+      navaid_identifier: entry.ident_of_related_navaid,
+      navaid_radial: safe_str_to_int(entry.bearing_of_navaid_from_point),
+      navaid_distance: safe_str_to_float(entry.distance_of_navaid_from_point),
+      point_description_text: entry.segment_description_text_leading_up_to_the_point,
+      sort_sequence_number: safe_str_to_int(entry.record_sort_sequence_number)
     }
   end
 

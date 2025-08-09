@@ -17,9 +17,9 @@ defmodule NASR.Entities.MiscellaneousActivityAreaRemarks do
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: entry.record_type_indicator,
-      maa_id: entry.maa_id,
-      remarks_text: entry.base_remarks_text
+      record_type_indicator: entry.type_indicator,
+      maa_id: entry.id,
+      remarks_text: entry.remarks
     }
   end
 end

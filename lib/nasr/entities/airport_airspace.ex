@@ -20,7 +20,7 @@ defmodule NASR.Entities.AirportAirspace do
   def new(entry) do
     %__MODULE__{
       record_type_indicator: entry.record_type_indicator,
-      id: entry.id,
+      id: entry.landing_facility_site_number,
       type: entry.type,
       raw_data: entry
     }

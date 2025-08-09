@@ -22,7 +22,7 @@ defmodule NASR.Entities.TowerSatelliteAirportServices do
       record_type_indicator: entry.record_identifier,
       terminal_communications_facility_identifier: entry.terminal_communications_facility_identifier,
       master_airport_services: entry.master_airport_services,
-      master_airport_location_identifier: entry.master_airport_location_identifier
+      master_airport_location_identifier: nil
     }
   end
 end

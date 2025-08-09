@@ -22,10 +22,10 @@ defmodule NASR.Entities.FixChartingInformation do
   def new(entry) do
     %__MODULE__{
       record_type_indicator: entry.record_type_indicator,
-      fix_identifier: entry.fix_identifier_record_identifier,
-      fix_state_name: entry.fix_state_name_record_identifier,
-      icao_region_code: entry.icao_region_code_record_identifier,
-      charting_information_text: entry.charting_information_text
+      fix_identifier: entry.record_identifier_fix_name,
+      fix_state_name: entry.record_identifier_fix_state_name,
+      icao_region_code: entry.icao_region_code,
+      charting_information_text: entry.chart_on_which_fix_is_to_be_depicted
     }
   end
 end

@@ -20,7 +20,7 @@ defmodule NASR.Entities.AutomatedTerminalInformationSystemBaseData do
   def new(entry) do
     %__MODULE__{
       record_type_indicator: entry.record_type_indicator,
-      id: entry.id,
+      id: entry.ats_airway_id,
       type: entry.type,
       raw_data: entry
     }

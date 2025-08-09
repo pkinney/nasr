@@ -23,9 +23,9 @@ defmodule NASR.Entities.TowerCommunicationsFrequencies do
     %__MODULE__{
       record_type_indicator: entry.record_identifier,
       terminal_communications_facility_identifier: entry.terminal_communications_facility_identifier,
-      frequency_use_data: entry.frequency_use_data,
-      transmitter_receiver_channel: entry.transmitter_receiver_channel,
-      frequency_special_usage_text: entry.frequency_special_usage_text
+      frequency_use_data: entry.frequency_use_1,
+      transmitter_receiver_channel: nil,
+      frequency_special_usage_text: nil
     }
   end
 end

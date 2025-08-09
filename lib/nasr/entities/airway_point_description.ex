@@ -33,10 +33,10 @@ defmodule NASR.Entities.AirwayPointDescription do
       airway_designation: entry.airway_designation,
       airway_type: entry.airway_type,
       airway_point_sequence_number: safe_str_to_int(entry.airway_point_sequence_number),
-      navaid_facility_identifier: entry.navaid_facility_identifier,
-      fix_identifier: entry.fix_identifier,
-      fix_state_name: entry.fix_state_name,
-      waypoint_description_code: entry.waypoint_description_code,
+      navaid_facility_identifier: entry.navaid_identifier_ex_sts_hvr,
+      fix_identifier: entry.navaid_facility_fix_name,
+      fix_state_name: entry.navaid_facility_fix_state_p_o_code,
+      waypoint_description_code: entry.fix_type___publication_category,
       record_sort_sequence_number: safe_str_to_int(entry.record_sort_sequence_number)
     }
   end

@@ -26,8 +26,8 @@ defmodule NASR.Entities.TowerATISData do
       record_type_indicator: entry.record_identifier,
       terminal_communications_facility_identifier: entry.terminal_communications_facility_identifier,
       atis_serial_number: safe_str_to_int(entry.atis_serial_number),
-      atis_hours_of_operation: entry.atis_hours_of_operation,
-      atis_frequency: entry.atis_frequency,
+      atis_hours_of_operation: entry.atis_hours_of_operation_in_local_time,
+      atis_frequency: nil,
       atis_phone_number: entry.atis_phone_number
     }
   end

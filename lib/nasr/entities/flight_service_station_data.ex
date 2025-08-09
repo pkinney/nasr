@@ -19,8 +19,8 @@ defmodule NASR.Entities.FlightServiceStationData do
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: entry.record_type_indicator,
-      id: entry.id,
+      record_type_indicator: entry.record_identifier,
+      id: entry.record_identifier,
       type: entry.type,
       raw_data: entry
     }

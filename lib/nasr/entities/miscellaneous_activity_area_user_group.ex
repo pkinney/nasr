@@ -17,9 +17,9 @@ defmodule NASR.Entities.MiscellaneousActivityAreaUserGroup do
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: entry.record_type_indicator,
-      maa_id: entry.maa_id,
-      user_group_text: entry.user_group_information_text
+      record_type_indicator: entry.type_indicator,
+      maa_id: entry.id,
+      user_group_text: entry.user_group_name
     }
   end
 end

@@ -32,12 +32,12 @@ defmodule NASR.Entities.MilitaryTrainingRouteBaseData do
       record_type_indicator: entry.record_type_indicator,
       route_type: convert_route_type(entry.route_type),
       route_identifier: safe_str_to_int(entry.route_identifier),
-      publication_effective_date: parse_date_yyyymmdd(entry.publication_effective_date),
+      publication_effective_date: parse_date_yyyymmdd(entry.publication_effective_date_yyyymmdd),
       faa_region_code: entry.faa_region_code,
-      artcc_identifiers: parse_identifier_list(entry.artcc_identifiers, 4),
-      fss_identifiers: parse_identifier_list(entry.fss_identifiers, 4),
-      times_of_use_text: entry.times_of_use_text,
-      sort_sequence_number: safe_str_to_int(entry.sort_sequence_number)
+      artcc_identifiers: [entry.artcc_ident],
+      fss_identifiers: parse_identifier_list(entry.all_flight_service_station_fss_idents, 4),
+      times_of_use_text: entry.times_of_use_text_information,
+      sort_sequence_number: safe_str_to_int(entry.sort_sequence_number_for_record)
     }
   end
 

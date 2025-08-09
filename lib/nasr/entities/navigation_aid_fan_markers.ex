@@ -22,7 +22,7 @@ defmodule NASR.Entities.NavigationAidFanMarkers do
       record_type_indicator: entry.record_type_indicator,
       navaid_facility_identifier: entry.navaid_facility_identifier,
       navaid_facility_type: entry.navaid_facitity_type_ex_vor_dme,
-      fan_marker_data: entry.fan_marker_information_text
+      fan_marker_data: entry.name_s_of_fan_marker_s
     }
   end
 end

@@ -22,7 +22,7 @@ defmodule NASR.Entities.NavigationAidRemarks do
       record_type_indicator: entry.record_type_indicator,
       navaid_facility_identifier: entry.navaid_facility_identifier,
       navaid_facility_type: entry.navaid_facitity_type_ex_vor_dme,
-      navaid_remarks: entry.navaid_remarks_free_form_text_note_navaid
+      navaid_remarks: entry.navaid_remarks_free_form_text
     }
   end
 end

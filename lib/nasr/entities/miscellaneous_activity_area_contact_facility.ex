@@ -17,9 +17,9 @@ defmodule NASR.Entities.MiscellaneousActivityAreaContactFacility do
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: entry.record_type_indicator,
-      maa_id: entry.maa_id,
-      contact_facility_text: entry.contact_facility_frequency_information_text
+      record_type_indicator: entry.type_indicator,
+      maa_id: entry.id,
+      contact_facility_text: entry.facility_name
     }
   end
 end

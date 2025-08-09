@@ -24,19 +24,31 @@ defmodule NASR.Entities.WxStation do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      landing_facility_site_number: entity.landing_facility_site_number_when_station_located,
-      ident: entity.wx_sensor_ident,
-      sensor_type: entity.wx_sensor_type,
-      frequency: entity.station_frequency,
-      second_frequency: entity.second_station_frequency,
-      telephone_number: entity.station_telephone_number,
-      city: entity.station_city,
-      state: entity.station_state_post_office_code_ex_il,
-      elevation: safe_str_to_int(entity.elevation),
-      commissioning_status: convert_yn(entity.commissioning_status),
-      navaid: convert_yn(entity.navaid_flag___wx_sensor_associated_with_navaid),
-      longitude: convert_dms_to_decimal(entity.station_longitude),
-      latitude: convert_dms_to_decimal(entity.station_latitude)
+      landing_facility_site_number: nil,
+      ident: entity.weather_reporting_location_identifier,
+      sensor_type: entity.collective_weather_service_type,
+      frequency: nil,
+      second_frequency: nil,
+      telephone_number: nil,
+      city: entity.associated_city,
+      state: entity.associated_state_post_office_code,
+      elevation: safe_str_to_int(entity.weather_reporting_location_elevation___value),
+      commissioning_status: nil,
+      navaid: nil,
+      longitude: parse_wx_coordinate(entity.longitude_of_the_weather_reporting_location),
+      latitude: parse_wx_coordinate(entity.latitude_of_the_weather_reporting_location)
     }
   end
+
+  defp parse_wx_coordinate(nil), do: nil
+  defp parse_wx_coordinate(""), do: nil
+  defp parse_wx_coordinate(coord_str) when is_binary(coord_str) do
+    # Try standard DMS first
+    try do
+      convert_dms_to_decimal(coord_str)
+    rescue
+      _ -> nil
+    end
+  end
+  defp parse_wx_coordinate(_), do: nil
 end

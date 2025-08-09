@@ -25,7 +25,7 @@ defmodule NASR.Entities.MilitaryTrainingRouteProcedures do
       route_type: convert_route_type(entry.route_type),
       route_identifier: safe_str_to_int(entry.route_identifier),
       standard_operating_procedure_text: entry.standard_operating_procedure_text,
-      sort_sequence_number: safe_str_to_int(entry.sort_sequence_number)
+      sort_sequence_number: safe_str_to_int(entry.sort_sequence_number_for_record)
     }
   end
 

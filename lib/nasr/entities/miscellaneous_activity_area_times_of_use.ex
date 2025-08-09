@@ -9,17 +9,17 @@ defmodule NASR.Entities.MiscellaneousActivityAreaTimesOfUse do
   ]
 
   @type t() :: %__MODULE__{
-    record_type_indicator: String.t() | nil,
-    maa_id: String.t() | nil,
-    times_of_use_text: String.t() | nil
-  }
+          record_type_indicator: String.t() | nil,
+          maa_id: String.t() | nil,
+          times_of_use_text: String.t() | nil
+        }
 
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: entry.record_type_indicator,
-      maa_id: entry.maa_id,
-      times_of_use_text: entry.times_of_use_information_text
+      record_type_indicator: entry.type_indicator,
+      maa_id: entry.id,
+      times_of_use_text: entry.of_use_description
     }
   end
 end

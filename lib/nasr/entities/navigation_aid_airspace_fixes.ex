@@ -19,7 +19,7 @@ defmodule NASR.Entities.NavigationAidAirspaceFixes do
   @spec new(map()) :: t()
   def new(entry) do
     # Parse fix names from the concatenated field
-    fix_names = parse_fix_names(entry.name_s_of_fixes_fix_file_the_id_s_of_the)
+    fix_names = parse_fix_names(entry.name_s_of_fixes_fix_file_the_id_s_of)
 
     %__MODULE__{
       record_type_indicator: entry.record_type_indicator,

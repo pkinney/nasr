@@ -20,7 +20,7 @@ defmodule NASR.Entities.AirRouteTrafficControlCenter do
   def new(entry) do
     %__MODULE__{
       record_type_indicator: entry.record_identifier,
-      id: entry.id,
+      id: entry.record_identifier,
       type: entry.type,
       raw_data: entry
     }

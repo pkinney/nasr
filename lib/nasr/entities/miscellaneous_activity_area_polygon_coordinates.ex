@@ -17,9 +17,9 @@ defmodule NASR.Entities.MiscellaneousActivityAreaPolygonCoordinates do
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: entry.record_type_indicator,
-      maa_id: entry.maa_id,
-      polygon_coordinates_text: entry.polygon_coordinates_text
+      record_type_indicator: entry.type_indicator,
+      maa_id: entry.id,
+      polygon_coordinates_text: nil
     }
   end
 end

@@ -27,7 +27,7 @@ defmodule NASR.Entities.AirwayChangeoverPointException do
       airway_designation: entry.airway_designation,
       airway_type: entry.airway_type,
       airway_point_sequence_number: safe_str_to_int(entry.airway_point_sequence_number),
-      changeover_point_exception_text: entry.changeover_point_exception_text,
+      changeover_point_exception_text: entry.remarks_text,
       record_sort_sequence_number: safe_str_to_int(entry.record_sort_sequence_number)
     }
   end

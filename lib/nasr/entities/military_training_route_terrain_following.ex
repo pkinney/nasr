@@ -25,7 +25,7 @@ defmodule NASR.Entities.MilitaryTrainingRouteTerrainFollowing do
       route_type: convert_route_type(entry.route_type),
       route_identifier: safe_str_to_int(entry.route_identifier),
       terrain_following_operations_text: entry.terrain_following_operations_text,
-      sort_sequence_number: safe_str_to_int(entry.sort_sequence_number)
+      sort_sequence_number: safe_str_to_int(entry.record_sort_sequence_number)
     }
   end
 

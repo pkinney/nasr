@@ -20,7 +20,7 @@ defmodule NASR.Entities.HoldingPatternOtherAltitudeSpeedInfo do
   def new(entry) do
     %__MODULE__{
       record_type_indicator: entry.record_type_indicator,
-      id: entry.id,
+      id: entry.holding_pattern_name_navaid_name_facility_type_st,
       type: entry.type,
       raw_data: entry
     }

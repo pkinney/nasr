@@ -1,5 +1,6 @@
 defmodule NASR.Entities do
   @moduledoc false
+  require Logger
 
   def stream(zip_file, apt_file, layout) do
     zip_file
@@ -22,7 +23,7 @@ defmodule NASR.Entities do
     type = Map.get(layout.types, type_string)
 
     if type == nil do
-      IO.puts("Unknown type #{inspect(type_string)} in line: #{line}")
+      Logger.warning("[#{__MODULE__}] type #{inspect(type_string)} in line: #{line}")
     end
 
     layout.fields

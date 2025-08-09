@@ -3,25 +3,33 @@ defmodule NASR do
 
   require Logger
 
+  def stream_raw(opts \\ []) do
+    {:ok, stream} = open_stream(opts)
+    categories = Enum.map(list_layouts(), fn {cat, _, _} -> cat end)
+    raw_stream(stream, categories)
+  end
+
+  def open_stream(opts \\ []) do
+    cond do
+      Keyword.has_key?(opts, :file) ->
+        # open the file stream from
+        open_zip(Keyword.get(opts, :file))
+
+      Keyword.has_key?(opts, :url) ->
+        url = Keyword.get(opts, :url)
+        # open the file stream from
+        file = NASR.Utils.download(url)
+        open_zip(file)
+
+      true ->
+        url = NASR.Utils.get_current_nasr_url()
+        file = NASR.Utils.download(url)
+        open_zip(file)
+    end
+  end
+
   def stream_airports(opts \\ []) do
-    {:ok, stream} =
-      cond do
-        Keyword.has_key?(opts, :file) ->
-          # open the file stream from
-          open_zip(Keyword.get(opts, :file))
-
-        Keyword.has_key?(opts, :url) ->
-          url = Keyword.get(opts, :url)
-          # open the file stream from
-          file = NASR.Utils.download(url)
-          open_zip(file)
-
-        true ->
-          url = NASR.Utils.get_current_nasr_url()
-          file = NASR.Utils.download(url)
-          open_zip(file)
-      end
-
+    {:ok, stream} = open_stream(opts)
     classes = airport_classes(stream)
 
     stream
@@ -77,7 +85,7 @@ defmodule NASR do
       if preprocessed?(cat) do
         data_file = Path.join([dir(), "output", "#{cat}.data"])
 
-        Logger.info("[#{__MODULE__}] Creating stream for #{cat} from preprocessed file #{data_file}...")
+        Logger.debug("[#{__MODULE__}] Creating stream for #{cat} from preprocessed file #{data_file}...")
 
         TermStream.deserialize(File.stream!(data_file, 512 * 1024, [:read, :binary]))
       else
@@ -88,7 +96,7 @@ defmodule NASR do
         layout_file = Path.join([dir(), "layouts", "#{cat}_rf.txt"])
         data_file = "#{String.upcase(cat)}.txt"
 
-        Logger.info("[#{__MODULE__}] Creating stream for #{cat} with layout from #{layout_file}...")
+        Logger.debug("[#{__MODULE__}] Creating stream for #{cat} with layout from #{layout_file}...")
 
         layout = NASR.Layout.load(layout_file)
         NASR.Entities.stream(zip_file, data_file, layout)

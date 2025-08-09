@@ -33,7 +33,7 @@ defmodule NASR.Entities.AirwayChangeoverPoint do
       airway_point_sequence_number: safe_str_to_int(entry.airway_point_sequence_number),
       changeover_navaid_identifier: entry.navaid_facility_name,
       changeover_navaid_type: entry.navaid_facility_type,
-      changeover_point_distance: nil,
+      changeover_point_distance: safe_str_to_int(entry.airway_point_sequence_number),
       record_sort_sequence_number: safe_str_to_int(entry.record_sort_sequence_number)
     }
   end

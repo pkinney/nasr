@@ -59,13 +59,13 @@ defmodule NASR.Entities.MiscellaneousActivityAreaBaseData do
     %__MODULE__{
       record_type_indicator: entry.type_indicator,
       maa_id: entry.id,
-      maa_type: nil,
+      maa_type: entry.area_name,
       navaid_identifier: entry.identifier_ex_scy,
       navaid_facility_type: entry.facility_type_code_ex_c,
       navaid_facility_type_described: entry.facility_type_described,
       azimuth_from_navaid: safe_str_to_float(entry.degrees_from_navaid),
       distance_from_navaid: safe_str_to_float(entry.in_nautical_miles_from),
-      navaid_name: nil,
+      navaid_name: entry.airport_name,
       state_abbreviation: entry.state_abbreviation_two_letter_post,
       state_name: entry.state_name,
       associated_city: entry.associated_city_name,
@@ -73,13 +73,13 @@ defmodule NASR.Entities.MiscellaneousActivityAreaBaseData do
       longitude: convert_dms_to_decimal(entry.longitude_formatted),
       maa_name: entry.name,
       use: entry.use,
-      controlling_agency: nil,
+      controlling_agency: entry.airport_id,
       effective_date: nil,
       sectional_charting_required: convert_yn(entry.on_vfr_chart_yes_no),
-      published_in_airport_facility_directory: nil,
+      published_in_airport_facility_directory: convert_yn(entry.on_vfr_chart_yes_no),
       description: entry.description,
-      fss_ident: nil,
-      fss_name: nil
+      fss_ident: entry.airport_id,
+      fss_name: entry.airport_name
     }
   end
 end

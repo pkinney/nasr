@@ -24,17 +24,17 @@ defmodule NASR.Entities.WxStation do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      landing_facility_site_number: nil,
+      landing_facility_site_number: entity.collective_number,
       ident: entity.weather_reporting_location_identifier,
       sensor_type: entity.collective_weather_service_type,
       frequency: nil,
       second_frequency: nil,
-      telephone_number: nil,
+      telephone_number: entity.associated_country_numeric_code_non_us_only,
       city: entity.associated_city,
       state: entity.associated_state_post_office_code,
       elevation: safe_str_to_int(entity.weather_reporting_location_elevation___value),
-      commissioning_status: nil,
-      navaid: nil,
+      commissioning_status: entity.continuation_record_indicator,
+      navaid: entity.weather_services_available_at_location_up_to,
       longitude: parse_wx_coordinate(entity.longitude_of_the_weather_reporting_location),
       latitude: parse_wx_coordinate(entity.latitude_of_the_weather_reporting_location)
     }

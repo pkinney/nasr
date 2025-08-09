@@ -24,8 +24,8 @@ defmodule NASR.Entities.TowerCommunicationsFrequencies do
       record_type_indicator: entry.record_identifier,
       terminal_communications_facility_identifier: entry.terminal_communications_facility_identifier,
       frequency_use_data: entry.frequency_use_1,
-      transmitter_receiver_channel: nil,
-      frequency_special_usage_text: nil
+      transmitter_receiver_channel: entry.frequency_s_for_master_airport_use_only_and,
+      frequency_special_usage_text: entry.blank
     }
   end
 end

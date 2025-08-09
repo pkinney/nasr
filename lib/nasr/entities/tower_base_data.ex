@@ -41,7 +41,7 @@ defmodule NASR.Entities.TowerBaseData do
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: nil,
+      record_type_indicator: entry.record_type_indicator,
       terminal_communications_facility_identifier: entry.terminal_communications_facility_identifier,
       information_effective_date: parse_date(entry.information_effective_date_mm_dd_yyyy),
       faa_region_code: entry.faa_region_code,

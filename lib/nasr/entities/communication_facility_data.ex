@@ -19,7 +19,7 @@ defmodule NASR.Entities.CommunicationFacilityData do
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: nil,
+      record_type_indicator: entry.communications_outlet_type,
       id: entry.communications_outlet_ident,
       type: entry.type,
       raw_data: entry

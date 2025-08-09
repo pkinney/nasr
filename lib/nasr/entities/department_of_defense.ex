@@ -19,7 +19,7 @@ defmodule NASR.Entities.DepartmentOfDefense do
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: nil,
+      record_type_indicator: entry.identifier_group_code,
       id: entry.location_identifier,
       type: entry.type,
       raw_data: entry

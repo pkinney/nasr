@@ -19,7 +19,7 @@ defmodule NASR.Entities.StandardTerminalArrivalRoute do
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: nil,
+      record_type_indicator: entry.type_code,
       id: entry.identifier,
       type: entry.type,
       raw_data: entry

@@ -23,7 +23,7 @@ defmodule NASR.Entities.TowerATISData do
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: entry.record_type_indicator,
+      record_type_indicator: entry.record_identifier,
       terminal_communications_facility_identifier: entry.terminal_communications_facility_identifier,
       atis_serial_number: safe_str_to_int(entry.atis_serial_number),
       atis_hours_of_operation: entry.atis_hours_of_operation,

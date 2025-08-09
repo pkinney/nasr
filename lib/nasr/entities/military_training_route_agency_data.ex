@@ -45,10 +45,10 @@ defmodule NASR.Entities.MilitaryTrainingRouteAgencyData do
       agency_station: entry.agency_station,
       agency_address: entry.agency_address,
       agency_city: entry.agency_city,
-      agency_state: entry.agency_state,
+      agency_state: entry.agency_state_alpha_post_office_code,
       agency_zip_code: entry.agency_zip_code,
-      agency_commercial_phone: entry.agency_commercial_phone,
-      agency_dsn_phone: entry.agency_dsn_phone,
+      agency_commercial_phone: entry.agency_commercial_phone_number,
+      agency_dsn_phone: entry.agency_dsn_phone_number,
       agency_hours: entry.agency_hours
     }
   end

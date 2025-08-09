@@ -19,10 +19,10 @@ defmodule NASR.Entities.TowerRemarks do
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: entry.record_type_indicator,
+      record_type_indicator: entry.record_identifier,
       terminal_communications_facility_identifier: entry.terminal_communications_facility_identifier,
       tower_element_number: entry.tower_element_number,
-      tower_remarks: entry.tower_remarks
+      tower_remarks: entry.tower_remark_text
     }
   end
 end

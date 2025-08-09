@@ -41,21 +41,21 @@ defmodule NASR.Entities.TowerBaseData do
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: entry.record_type_indicator,
+      record_type_indicator: nil,
       terminal_communications_facility_identifier: entry.terminal_communications_facility_identifier,
-      information_effective_date: parse_date(entry.information_effective_date),
+      information_effective_date: parse_date(entry.information_effective_date_mm_dd_yyyy),
       faa_region_code: entry.faa_region_code,
       associated_state_name: entry.associated_state_name,
       associated_state_post_office_code: entry.associated_state_post_office_code,
       associated_city_name: entry.associated_city_name,
-      official_facility_name: entry.official_facility_name,
-      airport_name: entry.airport_name,
-      latitude_formatted: entry.latitude_formatted,
-      latitude_seconds: entry.latitude_seconds,
-      longitude_formatted: entry.longitude_formatted,
-      longitude_seconds: entry.longitude_seconds,
+      official_facility_name: entry.official_airport_name,
+      airport_name: entry.official_airport_name,
+      latitude_formatted: entry.airport_reference_point_latitude_formatted,
+      latitude_seconds: entry.airport_reference_point_latitude_seconds,
+      longitude_formatted: entry.airport_reference_point_longitude_formatted,
+      longitude_seconds: entry.airport_reference_point_longitude_seconds,
       facility_type: entry.facility_type,
-      hours_of_operation: entry.hours_of_operation
+      hours_of_operation: entry.number_of_hours_of_daily_operation
     }
   end
 end

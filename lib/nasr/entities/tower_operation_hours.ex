@@ -21,7 +21,7 @@ defmodule NASR.Entities.TowerOperationHours do
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: entry.record_type_indicator,
+      record_type_indicator: entry.record_identifier,
       terminal_communications_facility_identifier: entry.terminal_communications_facility_identifier,
       hours_of_operation_military: entry.hours_of_operation_military,
       hours_of_operation_all_day: entry.hours_of_operation_all_day,

@@ -25,7 +25,7 @@ defmodule NASR.Entities.TowerAirspaceData do
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: entry.record_type_indicator,
+      record_type_indicator: entry.record_identifier,
       terminal_communications_facility_identifier: entry.terminal_communications_facility_identifier,
       class_b_airspace: convert_yn(entry.class_b_airspace),
       class_c_airspace: convert_yn(entry.class_c_airspace),

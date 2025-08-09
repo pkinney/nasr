@@ -19,7 +19,7 @@ defmodule NASR.Entities.TowerSatelliteAirportServices do
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: entry.record_type_indicator,
+      record_type_indicator: entry.record_identifier,
       terminal_communications_facility_identifier: entry.terminal_communications_facility_identifier,
       master_airport_services: entry.master_airport_services,
       master_airport_location_identifier: entry.master_airport_location_identifier

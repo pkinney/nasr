@@ -21,7 +21,7 @@ defmodule NASR.Entities.TowerCommunicationsFrequencies do
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: entry.record_type_indicator,
+      record_type_indicator: entry.record_identifier,
       terminal_communications_facility_identifier: entry.terminal_communications_facility_identifier,
       frequency_use_data: entry.frequency_use_data,
       transmitter_receiver_channel: entry.transmitter_receiver_channel,

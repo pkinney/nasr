@@ -21,11 +21,11 @@ defmodule NASR.Entities.TowerRadarData do
   @spec new(map()) :: t()
   def new(entry) do
     %__MODULE__{
-      record_type_indicator: entry.record_type_indicator,
+      record_type_indicator: entry.record_identifier,
       terminal_communications_facility_identifier: entry.terminal_communications_facility_identifier,
       radar_or_non_radar_primary_approach_call: entry.radar_or_non_radar_primary_approach_call,
-      radar_approach_control_hours: entry.radar_approach_control_hours,
-      radar_departure_control_hours: entry.radar_departure_control_hours
+      radar_approach_control_hours: entry.radar_hours_of_operation_1_ex_0700_2300,
+      radar_departure_control_hours: entry.radar_hours_of_operation_2
     }
   end
 end

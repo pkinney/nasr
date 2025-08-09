@@ -137,9 +137,9 @@ defmodule NASR.Entities.NavigationAidBaseData do
     %__MODULE__{
       record_type_indicator: entry.record_type_indicator,
       navaid_facility_identifier: entry.navaid_facility_identifier,
-      navaid_facility_type: entry.navaid_facility_type_described,
+      navaid_facility_type: entry.navaid_facility_type_see_description,
       official_navaid_facility_identifier: entry.official_navaid_facility_identifier,
-      effective_date: parse_date(entry.effective_date_this_date_coincides_with_the_56_day),
+      effective_date: parse_date(entry.effective_date_this_date_coincides_with),
       navaid_name: entry.name_of_navaid_ex_washington,
       associated_city: entry.city_associated_with_the_navaid_ex_washington,
       associated_state_name: entry.state_name_where_associated_city_is_located,

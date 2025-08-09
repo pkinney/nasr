@@ -22,7 +22,7 @@ defmodule NASR.Entities.NavigationAidHoldingPatterns do
       record_type_indicator: entry.record_type_indicator,
       navaid_facility_identifier: entry.navaid_facility_identifier,
       navaid_facility_type: entry.navaid_facitity_type_ex_vor_dme,
-      holding_pattern_data: entry.holding_pattern_information_text
+      holding_pattern_data: entry.name_s_of_holding_pattern_s
     }
   end
 end

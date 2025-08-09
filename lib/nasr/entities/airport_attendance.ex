@@ -1,4 +1,4 @@
-defmodule NASR.AirportAttendance do
+defmodule NASR.Entities.AirportAttendance do
   @moduledoc false
   defstruct [
     :airport_nasr_id,

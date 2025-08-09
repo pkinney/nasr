@@ -192,4 +192,23 @@ defmodule NASR.Utils do
   defp find_previous_year_cycle(_date, current_airac, cycle_num) do
     {cycle_num, current_airac}
   end
+
+  @doc """
+  Parses dates in MM/DD/YYYY format or other common formats.
+  Returns nil for empty strings or invalid dates.
+  """
+  def parse_date(""), do: nil
+  def parse_date(nil), do: nil
+
+  def parse_date(date_str) do
+    case Date.from_iso8601(date_str) do
+      {:ok, date} -> date
+      _ ->
+        # Try MM/DD/YYYY format
+        case Timex.parse(date_str, "{0M}/{0D}/{YYYY}") do
+          {:ok, datetime} -> NaiveDateTime.to_date(datetime)
+          _ -> nil
+        end
+    end
+  end
 end

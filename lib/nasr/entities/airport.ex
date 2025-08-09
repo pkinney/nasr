@@ -1,27 +1,27 @@
-defmodule NASR.Airport do
+defmodule NASR.Entities.Airport do
   @moduledoc false
   import NASR.Utils
 
   defstruct ~w(code
-    type 
+    type
     name
     elevation
-    nasr_site_number 
-    latitude 
-    longitude 
-    fuel_types 
+    nasr_site_number
+    latitude
+    longitude
+    fuel_types
     runways
-    remarks 
+    remarks
     attendances
-    ownership 
+    ownership
     facility_use
-    status 
+    status
     ctaf
     landing_fee
-    towered 
-    wx_station 
-    city 
-    state 
+    towered
+    wx_station
+    city
+    state
     nasr_id
     airframe_repair_service
     powerplant_repair_service

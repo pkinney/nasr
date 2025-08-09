@@ -1,4 +1,4 @@
-defmodule NASR.WxStation do
+defmodule NASR.Entities.WxStation do
   @moduledoc false
   import NASR.Utils
 

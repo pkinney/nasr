@@ -1,4 +1,4 @@
-defmodule NASR.AirportRemark do
+defmodule NASR.Entities.AirportRemark do
   @moduledoc false
 
   defstruct [

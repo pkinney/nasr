@@ -1,4 +1,4 @@
-defmodule NASR.Runway do
+defmodule NASR.Entities.Runway do
   @moduledoc false
   import NASR.Utils
 

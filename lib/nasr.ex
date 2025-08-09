@@ -1,51 +1,85 @@
 defmodule NASR do
   @moduledoc false
+  alias Credo.CLI.Options
+  alias NASR.Entities.Airport
 
   require Logger
 
+  @doc """
+  Creates a stream of raw maps for each entity in the NASR file. The NASR file can be sourced from a local file or url.
+  If no options are provided, it defaults to the latest NASR zip file available at the FAA's website.
+
+  ## Options
+  - `:file` - Path to a local NASR zip file.
+  - `:url` - URL to a NASR zip file.
+
+  ## Examples
+      iex> NASR.stream_raw(file: "path/to/nasr.zip")
+      #Stream<...>
+
+      iex> NASR.stream_raw(url: "https://example.com/nasr.zip")
+      #Stream<...>
+
+      iex> NASR.stream_raw()
+      #Stream<...>
+  """
   def stream_raw(opts \\ []) do
-    {:ok, stream} = open_stream(opts)
+    {:ok, stream, _file} = open_stream(opts)
     categories = Enum.map(list_layouts(), fn {cat, _, _} -> cat end)
     raw_stream(stream, categories)
   end
 
-  def open_stream(opts \\ []) do
-    cond do
-      Keyword.has_key?(opts, :file) ->
-        # open the file stream from
-        open_zip(Keyword.get(opts, :file))
+  @doc """
+  Creates a stream of NASR.Entities structs.
 
-      Keyword.has_key?(opts, :url) ->
-        url = Keyword.get(opts, :url)
-        # open the file stream from
-        file = NASR.Utils.download(url)
-        open_zip(file)
+  ## Options
+  - `:file` - Path to a local NASR zip file.
+  - `:url` - URL to a NASR zip file.
+  - `:entities` - List of entity types to include in the stream. Defaults to all entities.
+  """
 
-      true ->
-        url = NASR.Utils.get_current_nasr_url()
-        file = NASR.Utils.download(url)
-        open_zip(file)
-    end
-  end
+  def stream_structs(opts \\ []) do
+    {:ok, stream, file} = open_stream(opts)
 
-  def stream_airports(opts \\ []) do
-    {:ok, stream} = open_stream(opts)
-    classes = airport_classes(stream)
+    classes = airport_classes(file: file)
+    # If entities are specified, filter the categories to only include those
+    entities = Keyword.get(opts, :entities, NASR.Entities.entity_modules())
+
+    categories =
+      entities
+      |> Enum.map(fn entity ->
+        entity
+        |> NASR.Entities.entity_to_category()
+        |> case do
+          nil ->
+            Logger.warning("[#{__MODULE__}] No category found for entity #{inspect(entity)}. Skipping...")
+            nil
+
+          cat ->
+            String.upcase(cat)
+        end
+      end)
+      |> IO.inspect()
+      |> Enum.reject(&is_nil/1)
+      |> Enum.map(&String.upcase/1)
+      |> Enum.uniq()
+
+    types =
+      entities
+      |> Enum.map(&NASR.Entities.entity_to_type/1)
+      |> Enum.reject(&is_nil/1)
+      |> Enum.uniq()
+      |> MapSet.new()
 
     stream
-    |> raw_stream(["APT", "AWOS"])
-    |> Stream.map(fn entity ->
-      case entity.type do
-        :apt -> NASR.Airport.new(entity)
-        :apt_rwy -> NASR.Runway.new(entity)
-        :apt_rmk -> NASR.AirportRemark.new(entity)
-        :apt_att -> NASR.AirportAttendance.new(entity)
-        _ -> nil
-      end
+    |> raw_stream(categories)
+    |> Stream.filter(fn %{type: type} ->
+      MapSet.member?(types, type)
     end)
+    |> Stream.map(&NASR.Entities.from_raw/1)
     |> Stream.reject(&is_nil/1)
     |> Stream.map(fn
-      %NASR.Airport{} = airport ->
+      %Airport{} = airport ->
         Map.put(airport, :class, Map.get(classes, airport.nasr_id, :G))
 
       entity ->
@@ -53,12 +87,37 @@ defmodule NASR do
     end)
   end
 
-  defp open_zip(zip_file_path) do
-    Logger.info("[#{__MODULE__}] Opening zip file #{zip_file_path}")
-    zip_file_path |> Unzip.LocalFile.open() |> Unzip.new()
+  def stream_airports(opts \\ []) do
+    opts
+    |> Keyword.put(:entities, [
+      Airport,
+      NASR.Entities.AirportAttendance,
+      NASR.Entities.AirportRemark,
+      NASR.Entities.WxStation,
+      NASR.Entities.Runway
+    ])
+    |> stream_structs()
   end
 
-  def list_layouts do
+  defp open_stream(opts) do
+    cond do
+      Keyword.has_key?(opts, :file) ->
+        {:ok, stream} = opts |> Keyword.get(:file) |> Unzip.LocalFile.open() |> Unzip.new()
+        {:ok, stream, Keyword.get(opts, :file)}
+
+      Keyword.has_key?(opts, :url) ->
+        url = Keyword.get(opts, :url)
+        file = NASR.Utils.download(url)
+        {:ok, stream} = file |> Unzip.LocalFile.open() |> Unzip.new()
+        {:ok, stream, file}
+
+      true ->
+        url = NASR.Utils.get_current_nasr_url()
+        open_stream(url: url)
+    end
+  end
+
+  defp list_layouts do
     dir()
     |> Path.join("layouts")
     |> File.ls!()
@@ -71,36 +130,23 @@ defmodule NASR do
     end)
   end
 
-  def raw_stream(zip_file_path, categories) when is_binary(zip_file_path) do
-    {:ok, zip_file} = zip_file_path |> Unzip.LocalFile.open() |> Unzip.new()
-    raw_stream(zip_file, categories)
-  end
-
-  def raw_stream(zip_file, categories) when is_list(categories) do
+  defp raw_stream(zip_file, categories) when is_list(categories) do
     Logger.info("[#{__MODULE__}] Streaming...")
 
     categories
     |> Enum.map(&String.downcase(&1))
     |> Enum.map(fn cat ->
-      if preprocessed?(cat) do
-        data_file = Path.join([dir(), "output", "#{cat}.data"])
-
-        Logger.debug("[#{__MODULE__}] Creating stream for #{cat} from preprocessed file #{data_file}...")
-
-        TermStream.deserialize(File.stream!(data_file, 512 * 1024, [:read, :binary]))
-      else
-        if zip_file == nil do
-          raise "no NARS zip file found in the data directory. Download the latest NASR zip file from https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription/ and place it in `#{Path.join([dir(), "data"])}"
-        end
-
-        layout_file = Path.join([dir(), "layouts", "#{cat}_rf.txt"])
-        data_file = "#{String.upcase(cat)}.txt"
-
-        Logger.debug("[#{__MODULE__}] Creating stream for #{cat} with layout from #{layout_file}...")
-
-        layout = NASR.Layout.load(layout_file)
-        NASR.Entities.stream(zip_file, data_file, layout)
+      if zip_file == nil do
+        raise "no NARS zip file found in the data directory. Download the latest NASR zip file from https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription/ and place it in `#{Path.join([dir(), "data"])}"
       end
+
+      layout_file = Path.join([dir(), "layouts", "#{cat}_rf.txt"])
+      data_file = "#{String.upcase(cat)}.txt"
+
+      Logger.debug("[#{__MODULE__}] Creating stream for #{cat} with layout from #{layout_file}...")
+
+      layout = NASR.Layout.load(layout_file)
+      NASR.Entities.stream(zip_file, data_file, layout)
     end)
     |> Enum.reduce(nil, fn
       a, nil -> a
@@ -108,9 +154,18 @@ defmodule NASR do
     end)
   end
 
-  def stream(zip_file_path, category), do: stream(zip_file_path, [category])
+  @doc """
+  Because the airport entities do not have a field representing the airspace class they sit under, this function
+  reads the `CLS_ARSP.csv` file from the NASR zip file and returns a map of site IDs to their respective airspace classes.
 
-  def airport_classes(stream) do
+  The returned map will have keys as site IDs (formatted as "SITE_NO*SITE_TYPE_CODE") and values as the airspace class
+  (`:B`, `:C`, `:D`, `:E`), or `nil` if the site does not have a defined airspace class.
+
+  Options are the same as for `open_stream/1`, allowing you to specify a local file or a URL to the NASR zip file.
+  """
+  def airport_classes(opts \\ []) do
+    {:ok, stream, _} = open_stream(opts)
+
     csv_file_in_zip =
       stream
       |> Unzip.list_entries()
@@ -159,40 +214,14 @@ defmodule NASR do
     end)
   end
 
-  def categories do
-    Enum.map(list_layouts(), &elem(&1, 0))
-  end
-
-  def load(zip_file_path, file, layout) do
+  defp load(zip_file_path, file, layout) do
     {:ok, zip_file} = zip_file_path |> Unzip.LocalFile.open() |> Unzip.new()
     NASR.Entities.load(zip_file, file, layout)
   end
 
-  def stream(zip_file_path, file, layout) do
+  defp stream(zip_file_path, file, layout) do
     {:ok, zip_file} = zip_file_path |> Unzip.LocalFile.open() |> Unzip.new()
     NASR.Entities.stream(zip_file, file, layout)
-  end
-
-  def preprocessed?(cat) do
-    File.exists?(Path.join([dir(), "output", "#{cat}.data"]))
-  end
-
-  def find_zip_file do
-    if File.exists?(Path.join([dir(), "data"])) do
-      dir()
-      |> Path.join("data")
-      |> File.ls!()
-      |> Enum.find(fn file ->
-        String.starts_with?(file, "28DaySubscription") and String.ends_with?(file, ".zip")
-      end)
-      |> then(fn
-        nil ->
-          nil
-
-        file ->
-          Path.join([dir(), "data", file])
-      end)
-    end
   end
 
   defp dir, do: :code.priv_dir(:nasr)

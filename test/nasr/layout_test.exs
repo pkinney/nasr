@@ -28,7 +28,7 @@ defmodule NASR.Layout.ParserTest do
   end
 
   test "parses at least one line from all layout files" do
-    dir = Path.join(__DIR__, "../../layouts")
+    dir = Path.join(__DIR__, "../../priv/layouts")
 
     dir
     |> File.ls!()

@@ -15,6 +15,11 @@ defmodule NASR do
           # open the file stream from
           file = NASR.Utils.download(url)
           open_zip(file)
+
+        true ->
+          url = NASR.Utils.get_current_nasr_url()
+          file = NASR.Utils.download(url)
+          open_zip(file)
       end
 
     classes = airport_classes(stream)

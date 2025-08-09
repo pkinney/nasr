@@ -4,6 +4,12 @@ defmodule NASR.TPP do
 
   require Logger
 
+  def stream_recent do
+    date = NASR.Utils.get_airac_cycle_for_date()
+    url = "https://aeronav.faa.gov/d-tpp/#{date}/xml_data/d-TPP_Metafile.xml"
+    stream_records(url: url)
+  end
+
   def stream_records(opts \\ nil) do
     date = Timex.format!(DateTime.utc_now(), "{YY}{0M}")
     url = "https://aeronav.faa.gov/d-tpp/#{date}/xml_data/d-TPP_Metafile.xml"

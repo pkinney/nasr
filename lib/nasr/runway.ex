@@ -73,7 +73,7 @@ defmodule NASR.Runway do
   defp convert_surface_type("TURF"), do: :turf
   defp convert_surface_type("WATER"), do: :water
   defp convert_surface_type("WOOD"), do: :wood
-  defp convert_surface_type(""), do: :unknown
+  defp convert_surface_type(_), do: :unknown
 
   defp convert_condition("E"), do: :fair
   defp convert_condition("G"), do: :good

@@ -1,8 +1,10 @@
 defmodule NASR.Entities do
   @moduledoc false
   alias NASR.Entities.Airport
+  alias NASR.Entities.AirportAirspace
   alias NASR.Entities.AirportAttendance
   alias NASR.Entities.AirportRemark
+  alias NASR.Entities.AirRouteTrafficControlCenter
   alias NASR.Entities.AirRouteTrafficControlCenterBaseData
   alias NASR.Entities.AirRouteTrafficControlCenterCommunicationsFrequencyData
   alias NASR.Entities.AirRouteTrafficControlCenterFrequencyRemarksData
@@ -12,6 +14,7 @@ defmodule NASR.Entities do
   alias NASR.Entities.AirwayChangeoverPointException
   alias NASR.Entities.AirwayPointDescription
   alias NASR.Entities.AirwayPointRemarks
+  alias NASR.Entities.AirwayRemarks
   alias NASR.Entities.AutomatedTerminalInformationSystemAirwayPointDescription
   alias NASR.Entities.AutomatedTerminalInformationSystemAirwayPointRemarksText
   alias NASR.Entities.AutomatedTerminalInformationSystemAirwayRemarkText
@@ -21,6 +24,7 @@ defmodule NASR.Entities do
   alias NASR.Entities.AutomatedWeatherObservingSystemBaseData
   alias NASR.Entities.AutomatedWeatherObservingSystemRemarks
   alias NASR.Entities.CommunicationFacilityData
+  alias NASR.Entities.DepartmentOfDefense
   alias NASR.Entities.FixBaseData
   alias NASR.Entities.FixChartingInformation
   alias NASR.Entities.FixILSMakeup
@@ -65,6 +69,7 @@ defmodule NASR.Entities do
   alias NASR.Entities.PreferredRouteData
   alias NASR.Entities.PreferredRouteSegment
   alias NASR.Entities.Runway
+  alias NASR.Entities.StandardTerminalArrivalRoute
   alias NASR.Entities.TowerAirspaceData
   alias NASR.Entities.TowerATISData
   alias NASR.Entities.TowerBaseData
@@ -80,10 +85,12 @@ defmodule NASR.Entities do
 
   @entity_type_map %{
     Airport => {"apt", :apt},
+    AirportAirspace => {"apt", :apt_ars},
     AirportAttendance => {"apt", :apt_att},
     AirportRemark => {"apt", :apt_rmk},
     Runway => {"apt", :apt_rwy},
-    WxStation => {"wxl", :wx},
+    AirRouteTrafficControlCenter => {"artcc", :artcc},
+    WxStation => {"wxl", :wxl},
     ILSBaseData => {"ils", :ils1},
     ILSLocalizerData => {"ils", :ils2},
     ILSGlideSlopeData => {"ils", :ils3},
@@ -123,6 +130,7 @@ defmodule NASR.Entities do
     AirwayChangeoverPoint => {"awy", :awy3},
     AirwayPointRemarks => {"awy", :awy4},
     AirwayChangeoverPointException => {"awy", :awy5},
+    AirwayRemarks => {"awy", :awy_rmk},
     MilitaryTrainingRouteBaseData => {"mtr", :mtr1},
     MilitaryTrainingRouteProcedures => {"mtr", :mtr2},
     MilitaryTrainingRouteWidth => {"mtr", :mtr3},
@@ -143,6 +151,7 @@ defmodule NASR.Entities do
     AutomatedTerminalInformationSystemChangeoverPointExceptionText => {"ats", :ats5},
     AutomatedTerminalInformationSystemAirwayRemarkText => {"ats", :ats_rmk},
     CommunicationFacilityData => {"com", :com},
+    DepartmentOfDefense => {"dod", :dod},
     FlightServiceStationData => {"fss", :fss},
     AirRouteTrafficControlCenterBaseData => {"aff", :aff1},
     AirRouteTrafficControlCenterSiteRemarksData => {"aff", :aff2},
@@ -153,7 +162,8 @@ defmodule NASR.Entities do
     HoldingPatternOtherAltitudeSpeedInfo => {"hp", :hp3},
     HoldingPatternRemarksText => {"hp", :hp4},
     AutomatedWeatherObservingSystemBaseData => {"awos", :awos1},
-    AutomatedWeatherObservingSystemRemarks => {"awos", :awos2}
+    AutomatedWeatherObservingSystemRemarks => {"awos", :awos2},
+    StandardTerminalArrivalRoute => {"star", :star}
   }
 
   @type_to_entity_map Map.new(@entity_type_map, fn {module, {_, type}} -> {type, module} end)
@@ -189,24 +199,36 @@ defmodule NASR.Entities do
   end
 
   defp extract(line, {"L", "AN", len, start}) do
-    line |> String.slice(start - 1, len) |> String.trim_trailing()
+    line |> safe_slice(start - 1, len) |> String.trim_trailing()
   end
 
   defp extract(line, {"R", "AN", len, start}) do
-    line |> String.slice(start - 1, len) |> String.trim_leading()
+    line |> safe_slice(start - 1, len) |> String.trim_leading()
   end
 
   defp extract(line, {"L", "N", len, start}) do
-    line |> String.slice(start - 1, len) |> String.trim_trailing()
+    line |> safe_slice(start - 1, len) |> String.trim_trailing()
   end
 
   defp extract(line, {"R", "N", len, start}) do
-    line |> String.slice(start - 1, len) |> String.trim_leading()
+    line |> safe_slice(start - 1, len) |> String.trim_leading()
+  end
+
+  defp safe_slice(line, start, len) do
+    line_length = byte_size(line)
+
+    cond do
+      start < 0 -> ""
+      start >= line_length -> ""
+      start + len > line_length -> binary_part(line, start, line_length - start)
+      len <= 0 -> ""
+      true -> binary_part(line, start, len)
+    end
   end
 
   def entity_modules do
     with {:ok, list} <- :application.get_key(:nasr, :modules) do
-      Enum.filter(list, &(&1 |> Module.split() |> Enum.take(2) == ~w(NASR Entities)))
+      Enum.filter(list, &(length(Module.split(&1)) > 2 and &1 |> Module.split() |> Enum.take(2) == ~w(NASR Entities)))
     end
   end
 

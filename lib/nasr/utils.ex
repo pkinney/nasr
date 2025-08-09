@@ -21,6 +21,7 @@ defmodule NASR.Utils do
   end
 
   def safe_str_to_int(""), do: nil
+  def safe_str_to_int(nil), do: nil
 
   def safe_str_to_int(str) do
     cond do
@@ -31,6 +32,7 @@ defmodule NASR.Utils do
   end
 
   def safe_str_to_float(""), do: nil
+  def safe_str_to_float(nil), do: nil
 
   def safe_str_to_float(str) do
     cond do
@@ -53,6 +55,7 @@ defmodule NASR.Utils do
   end
 
   def convert_dms_to_decimal(""), do: nil
+  def convert_dms_to_decimal(nil), do: nil
 
   def convert_dms_to_decimal(str) do
     [deg, min, sec] = String.split(str, "-")

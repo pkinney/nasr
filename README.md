@@ -124,5 +124,5 @@ Calling `NASR.stream/2` will selectively choose the raw zip file or the preproce
 - `NASR.Entities.HoldingPatternRemarksText` (HP4) - Remarks text
 
 ### Automated Weather Observing System Data
-- `NASR.Entities.AutomatedWeatherObservingSystemBaseData` (AWOS1) - Base AWOS/ASOS data
-- `NASR.Entities.AutomatedWeatherObservingSystemRemarks` (AWOS2) - AWOS/ASOS remarks
+- `NASR.Entities.AWOSBaseData` (AWOS1) - Base AWOS/ASOS data
+- `NASR.Entities.AWOSRemarks` (AWOS2) - AWOS/ASOS remarks

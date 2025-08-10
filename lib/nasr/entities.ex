@@ -21,8 +21,8 @@ defmodule NASR.Entities do
   alias NASR.Entities.AutomatedTerminalInformationSystemBaseData
   alias NASR.Entities.AutomatedTerminalInformationSystemChangeoverPointDescription
   alias NASR.Entities.AutomatedTerminalInformationSystemChangeoverPointExceptionText
-  alias NASR.Entities.AutomatedWeatherObservingSystemBaseData
-  alias NASR.Entities.AutomatedWeatherObservingSystemRemarks
+  alias NASR.Entities.AWOSBaseData
+  alias NASR.Entities.AWOSRemarks
   alias NASR.Entities.CommunicationFacilityData
   alias NASR.Entities.DepartmentOfDefense
   alias NASR.Entities.FixBaseData
@@ -161,8 +161,8 @@ defmodule NASR.Entities do
     HoldingPatternChartingData => {"hp", :hp2},
     HoldingPatternOtherAltitudeSpeedInfo => {"hp", :hp3},
     HoldingPatternRemarksText => {"hp", :hp4},
-    AutomatedWeatherObservingSystemBaseData => {"awos", :awos1},
-    AutomatedWeatherObservingSystemRemarks => {"awos", :awos2},
+    AWOSBaseData => {"awos", :awos1},
+    AWOSRemarks => {"awos", :awos2},
     StandardTerminalArrivalRoute => {"star", :star}
   }
 
@@ -337,7 +337,7 @@ defmodule NASR.Entities do
   # def from_raw(%{type: :hp2} = entity), do: HoldingPatternChartingData.new(entity)
   # def from_raw(%{type: :hp3} = entity), do: HoldingPatternOtherAltitudeSpeedInfo.new(entity)
   # def from_raw(%{type: :hp4} = entity), do: HoldingPatternRemarksText.new(entity)
-  # def from_raw(%{type: :awos1} = entity), do: AutomatedWeatherObservingSystemBaseData.new(entity)
-  # def from_raw(%{type: :awos2} = entity), do: AutomatedWeatherObservingSystemRemarks.new(entity)
+  # def from_raw(%{type: :awos1} = entity), do: AWOSBaseData.new(entity)
+  # def from_raw(%{type: :awos2} = entity), do: AWOSRemarks.new(entity)
   # def from_raw(_), do: nil
 end

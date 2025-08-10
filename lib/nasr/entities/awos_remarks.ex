@@ -1,4 +1,4 @@
-defmodule NASR.Entities.AutomatedWeatherObservingSystemRemarks do
+defmodule NASR.Entities.AWOSRemarks do
   @moduledoc "Entity struct for AWOS2 records"
   import NASR.Utils
   

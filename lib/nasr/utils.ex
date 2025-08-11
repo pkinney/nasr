@@ -204,14 +204,36 @@ defmodule NASR.Utils do
   def parse_date(nil), do: nil
 
   def parse_date(date_str) do
-    case Date.from_iso8601(date_str) do
-      {:ok, date} -> date
-      _ ->
-        # Try MM/DD/YYYY format
+    cond do
+      # ISO8601 format: YYYY-MM-DD
+      String.match?(date_str, ~r/^\d{4}-\d{2}-\d{2}$/) ->
+        case Date.from_iso8601(date_str) do
+          {:ok, date} -> date
+          _ -> nil
+        end
+      
+      # NASR standard format: YYYY/MM/DD
+      String.match?(date_str, ~r/^\d{4}\/\d{2}\/\d{2}$/) ->
+        case Timex.parse(date_str, "{YYYY}/{0M}/{0D}") do
+          {:ok, datetime} -> NaiveDateTime.to_date(datetime)
+          _ -> nil
+        end
+      
+      # NASR activation/amendment format: YYYY/MM
+      String.match?(date_str, ~r/^\d{4}\/\d{2}$/) ->
+        case Timex.parse(date_str, "{YYYY}/{0M}") do
+          {:ok, datetime} -> NaiveDateTime.to_date(datetime)
+          _ -> nil
+        end
+      
+      # US format: MM/DD/YYYY
+      String.match?(date_str, ~r/^\d{2}\/\d{2}\/\d{4}$/) ->
         case Timex.parse(date_str, "{0M}/{0D}/{YYYY}") do
           {:ok, datetime} -> NaiveDateTime.to_date(datetime)
           _ -> nil
         end
+      
+      true -> nil
     end
   end
 end

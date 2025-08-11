@@ -32,10 +32,10 @@ defmodule NASR.Layout.Parser do
 
         {:length, l}
 
-      String.match?(line, ~r/[L|R]\s+(AN|N)\s*\d+\s+\d+/) ->
-        %{"just" => just, "type" => type, "len" => len, "start" => start, "rest" => rest} =
+      String.match?(line, ~r/^[L|R]\s+(AN|N)\s*\d+\s+\d+\s+[\w\d]+\s+/) ->
+        %{"just" => just, "type" => type, "len" => len, "start" => start, "elem" => elem, "rest" => rest} =
           Regex.named_captures(
-            ~r/^(?<just>(L|R))\s+(?<type>(AN|N))\s*(?<len>(\d+))\s+(?<start>(\d+))\s+[^\s\\]+\s+(?<rest>(.*))$/,
+            ~r/^(?<just>(L|R))\s+(?<type>(AN|N))\s*(?<len>(\d+))\s+(?<start>(\d+))\s+(?<elem>([\w\d]+))\s+(?<rest>(.*))$/,
             line
           )
 
@@ -52,7 +52,7 @@ defmodule NASR.Layout.Parser do
           |> String.downcase()
           |> String.to_atom()
 
-        {:spec, just, type, len, start, name}
+        {:spec, just, type, len, start, elem, rest}
 
       true ->
         nil

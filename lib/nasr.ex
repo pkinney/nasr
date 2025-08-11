@@ -99,6 +99,36 @@ defmodule NASR do
     |> stream_structs()
   end
 
+  def load_layouts(opts \\ []) do
+    skip = ["fss_rf.txt", "Stardp_rf.txt", "lid_rf.txt", "com_rf.txt", "Wxl_rf.txt"]
+    {:ok, stream, _file} = open_stream(opts)
+
+    stream
+    |> Unzip.list_entries()
+    |> Enum.map(& &1.file_name)
+    |> Enum.filter(&String.starts_with?(&1, "Layout_Data"))
+    |> Enum.reject(fn filename ->
+      Enum.any?(skip, &String.ends_with?(filename, &1))
+    end)
+    |> Enum.map(fn filename ->
+      Logger.info("[#{__MODULE__}] Loading layout from #{filename}...")
+
+      category = filename |> Path.basename() |> String.replace("_rf.txt", "") |> String.upcase()
+
+      stream
+      |> Unzip.file_stream!(filename)
+      |> Enum.map_join(&IO.iodata_to_binary/1)
+      |> NASR.Layout.parse(category)
+    end)
+    |> List.flatten()
+
+    # Map.new(list_layouts(), fn {cat, layout_file, data_file} ->
+    #   Logger.info("[#{__MODULE__}] Loading layout for #{cat} from #{layout_file}...")
+    #   layout = NASR.Layout.load(layout_file)
+    #   {cat, layout, data_file}
+    # end)
+  end
+
   defp open_stream(opts) do
     cond do
       Keyword.has_key?(opts, :file) ->
@@ -212,16 +242,6 @@ defmodule NASR do
       %{"SITE_ID" => site_id, "CLASS_E_AIRSPACE" => "Y"} -> {site_id, :E}
       _ -> nil
     end)
-  end
-
-  defp load(zip_file_path, file, layout) do
-    {:ok, zip_file} = zip_file_path |> Unzip.LocalFile.open() |> Unzip.new()
-    NASR.Entities.load(zip_file, file, layout)
-  end
-
-  defp stream(zip_file_path, file, layout) do
-    {:ok, zip_file} = zip_file_path |> Unzip.LocalFile.open() |> Unzip.new()
-    NASR.Entities.stream(zip_file, file, layout)
   end
 
   defp dir, do: :code.priv_dir(:nasr)

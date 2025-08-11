@@ -12,7 +12,10 @@ defmodule NASR.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       name: "NASR",
       description: "A library for parsing and analyzing FAA NASR and dTPP data files",
-      package: package()
+      package: package(),
+      preferred_cli_env: [
+        "test.watch": :test
+      ]
     ]
   end
 
@@ -49,7 +52,8 @@ defmodule NASR.MixProject do
       {:styler, "~> 1.4", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:ex_doc, "~> 0.30", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.30", only: :dev, runtime: false},
+      {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
   end
 

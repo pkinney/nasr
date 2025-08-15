@@ -15,7 +15,7 @@ defmodule NasrTest do
     end
 
     test "gets a raw stream of all data in CSV files", %{nasr_file_path: path} do
-      [file: path] |> NASR.stream_raw() |> Enum.frequencies_by(& &1["__FILE__"]) |> IO.inspect()
+      [file: path] |> NASR.stream_raw() |> Enum.frequencies_by(& &1["__FILE__"])
     end
 
     test "can take a list of types", %{nasr_file_path: path} do
@@ -33,12 +33,11 @@ defmodule NasrTest do
         |> Enum.take(1)
         |> List.first()
 
-      # [file: path, include: ["APT_BASE"]] |> NASR.stream_structs() |> Enum.find()
-      NASR.Entities.Fix.new(raw)
+      assert NASR.Entities.Fix.new(raw)
     end
 
     test "streams structs of specific types", %{nasr_file_path: path} do
-      [file: path, include: ["FIX_BASE", "FIX_CHRT"]] |> NASR.stream_structs() |> Enum.to_list() |> IO.inspect()
+      [file: path, include: ["FIX_BASE", "FIX_CHRT"]] |> NASR.stream_structs() |> Enum.to_list()
     end
   end
 end

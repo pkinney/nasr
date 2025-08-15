@@ -31,7 +31,7 @@ defmodule NASR.Entities.Airport.Runway do
   * `:dual_wheel_weight` - Runway Weight-Bearing Capacity for Dual Wheel type Landing Gear
   * `:dual_tandem_weight` - Runway Weight-Bearing Capacity for Two Dual Wheels in tandem type Landing Gear
   * `:double_dual_tandem_weight` - Runway Weight-Bearing Capacity for Two Dual Wheels in tandem/two dual wheels in double tandem body gear type Landing Gear
-  * `:eff_date` - The 28 Day NASR Subscription Effective Date in format 'YYYY/MM/DD'
+  * `:effective_date` - The 28 Day NASR Subscription Effective Date in format 'YYYY/MM/DD'
   """
   import NASR.Utils
 
@@ -60,7 +60,7 @@ defmodule NASR.Entities.Airport.Runway do
     dual_wheel_weight
     dual_tandem_weight
     double_dual_tandem_weight
-    eff_date
+    effective_date
   )a
 
   @type t() :: %__MODULE__{
@@ -88,7 +88,7 @@ defmodule NASR.Entities.Airport.Runway do
           dual_wheel_weight: integer() | nil,
           dual_tandem_weight: integer() | nil,
           double_dual_tandem_weight: integer() | nil,
-          eff_date: Date.t() | nil
+          effective_date: Date.t() | nil
         }
 
   @spec new(map()) :: t()
@@ -118,7 +118,7 @@ defmodule NASR.Entities.Airport.Runway do
       dual_wheel_weight: safe_str_to_int(Map.fetch!(entity, "GROSS_WT_DW")),
       dual_tandem_weight: safe_str_to_int(Map.fetch!(entity, "GROSS_WT_DTW")),
       double_dual_tandem_weight: safe_str_to_int(Map.fetch!(entity, "GROSS_WT_DDTW")),
-      eff_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
+      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
     }
   end
 

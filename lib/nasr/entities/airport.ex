@@ -77,20 +77,6 @@ defmodule NASR.Entities.Airport do
   * `:beacon_lens_color` - Lens Color of Operable Beacon located on the Airport
   * `:landing_fee_flag` - Landing Fee charged to Non-Commercial Users of Airport (boolean)
   * `:medical_use_flag` - A "Y" in this field indicates that the Landing Facility Is used for Medical Purposes (boolean)
-  * `:based_aircraft_single_engine` - Single Engine General Aviation Aircraft count
-  * `:based_aircraft_multi_engine` - Multi Engine General Aviation Aircraft count
-  * `:based_aircraft_jet_engine` - Jet Engine General Aviation Aircraft count
-  * `:based_aircraft_helicopter` - General Aviation Helicopter count
-  * `:based_aircraft_gliders` - Operational Gliders count
-  * `:based_aircraft_military` - Operational Military Aircraft (Including Helicopters) count
-  * `:based_aircraft_ultralight` - Ultralight Aircraft count
-  * `:commercial_operations` - Commercial Services (Scheduled Operations by CAB-Certificated Carriers or Intrastate Carriers) count
-  * `:commuter_operations` - Commuter Services Operations (Scheduled Commuter/Cargo Carriers) count
-  * `:air_taxi_operations` - Air Taxi Operations (Air Taxi Operators Carrying Passengers, Mail, or Mail for Revenue) count
-  * `:local_operations` - General Aviation Local Operations (Those Operating in the Local Traffic Pattern or Within a 20-Mile Radius of the Airport) count
-  * `:itinerant_operations` - General Aviation Itinerant Operations (Those General Aviation Operations Excluding Commuter or Air Taxi Not qualifying as Local) count
-  * `:military_operations` - Military Aircraft Operations count
-  * `:operations_ending_date` - 12-Month Ending Date on which Annual Operations data in above six fields is based (YYYY/MM/DD)
   * `:airport_position_source` - Airport Position Source
   * `:airport_position_source_date` - Airport Position Source Date (YYYY/MM/DD)
   * `:airport_elevation_source` - Airport Elevation Source
@@ -105,7 +91,7 @@ defmodule NASR.Entities.Airport do
   * `:minimum_operational_network` - Minimum Operational Network (MON)
   * `:user_fee_flag` - If Flag is checked in NASR, User Fee Airports Will Be Designated With Text "US CUSTOMS USER FEE ARPT." (boolean)
   * `:cold_temperature_altitude_correction` - Cold Temperature Airport. Altitude Correction Required At or Below Temperature Given in Celsius
-  * `:eff_date` - The 28 Day NASR Subscription Effective Date in format 'YYYY/MM/DD'
+  * `:effective_date` - The 28 Day NASR Subscription Effective Date in format 'YYYY/MM/DD'
   """
   import NASR.Utils
 
@@ -175,20 +161,6 @@ defmodule NASR.Entities.Airport do
     beacon_lens_color
     landing_fee_flag
     medical_use_flag
-    based_aircraft_single_engine
-    based_aircraft_multi_engine
-    based_aircraft_jet_engine
-    based_aircraft_helicopter
-    based_aircraft_gliders
-    based_aircraft_military
-    based_aircraft_ultralight
-    commercial_operations
-    commuter_operations
-    air_taxi_operations
-    local_operations
-    itinerant_operations
-    military_operations
-    operations_ending_date
     airport_position_source
     airport_position_source_date
     airport_elevation_source
@@ -203,12 +175,13 @@ defmodule NASR.Entities.Airport do
     minimum_operational_network
     user_fee_flag
     cold_temperature_altitude_correction
-    eff_date
+    effective_date
   )a
 
   @type t() :: %__MODULE__{
           site_no: String.t(),
-          site_type_code: :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
+          site_type_code:
+            :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
           arpt_id: String.t(),
           city: String.t(),
           state_code: String.t(),
@@ -267,25 +240,12 @@ defmodule NASR.Entities.Airport do
           bulk_oxygen_type: :high | :low | :high_low | :none | String.t() | nil,
           lighting_schedule: String.t(),
           beacon_lighting_schedule: String.t(),
-          air_traffic_control_tower: :atct | :non_atct | :atct_approach | :atct_rapcon | :atct_ratcf | :atct_tracon | String.t() | nil,
+          air_traffic_control_tower:
+            :atct | :non_atct | :atct_approach | :atct_rapcon | :atct_ratcf | :atct_tracon | String.t() | nil,
           segmented_circle_flag: :yes | :no | :none | :yes_lighted | String.t() | nil,
           beacon_lens_color: String.t(),
           landing_fee_flag: boolean() | nil,
           medical_use_flag: boolean() | nil,
-          based_aircraft_single_engine: integer() | nil,
-          based_aircraft_multi_engine: integer() | nil,
-          based_aircraft_jet_engine: integer() | nil,
-          based_aircraft_helicopter: integer() | nil,
-          based_aircraft_gliders: integer() | nil,
-          based_aircraft_military: integer() | nil,
-          based_aircraft_ultralight: integer() | nil,
-          commercial_operations: integer() | nil,
-          commuter_operations: integer() | nil,
-          air_taxi_operations: integer() | nil,
-          local_operations: integer() | nil,
-          itinerant_operations: integer() | nil,
-          military_operations: integer() | nil,
-          operations_ending_date: Date.t() | nil,
           airport_position_source: String.t(),
           airport_position_source_date: Date.t() | nil,
           airport_elevation_source: String.t(),
@@ -295,12 +255,13 @@ defmodule NASR.Entities.Airport do
           transient_storage_hangar_flag: boolean() | nil,
           transient_storage_tiedown_flag: boolean() | nil,
           other_services: [String.t()],
-          wind_indicator_flag: :no_wind_indicator | :unlighted_wind_indicator | :lighted_wind_indicator | String.t() | nil,
+          wind_indicator_flag:
+            :no_wind_indicator | :unlighted_wind_indicator | :lighted_wind_indicator | String.t() | nil,
           icao_id: String.t(),
           minimum_operational_network: String.t(),
           user_fee_flag: boolean() | nil,
           cold_temperature_altitude_correction: float() | nil,
-          eff_date: Date.t() | nil
+          effective_date: Date.t() | nil
         }
 
   @spec new(map()) :: t()
@@ -371,20 +332,6 @@ defmodule NASR.Entities.Airport do
       beacon_lens_color: Map.fetch!(entity, "BCN_LENS_COLOR"),
       landing_fee_flag: convert_yn(Map.fetch!(entity, "LNDG_FEE_FLAG")),
       medical_use_flag: convert_yn(Map.fetch!(entity, "MEDICAL_USE_FLAG")),
-      based_aircraft_single_engine: safe_str_to_int(Map.fetch!(entity, "BASED_SINGLE_ENG")),
-      based_aircraft_multi_engine: safe_str_to_int(Map.fetch!(entity, "BASED_MULTI_ENG")),
-      based_aircraft_jet_engine: safe_str_to_int(Map.fetch!(entity, "BASED_JET_ENG")),
-      based_aircraft_helicopter: safe_str_to_int(Map.fetch!(entity, "BASED_HEL")),
-      based_aircraft_gliders: safe_str_to_int(Map.fetch!(entity, "BASED_ GLIDERS")),
-      based_aircraft_military: safe_str_to_int(Map.fetch!(entity, "BASED_ MIL_ACFT")),
-      based_aircraft_ultralight: safe_str_to_int(Map.fetch!(entity, "BASED_ULTRALGT_ACFT")),
-      commercial_operations: safe_str_to_int(Map.fetch!(entity, "COMMERCIAL_OPS")),
-      commuter_operations: safe_str_to_int(Map.fetch!(entity, "COMMUTER_OPS")),
-      air_taxi_operations: safe_str_to_int(Map.fetch!(entity, "AIR_TAXI_OPS")),
-      local_operations: safe_str_to_int(Map.fetch!(entity, "LOCAL_OPS")),
-      itinerant_operations: safe_str_to_int(Map.fetch!(entity, "ITNRNT_OPS")),
-      military_operations: safe_str_to_int(Map.fetch!(entity, "MIL_ACFT_OPS")),
-      operations_ending_date: parse_date(Map.fetch!(entity, "ANNUAL_OPS_DATE")),
       airport_position_source: Map.fetch!(entity, "ARPT_PSN_SOURCE"),
       airport_position_source_date: parse_date(Map.fetch!(entity, "POSITION_SRC_DATE")),
       airport_elevation_source: Map.fetch!(entity, "ARPT_ELEV_SOURCE"),
@@ -399,15 +346,16 @@ defmodule NASR.Entities.Airport do
       minimum_operational_network: Map.fetch!(entity, "MIN_OP_NETWORK"),
       user_fee_flag: convert_yn(Map.fetch!(entity, "USER_FEE_FLAG")),
       cold_temperature_altitude_correction: safe_str_to_float(Map.fetch!(entity, "CTA")),
-      eff_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
+      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
     }
   end
 
   @spec type() :: String.t()
-  def type(), do: "APT_BASE"
+  def type, do: "APT_BASE"
 
   defp parse_site_type_code(nil), do: nil
   defp parse_site_type_code(""), do: nil
+
   defp parse_site_type_code(code) when is_binary(code) do
     case String.trim(code) do
       "A" -> :airport
@@ -422,6 +370,7 @@ defmodule NASR.Entities.Airport do
 
   defp parse_ownership_type_code(nil), do: nil
   defp parse_ownership_type_code(""), do: nil
+
   defp parse_ownership_type_code(code) when is_binary(code) do
     case String.trim(code) do
       "PU" -> :public
@@ -436,6 +385,7 @@ defmodule NASR.Entities.Airport do
 
   defp parse_facility_use_code(nil), do: nil
   defp parse_facility_use_code(""), do: nil
+
   defp parse_facility_use_code(code) when is_binary(code) do
     case String.trim(code) do
       "PU" -> :public
@@ -446,6 +396,7 @@ defmodule NASR.Entities.Airport do
 
   defp parse_survey_method_code(nil), do: nil
   defp parse_survey_method_code(""), do: nil
+
   defp parse_survey_method_code(code) when is_binary(code) do
     case String.trim(code) do
       "E" -> :estimated
@@ -456,6 +407,7 @@ defmodule NASR.Entities.Airport do
 
   defp parse_elevation_method_code(nil), do: nil
   defp parse_elevation_method_code(""), do: nil
+
   defp parse_elevation_method_code(code) when is_binary(code) do
     case String.trim(code) do
       "E" -> :estimated
@@ -466,6 +418,7 @@ defmodule NASR.Entities.Airport do
 
   defp parse_airport_status_code(nil), do: nil
   defp parse_airport_status_code(""), do: nil
+
   defp parse_airport_status_code(code) when is_binary(code) do
     case String.trim(code) do
       "CI" -> :closed_indefinitely
@@ -477,6 +430,7 @@ defmodule NASR.Entities.Airport do
 
   defp parse_fuel_types(nil), do: []
   defp parse_fuel_types(""), do: []
+
   defp parse_fuel_types(fuels) when is_binary(fuels) do
     fuels
     |> String.split(",")
@@ -486,6 +440,7 @@ defmodule NASR.Entities.Airport do
 
   defp parse_repair_service(nil), do: nil
   defp parse_repair_service(""), do: nil
+
   defp parse_repair_service(service) when is_binary(service) do
     case String.trim(service) do
       "MAJOR" -> :major
@@ -497,6 +452,7 @@ defmodule NASR.Entities.Airport do
 
   defp parse_oxygen_type(nil), do: nil
   defp parse_oxygen_type(""), do: nil
+
   defp parse_oxygen_type(type) when is_binary(type) do
     case String.trim(type) do
       "HIGH" -> :high
@@ -509,6 +465,7 @@ defmodule NASR.Entities.Airport do
 
   defp parse_tower_type(nil), do: nil
   defp parse_tower_type(""), do: nil
+
   defp parse_tower_type(type) when is_binary(type) do
     case String.trim(type) do
       "ATCT" -> :atct
@@ -523,6 +480,7 @@ defmodule NASR.Entities.Airport do
 
   defp parse_segmented_circle_flag(nil), do: nil
   defp parse_segmented_circle_flag(""), do: nil
+
   defp parse_segmented_circle_flag(flag) when is_binary(flag) do
     case String.trim(flag) do
       "Y" -> :yes
@@ -535,6 +493,7 @@ defmodule NASR.Entities.Airport do
 
   defp parse_other_services(nil), do: []
   defp parse_other_services(""), do: []
+
   defp parse_other_services(services) when is_binary(services) do
     services
     |> String.split(",")
@@ -544,6 +503,7 @@ defmodule NASR.Entities.Airport do
 
   defp parse_wind_indicator_flag(nil), do: nil
   defp parse_wind_indicator_flag(""), do: nil
+
   defp parse_wind_indicator_flag(flag) when is_binary(flag) do
     case String.trim(flag) do
       "N" -> :no_wind_indicator

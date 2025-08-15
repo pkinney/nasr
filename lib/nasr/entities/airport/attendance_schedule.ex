@@ -17,7 +17,7 @@ defmodule NASR.Entities.Airport.AttendanceSchedule do
   * `:months_attended` - Describes the months that the facility is attended (may contain 'UNATNDD' for unattended facilities)
   * `:days_attended` - Describes the days of the week that the facility is open
   * `:hours_attended` - Describes the hours within the day that the facility is attended
-  * `:eff_date` - The 28 Day NASR Subscription Effective Date
+  * `:effective_date` - The 28 Day NASR Subscription Effective Date
 
   """
   import NASR.Utils
@@ -33,7 +33,7 @@ defmodule NASR.Entities.Airport.AttendanceSchedule do
     months_attended
     days_attended
     hours_attended
-    eff_date
+    effective_date
   )a
 
   @type t() :: %__MODULE__{
@@ -47,7 +47,7 @@ defmodule NASR.Entities.Airport.AttendanceSchedule do
           months_attended: String.t(),
           days_attended: String.t(),
           hours_attended: String.t(),
-          eff_date: Date.t() | nil
+          effective_date: Date.t() | nil
         }
 
   @spec new(map()) :: t()
@@ -63,7 +63,7 @@ defmodule NASR.Entities.Airport.AttendanceSchedule do
       months_attended: Map.fetch!(entity, "MONTH"),
       days_attended: Map.fetch!(entity, "DAY"),
       hours_attended: Map.fetch!(entity, "HOUR"),
-      eff_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
+      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
     }
   end
 

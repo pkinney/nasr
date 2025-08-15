@@ -1,7 +1,5 @@
 defmodule NASR do
   @moduledoc false
-  alias Credo.CLI.Options
-  alias NASR.Entities.Airport
 
   require Logger
 
@@ -62,14 +60,13 @@ defmodule NASR do
   end
 
   def stream_structs(opts \\ []) do
-    types = Map.new(entity_modules(), fn module -> {module.type(), module} end)
-
     opts
     |> stream_raw()
-    |> Stream.map(fn %{"__TYPE__" => type} = raw ->
-      module = Map.get(types, type)
-      module.new(raw)
-    end)
+    |> Stream.map(&from_raw/1)
+  end
+
+  def from_raw(%{"__TYPE__" => type} = raw) do
+    module_for_type(type).new(raw)
   end
 
   def list_types(opts \\ []) do
@@ -91,13 +88,36 @@ defmodule NASR do
 
   def module_for_type(type) do
     # TODO: Make a better way of doing this
-    Enum.find(entity_modules(), &(&1.type == type))
+    types =
+      :nasr
+      |> Application.get_env(:modules_for_type)
+      |> case do
+        nil ->
+          t =
+            Map.new(entity_modules(), fn module -> {module.type(), module} end)
+
+          Application.put_env(:nasr, :modules_for_type, t)
+          t
+
+        types ->
+          types
+      end
+
+    Map.get(types, type)
   end
 
-  defp entity_modules do
-    with {:ok, list} <- :application.get_key(:nasr, :modules) do
-      Enum.filter(list, &(length(Module.split(&1)) > 2 and &1 |> Module.split() |> Enum.take(2) == ~w(NASR Entities)))
-    end
+  def entity_modules do
+    {:ok, modules} = :application.get_key(:nasr, :modules)
+
+    Enum.filter(modules, fn module ->
+      # Filter out modules that are not in the NASR.Entities namespace
+      module
+      |> Module.split()
+      |> case do
+        ["NASR", "Entities", _ | _] -> true
+        _ -> false
+      end
+    end)
   end
 
   #   @doc """

@@ -16,7 +16,7 @@ defmodule NASR.Entities.Airport.ArrestingSystems do
   * `:runway_id` - Runway Identification
   * `:runway_end_id` - Runway End Identifier (the runway end described by the arresting system)
   * `:arresting_device_type` - Type of Aircraft Arresting Device (e.g., BAK-6, BAK-9, BAK-12, etc.)
-  * `:eff_date` - The 28 Day NASR Subscription Effective Date
+  * `:effective_date` - The 28 Day NASR Subscription Effective Date
 
   ## Arresting Device Types
 
@@ -39,7 +39,7 @@ defmodule NASR.Entities.Airport.ArrestingSystems do
     runway_id
     runway_end_id
     arresting_device_type
-    eff_date
+    effective_date
   )a
 
   @type t() :: %__MODULE__{
@@ -52,7 +52,7 @@ defmodule NASR.Entities.Airport.ArrestingSystems do
           runway_id: String.t(),
           runway_end_id: String.t(),
           arresting_device_type: String.t(),
-          eff_date: Date.t() | nil
+          effective_date: Date.t() | nil
         }
 
   @spec new(map()) :: t()
@@ -67,7 +67,7 @@ defmodule NASR.Entities.Airport.ArrestingSystems do
       runway_id: Map.fetch!(entity, "RWY_ID"),
       runway_end_id: Map.fetch!(entity, "RWY_END_ID"),
       arresting_device_type: parse_arresting_device_type(Map.fetch!(entity, "ARREST_DEVICE_CODE")),
-      eff_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
+      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
     }
   end
 

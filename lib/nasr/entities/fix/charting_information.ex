@@ -12,7 +12,7 @@ defmodule NASR.Entities.Fix.ChartingInformation do
   * `:state_code` - Associated State Post Office Code (standard two letter abbreviation)
   * `:country_code` - Country Post Office Code
   * `:charting_type_desc` - Chart on which Fix is to be depicted (e.g., "CONTROLLER LOW", "ENROUTE LOW", "IAP", "STAR")
-  * `:eff_date` - The 28 Day NASR Subscription Effective Date
+  * `:effective_date` - The 28 Day NASR Subscription Effective Date
 
   ## Data Source
 
@@ -27,7 +27,7 @@ defmodule NASR.Entities.Fix.ChartingInformation do
     state_code
     country_code
     charting_type_desc
-    eff_date
+    effective_date
   )a
 
   @type t() :: %__MODULE__{}
@@ -40,7 +40,7 @@ defmodule NASR.Entities.Fix.ChartingInformation do
       state_code: Map.fetch!(entity, "STATE_CODE"),
       country_code: Map.fetch!(entity, "COUNTRY_CODE"),
       charting_type_desc: Map.fetch!(entity, "CHARTING_TYPE_DESC"),
-      eff_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
+      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
     }
   end
 

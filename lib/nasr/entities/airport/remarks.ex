@@ -19,7 +19,7 @@ defmodule NASR.Entities.Airport.Remarks do
   * `:element` - Specific element that the remark text pertains to
   * `:reference_column_sequence_no` - Sequence number assigned to Reference Column Remark
   * `:remark_text` - Free form text that further describes a specific information item
-  * `:eff_date` - The 28 Day NASR Subscription Effective Date
+  * `:effective_date` - The 28 Day NASR Subscription Effective Date
 
   ## Remark Categories
 
@@ -50,7 +50,7 @@ defmodule NASR.Entities.Airport.Remarks do
     element
     reference_column_sequence_no
     remark_text
-    eff_date
+    effective_date
   )a
 
   @type t() :: %__MODULE__{
@@ -66,7 +66,7 @@ defmodule NASR.Entities.Airport.Remarks do
           element: String.t(),
           reference_column_sequence_no: integer() | nil,
           remark_text: String.t(),
-          eff_date: Date.t() | nil
+          effective_date: Date.t() | nil
         }
 
   @spec new(map()) :: t()
@@ -84,7 +84,7 @@ defmodule NASR.Entities.Airport.Remarks do
       element: Map.fetch!(entity, "ELEMENT"),
       reference_column_sequence_no: safe_str_to_int(Map.fetch!(entity, "REF_COL_SEQ_NO")),
       remark_text: Map.fetch!(entity, "REMARK"),
-      eff_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
+      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
     }
   end
 

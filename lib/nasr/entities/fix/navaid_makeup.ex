@@ -15,7 +15,7 @@ defmodule NASR.Entities.Fix.NavaidMakeup do
   * `:nav_type` - Facility Type of the NAVAID
   * `:bearing` - Bearing, Radial, Direction or Course from the NAVAID (degrees)
   * `:distance` - DME Distance from Facility (nautical miles)
-  * `:eff_date` - The 28 Day NASR Subscription Effective Date
+  * `:effective_date` - The 28 Day NASR Subscription Effective Date
 
   ## Data Source
 
@@ -33,7 +33,7 @@ defmodule NASR.Entities.Fix.NavaidMakeup do
     nav_type
     bearing
     distance
-    eff_date
+    effective_date
   )a
 
   @type t() :: %__MODULE__{}
@@ -49,7 +49,7 @@ defmodule NASR.Entities.Fix.NavaidMakeup do
       nav_type: Map.fetch!(entity, "NAV_TYPE"),
       bearing: safe_str_to_float(Map.fetch!(entity, "BEARING")),
       distance: safe_str_to_float(Map.fetch!(entity, "DISTANCE")),
-      eff_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
+      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
     }
   end
 

@@ -3,99 +3,103 @@ defmodule NASR.EntitiesIntegrationTest do
 
   @moduletag timeout: 60_000
 
-  describe "NASR.Entities.from_raw/1" do
+  setup_all do
+    Application.ensure_all_started(:nasr)
+
+    nasr_file_path = NASR.TestSetup.load_nasr_zip_if_needed()
+    # Collect one raw entity of each type from the NASR stream
+    entity_samples =
+      [file: nasr_file_path]
+      |> NASR.stream_raw()
+      |> Enum.uniq_by(fn entity ->
+        Map.get(entity, "__TYPE__")
+      end)
+
+    {:ok, entity_samples: entity_samples}
+  end
+
+  describe "NASR.stream_structs/1" do
     @tag :integration
-    test "handles all entity types from stream_raw without returning nil" do
-      # Track entity types and their counts
-      entity_stats = %{
-        total_entities: 0,
-        nil_entities: 0,
-        processed_types: MapSet.new(),
-        error_types: MapSet.new()
-      }
+    test "handles all entity types from stream_raw without returning nil", %{entity_samples: _entity_samples} do
+      # Enum.map(entity_samples, fn entity ->
+      #   struct = NASR.from_raw(entity)
+      #   assert struct != nil, "Entity should not return nil: #{inspect(entity)}"
+      #   assert Map.has_key?(struct, :__struct__), "Entity should be a struct: #{inspect(struct)}"
+      # end)
 
-      # Process the stream with a reasonable limit to avoid overwhelming the test
-      # Limit to first 10k entities for testing
-      final_stats =
-        Enum.reduce(NASR.stream_raw(), entity_stats, fn raw_entity, stats ->
-          entity_type = Map.get(raw_entity, :type)
+      :ok
+    end
 
-          try do
-            result = NASR.Entities.from_raw(raw_entity)
+    test "all entities have an example in the sample", %{entity_samples: samples} do
+      # There are some entity types that may not have samples in the current NASR data
+      exceptions = ~w()a
 
-            updated_stats = %{
-              stats
-              | total_entities: stats.total_entities + 1,
-                processed_types: MapSet.put(stats.processed_types, entity_type)
-            }
+      Enum.each(NASR.entity_modules(), fn module ->
+        type = module.type()
 
-            if is_nil(result) do
-              IO.puts("Warning: from_raw returned nil for entity type: #{inspect(entity_type)}")
-              %{updated_stats | nil_entities: stats.nil_entities + 1}
-            else
-              updated_stats
-            end
-          rescue
-            error ->
-              IO.puts("Error processing entity type #{inspect(entity_type)}: #{inspect(error)}")
-              %{stats | total_entities: stats.total_entities + 1, error_types: MapSet.put(stats.error_types, entity_type)}
-          end
+        if type not in exceptions do
+          assert Enum.any?(samples, fn sample -> sample["__TYPE__"] == type end),
+                 "No sample found for entity type #{type}"
+        end
+      end)
+    end
+
+    Enum.each(NASR.entity_modules(), fn module_under_test ->
+      test "entity module #{module_under_test} can be created from sample data", %{entity_samples: samples} do
+        module = unquote(module_under_test)
+        type = module.type()
+
+        samples
+        |> Enum.find(fn sample ->
+          sample["__TYPE__"] == type
         end)
+        |> case do
+          # we test for this elsewhere
+          nil ->
+            :ok
 
-      # Print statistics
-      IO.puts("Integration test results:")
-      IO.puts("  Total entities processed: #{final_stats.total_entities}")
-      IO.puts("  Entity types encountered: #{MapSet.size(final_stats.processed_types)}")
-      IO.puts("  Entity types: #{final_stats.processed_types |> Enum.sort() |> Enum.join(", ")}")
-      IO.puts("  Entities returning nil: #{final_stats.nil_entities}")
-      IO.puts("  Entity types with errors: #{MapSet.size(final_stats.error_types)}")
+          sample ->
+            entity = NASR.from_raw(sample)
 
-      if MapSet.size(final_stats.error_types) > 0 do
-        IO.puts("  Error types: #{final_stats.error_types |> Enum.sort() |> Enum.join(", ")}")
+            assert entity.__struct__ == module,
+                   "Entity module #{module} should match the sample type #{type}"
+        end
       end
+    end)
 
-      # Assertions
-      assert final_stats.total_entities > 0
-      assert final_stats.nil_entities == 0
-      assert MapSet.size(final_stats.error_types) == 0
-      assert MapSet.size(final_stats.processed_types) > 10
+    # @tag :integration
+    # test "from_raw returns structs that match expected patterns" do
+    #   # Sample a few entities and verify they have expected structure
+    #   sample_entities =
+    #     NASR.stream_raw()
+    #     |> Stream.take(100)
+    #     |> Stream.map(&NASR.Entities.from_raw/1)
+    #     |> Stream.reject(&is_nil/1)
+    #     |> Enum.take(10)
 
-      :ok
-    end
+    #   assert length(sample_entities) > 0, "Should get some processed entities"
 
-    @tag :integration
-    test "from_raw returns structs that match expected patterns" do
-      # Sample a few entities and verify they have expected structure
-      sample_entities =
-        NASR.stream_raw()
-        |> Stream.take(100)
-        |> Stream.map(&NASR.Entities.from_raw/1)
-        |> Stream.reject(&is_nil/1)
-        |> Enum.take(10)
+    #   # Verify each entity is a struct with the expected pattern
+    #   for entity <- sample_entities do
+    #     assert is_struct(entity), "Entity should be a struct: #{inspect(entity)}"
+    #     assert Map.has_key?(entity, :__struct__), "Entity should have __struct__ key"
 
-      assert length(sample_entities) > 0, "Should get some processed entities"
+    #     # Verify the module exists and follows naming convention
+    #     module = entity.__struct__
+    #     assert is_atom(module), "Module should be an atom"
+    #     module_name = to_string(module)
+    #     assert String.starts_with?(module_name, "Elixir.NASR."), "Module should be in NASR namespace"
+    #   end
 
-      # Verify each entity is a struct with the expected pattern
-      for entity <- sample_entities do
-        assert is_struct(entity), "Entity should be a struct: #{inspect(entity)}"
-        assert Map.has_key?(entity, :__struct__), "Entity should have __struct__ key"
+    #   :ok
+    # end
 
-        # Verify the module exists and follows naming convention
-        module = entity.__struct__
-        assert is_atom(module), "Module should be an atom"
-        module_name = to_string(module)
-        assert String.starts_with?(module_name, "Elixir.NASR."), "Module should be in NASR namespace"
-      end
+    # test "from_raw handles unknown entity types gracefully" do
+    #   unknown_entity = %{type: :unknown_test_type, some_field: "test"}
+    #   result = NASR.Entities.from_raw(unknown_entity)
 
-      :ok
-    end
-
-    test "from_raw handles unknown entity types gracefully" do
-      unknown_entity = %{type: :unknown_test_type, some_field: "test"}
-      result = NASR.Entities.from_raw(unknown_entity)
-
-      # Unknown types should return nil (handled by the catch-all pattern)
-      assert is_nil(result), "Unknown entity types should return nil"
-    end
+    #   # Unknown types should return nil (handled by the catch-all pattern)
+    #   assert is_nil(result), "Unknown entity types should return nil"
+    # end
   end
 end

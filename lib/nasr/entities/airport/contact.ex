@@ -22,7 +22,7 @@ defmodule NASR.Entities.Airport.Contact do
   * `:zip_code` - Contact Zip Code
   * `:zip_plus_four` - Contact Zip Plus Four
   * `:phone_number` - Contact Phone Number
-  * `:eff_date` - The 28 Day NASR Subscription Effective Date
+  * `:effective_date` - The 28 Day NASR Subscription Effective Date
 
   """
   import NASR.Utils
@@ -43,7 +43,7 @@ defmodule NASR.Entities.Airport.Contact do
     zip_code
     zip_plus_four
     phone_number
-    eff_date
+    effective_date
   )a
 
   @type t() :: %__MODULE__{
@@ -62,7 +62,7 @@ defmodule NASR.Entities.Airport.Contact do
           zip_code: String.t(),
           zip_plus_four: String.t(),
           phone_number: String.t(),
-          eff_date: Date.t() | nil
+          effective_date: Date.t() | nil
         }
 
   @spec new(map()) :: t()
@@ -83,7 +83,7 @@ defmodule NASR.Entities.Airport.Contact do
       zip_code: Map.fetch!(entity, "ZIP_CODE"),
       zip_plus_four: Map.fetch!(entity, "ZIP_PLUS_FOUR"),
       phone_number: Map.fetch!(entity, "PHONE_NO"),
-      eff_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
+      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
     }
   end
 

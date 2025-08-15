@@ -26,7 +26,7 @@ defmodule NASR.Entities.Fix do
   * `:min_recep_alt` - Fix Minimum Reception Altitude (MRA) in feet
   * `:compulsory` - Compulsory FIX identified as HIGH or LOW or LOW/HIGH. Null in this field identifies Non-Compulsory FIX. Values: `:high`, `:low`, `:low_high`, `nil`
   * `:charts` - Concatenated list of the information found in the FIX_CHRT file separated by a comma (list of chart names)
-  * `:eff_date` - The 28 Day NASR Subscription Effective Date in format 'YYYY/MM/DD'
+  * `:effective_date` - The 28 Day NASR Subscription Effective Date in format 'YYYY/MM/DD'
   """
   import NASR.Utils
 
@@ -48,7 +48,7 @@ defmodule NASR.Entities.Fix do
     min_recep_alt
     compulsory
     charts
-    eff_date
+    effective_date
   )a
 
   @type t() :: %__MODULE__{
@@ -69,7 +69,7 @@ defmodule NASR.Entities.Fix do
           min_recep_alt: integer() | nil,
           compulsory: :high | :low | :low_high | nil,
           charts: [String.t()],
-          eff_date: Date.t() | nil
+          effective_date: Date.t() | nil
         }
 
   @spec type() :: String.t()
@@ -95,7 +95,7 @@ defmodule NASR.Entities.Fix do
       min_recep_alt: safe_str_to_int(Map.fetch!(entity, "MIN_RECEP_ALT")),
       compulsory: parse_compulsory(Map.fetch!(entity, "COMPULSORY")),
       charts: parse_charts(Map.fetch!(entity, "CHARTS")),
-      eff_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
+      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
     }
   end
 

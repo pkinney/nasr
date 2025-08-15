@@ -1,111 +1,111 @@
 defmodule NASR.Entities.Airport do
   @moduledoc """
-  Represents Airport information from the NASR APT_BASE data.
+  Represents Landing Facility information from the NASR APT_BASE data.
 
   This entity contains the core information about landing facilities including
-  airports, heliports, seaplane bases, and other types of aviation facilities.
+  airports, heliports, seaplane bases, gliderports, balloonports, and ultralight
+  facilities from the FAA's National Airspace System Resources (NASR) subscription.
+
+  The APT_BASE file is part of the Landing Facility Data comma-separated values (CSV)
+  record layout that replaces the legacy APT.txt Subscriber File, providing comprehensive
+  information about all types of landing facilities in the United States.
 
   ## Fields
 
-  * `:site_no` - Landing Facility Site Number (unique identifying number)
-  * `:site_type_code` - Landing Facility Type Code (:airport, :balloonport, :seaplane_base, :gliderport, :heliport, :ultralight)
-  * `:arpt_id` - Location Identifier (unique 3-4 character alphanumeric identifier)
+  * `:site_no` - Landing Facility Site Number. A unique identifying number
+  * `:site_type_code` - Landing Facility Type Code. Values: `:airport`, `:balloonport`, `:seaplane_base`, `:gliderport`, `:heliport`, `:ultralight`
+  * `:arpt_id` - Location Identifier. Unique 3-4 character alphanumeric identifier assigned to the Landing Facility
   * `:city` - Airport Associated City Name
-  * `:state_code` - Associated State Post Office Code (two letter abbreviation)
-  * `:country_code` - Country Post Office Code
+  * `:state_code` - Associated State Post Office Code standard two letter abbreviation for US States and Territories
+  * `:country_code` - Country Post Office Code Airport Located
   * `:region_code` - FAA Region Code
   * `:ado_code` - FAA District or Field Office Code
   * `:state_name` - Associated State Name
-  * `:county_name` - Associated County or Parish Name
-  * `:county_assoc_state` - Associated County's State (may differ from city's state)
+  * `:county_name` - Associated County or Parish Name (For Non-Us Aerodromes This May Be Territory Or Province Name)
+  * `:county_assoc_state` - Associated County's State (Post Office Code) State where the Associated County is located; may not be the same as the Associated City's State Code
   * `:arpt_name` - Official Facility Name
-  * `:ownership_type_code` - Airport Ownership Type (:public, :private, :air_force, :navy, :army, :coast_guard)
-  * `:facility_use_code` - Facility Use (:public, :private)
-  * `:latitude` - Airport Reference Point Latitude in decimal format
-  * `:longitude` - Airport Reference Point Longitude in decimal format
-  * `:survey_method_code` - Airport Reference Point Determination Method (:estimated, :surveyed)
-  * `:elevation` - Airport Elevation (nearest tenth of a foot MSL)
-  * `:elevation_method_code` - Airport Elevation Determination Method (:estimated, :surveyed)
+  * `:ownership_type_code` - Airport Ownership Type. Values: `:public`, `:private`, `:air_force`, `:navy`, `:army`, `:coast_guard`
+  * `:facility_use_code` - Facility Use. Values: `:public`, `:private`
+  * `:latitude` - Airport Reference Point Latitude in Decimal Format
+  * `:longitude` - Airport Reference Point Longitude in Decimal Format
+  * `:survey_method_code` - Airport Reference Point Determination Method. Values: `:estimated`, `:surveyed`
+  * `:elevation` - Airport Elevation (Nearest Tenth of a Foot MSL). Elevation is measured at the highest point on the centerline of the usable landing surface
+  * `:elevation_method_code` - Airport Elevation Determination Method. Values: `:estimated`, `:surveyed`
   * `:magnetic_variation` - Magnetic Variation in degrees
   * `:magnetic_hemisphere` - Magnetic Variation Direction (E/W)
   * `:magnetic_variation_year` - Magnetic Variation Epoch Year
-  * `:traffic_pattern_altitude` - Traffic Pattern Altitude (whole feet AGL)
+  * `:traffic_pattern_altitude` - Traffic Pattern Altitude (Whole Feet AGL)
   * `:sectional_chart` - Aeronautical Sectional Chart on Which Facility Appears
-  * `:distance_from_city` - Distance from Central Business District to Airport (miles)
-  * `:direction_from_city` - Direction of Airport from Central Business District (nearest 1/8 compass point)
-  * `:land_area_covered` - Land Area Covered by Airport (acres)
-  * `:boundary_artcc_id` - Responsible ARTCC Identifier
-  * `:boundary_artcc_computer_id` - Responsible ARTCC Computer Identifier
+  * `:distance_from_city` - Distance from Central Business District of the Associated City to the Airport (miles)
+  * `:direction_from_city` - Direction of Airport from Central Business District of Associated City (Nearest 1/8 Compass Point)
+  * `:land_area_covered` - Land Area Covered by Airport (Acres)
+  * `:boundary_artcc_id` - Responsible ARTCC Identifier (The Responsible ARTCC Is The FAA Air Route Traffic Control Center Who Has Control Over The Airport)
+  * `:boundary_artcc_computer_id` - Responsible ARTCC (FAA) Computer Identifier
   * `:boundary_artcc_name` - Responsible ARTCC Name
   * `:fss_on_facility_flag` - Tie-In FSS Physically Located On Facility (boolean)
-  * `:fss_id` - Tie-In Flight Service Station Identifier
+  * `:fss_id` - Tie-In Flight Service Station (FSS) Identifier
   * `:fss_name` - Tie-In FSS Name
-  * `:fss_phone_no` - Local Phone Number from Airport to FSS
-  * `:fss_toll_free_no` - Toll Free Phone Number to FSS
-  * `:alt_fss_id` - Alternate FSS Identifier
+  * `:fss_phone_no` - Local Phone Number from Airport to FSS for Administrative Services
+  * `:fss_toll_free_no` - Toll Free Phone Number from Airport to FSS for Pilot Briefing Services
+  * `:alt_fss_id` - Alternate FSS Identifier provides the identifier of a full-time Flight Service Station that assumes responsibility for the Airport during the off hours of a part-time primary FSS
   * `:alt_fss_name` - Alternate FSS Name
-  * `:alt_fss_toll_free_no` - Toll Free Phone Number to Alternate FSS
-  * `:notam_facility_id` - NOTAM Facility Identifier
-  * `:notam_service_flag` - Availability of NOTAM 'D' Service (boolean)
-  * `:activation_date` - Airport Activation Date (Date)
-  * `:airport_status_code` - Airport Status (:closed_indefinitely, :closed_permanently, :operational)
-  * `:arff_certification_type` - Airport ARFF Certification Type Code
-  * `:npias_federal_agreements_code` - NPIAS/Federal Agreements Code
+  * `:alt_fss_toll_free_no` - Toll Free Phone Number from Airport to Alternate FSS for Pilot Briefing Services
+  * `:notam_facility_id` - Identifier of the Facility responsible for issuing Notices to Airmen (NOTAMS) and Weather information for the Airport
+  * `:notam_service_flag` - Availability of NOTAM 'D' Service at Airport (boolean)
+  * `:activation_date` - Airport Activation Date (YYYY/MM) provides the YEAR and MONTH that the Facility was added to the NFDC airport database
+  * `:airport_status_code` - Airport Status Code. Values: `:closed_indefinitely`, `:closed_permanently`, `:operational`
+  * `:arff_certification_type` - Airport ARFF Certification Type Code. Format is the class code ('I', 'II', 'III', or 'IV') followed by a one character code A, B, C, D, E, or L
+  * `:npias_federal_agreements_code` - NPIAS/Federal Agreements Code. A Combination of 1 to 7 Codes that Indicate the Type of Federal Agreements existing at the Airport
   * `:airspace_analysis_determination` - Airport Airspace Analysis Determination
-  * `:customs_entry_airport_flag` - International Airport of Entry for Customs (boolean)
-  * `:customs_landing_rights_flag` - Customs Landing Rights Airport (boolean)
-  * `:joint_use_agreement_flag` - Military/Civil Joint Use Agreement (boolean)
-  * `:military_landing_rights_flag` - Military Landing Rights Agreement (boolean)
+  * `:customs_entry_airport_flag` - Facility has been designated by the U.S. Department of Homeland Security as an International Airport of Entry for Customs (boolean)
+  * `:customs_landing_rights_flag` - Facility has been designated by the U.S. Department of Homeland Security as a Customs Landing Rights Airport (boolean)
+  * `:joint_use_agreement_flag` - Facility has Military/Civil Joint Use Agreement that allows Civil Operations at a Military Airport (boolean)
+  * `:military_landing_rights_flag` - Airport has entered into an Agreement that Grants Landing Rights to the Military (boolean)
   * `:inspection_method_code` - Airport Inspection Method
   * `:agency_performing_inspection` - Agency/Group Performing Physical Inspection
-  * `:last_inspection_date` - Last Physical Inspection Date
-  * `:last_information_request_date` - Last Date Information Request was completed
-  * `:fuel_types` - List of fuel types available for public use
-  * `:airframe_repair_service` - Airframe Repair Service Availability
-  * `:power_plant_repair_service` - Power Plant Repair Service Availability
-  * `:bottled_oxygen_type` - Type of Bottled Oxygen Available
-  * `:bulk_oxygen_type` - Type of Bulk Oxygen Available
-  * `:lighting_schedule` - Airport Lighting Schedule
-  * `:beacon_lighting_schedule` - Beacon Lighting Schedule
-  * `:air_traffic_control_tower` - Air Traffic Control Tower Facility Type
-  * `:segmented_circle_flag` - Segmented Circle Airport Marker System (boolean)
-  * `:beacon_lens_color` - Lens Color of Operable Beacon
-  * `:landing_fee_flag` - Landing Fee charged to Non-Commercial Users (boolean)
-  * `:medical_use_flag` - Landing Facility used for Medical Purposes (boolean)
+  * `:last_inspection_date` - Last Physical Inspection Date (YYYY/MM/DD)
+  * `:last_information_request_date` - Last Date Information Request was completed by Facility Owner or Manager (YYYY/MM/DD)
+  * `:fuel_types` - Fuel Types available for public use at the Airport (list of fuel type strings)
+  * `:airframe_repair_service` - Airframe Repair Service Availability/Type. Values: `:major`, `:minor`, `:none`
+  * `:power_plant_repair_service` - Power Plant (Engine) Repair Availability/Type. Values: `:major`, `:minor`, `:none`
+  * `:bottled_oxygen_type` - Type of Bottled Oxygen Available (Value represents High and/or Low Pressure Replacement Bottle). Values: `:high`, `:low`, `:high_low`, `:none`
+  * `:bulk_oxygen_type` - Type of Bulk Oxygen Available (Value represents High and/or Low Pressure Cylinders). Values: `:high`, `:low`, `:high_low`, `:none`
+  * `:lighting_schedule` - Airport Lighting Schedule value is the beginning-ending times (local time) that the Standard Airport Lights are operated
+  * `:beacon_lighting_schedule` - Beacon Lighting Schedule value is the beginning-ending times (local time) that the Rotating Airport Beacon Light is operated
+  * `:air_traffic_control_tower` - Air Traffic Control Tower Facility Type. Values: `:atct`, `:non_atct`, `:atct_approach`, `:atct_rapcon`, `:atct_ratcf`, `:atct_tracon`
+  * `:segmented_circle_flag` - Segmented Circle Airport Marker System on the Airport. Values: `:yes`, `:no`, `:none`, `:yes_lighted`
+  * `:beacon_lens_color` - Lens Color of Operable Beacon located on the Airport
+  * `:landing_fee_flag` - Landing Fee charged to Non-Commercial Users of Airport (boolean)
+  * `:medical_use_flag` - A "Y" in this field indicates that the Landing Facility Is used for Medical Purposes (boolean)
   * `:based_aircraft_single_engine` - Single Engine General Aviation Aircraft count
   * `:based_aircraft_multi_engine` - Multi Engine General Aviation Aircraft count
   * `:based_aircraft_jet_engine` - Jet Engine General Aviation Aircraft count
   * `:based_aircraft_helicopter` - General Aviation Helicopter count
   * `:based_aircraft_gliders` - Operational Gliders count
-  * `:based_aircraft_military` - Operational Military Aircraft count
+  * `:based_aircraft_military` - Operational Military Aircraft (Including Helicopters) count
   * `:based_aircraft_ultralight` - Ultralight Aircraft count
-  * `:commercial_operations` - Commercial Services operations count
-  * `:commuter_operations` - Commuter Services operations count
-  * `:air_taxi_operations` - Air Taxi operations count
-  * `:local_operations` - General Aviation Local operations count
-  * `:itinerant_operations` - General Aviation Itinerant operations count
-  * `:military_operations` - Military Aircraft operations count
-  * `:operations_ending_date` - 12-Month Ending Date for operations data
+  * `:commercial_operations` - Commercial Services (Scheduled Operations by CAB-Certificated Carriers or Intrastate Carriers) count
+  * `:commuter_operations` - Commuter Services Operations (Scheduled Commuter/Cargo Carriers) count
+  * `:air_taxi_operations` - Air Taxi Operations (Air Taxi Operators Carrying Passengers, Mail, or Mail for Revenue) count
+  * `:local_operations` - General Aviation Local Operations (Those Operating in the Local Traffic Pattern or Within a 20-Mile Radius of the Airport) count
+  * `:itinerant_operations` - General Aviation Itinerant Operations (Those General Aviation Operations Excluding Commuter or Air Taxi Not qualifying as Local) count
+  * `:military_operations` - Military Aircraft Operations count
+  * `:operations_ending_date` - 12-Month Ending Date on which Annual Operations data in above six fields is based (YYYY/MM/DD)
   * `:airport_position_source` - Airport Position Source
-  * `:airport_position_source_date` - Airport Position Source Date
+  * `:airport_position_source_date` - Airport Position Source Date (YYYY/MM/DD)
   * `:airport_elevation_source` - Airport Elevation Source
-  * `:airport_elevation_source_date` - Airport Elevation Source Date
+  * `:airport_elevation_source_date` - Airport Elevation Source Date (YYYY/MM/DD)
   * `:contract_fuel_available_flag` - Contract Fuel Available (boolean)
   * `:transient_storage_buoy_flag` - Buoy Transient Storage Facilities (boolean)
   * `:transient_storage_hangar_flag` - Hangar Transient Storage Facilities (boolean)
   * `:transient_storage_tiedown_flag` - Tie-Down Transient Storage Facilities (boolean)
-  * `:other_services` - List of other airport services available
-  * `:wind_indicator_flag` - Wind Indicator availability
+  * `:other_services` - Other Airport Services Available. A Comma-Separated List of Other Airport Services Available at the Airport
+  * `:wind_indicator_flag` - Wind Indicator shows whether a Wind Indicator exists at the Airport. Values: `:no_wind_indicator`, `:unlighted_wind_indicator`, `:lighted_wind_indicator`
   * `:icao_id` - ICAO Identifier
   * `:minimum_operational_network` - Minimum Operational Network (MON)
-  * `:user_fee_flag` - User Fee Airport designation (boolean)
-  * `:cold_temperature_altitude_correction` - Cold Temperature Airport altitude correction
-  * `:eff_date` - The 28 Day NASR Subscription Effective Date
-
-  ## Data Source
-
-  This data comes from the FAA's National Airspace System Resources (NASR) subscription,
-  specifically from the APT_BASE.csv file. The data is updated on a 28-day cycle.
+  * `:user_fee_flag` - If Flag is checked in NASR, User Fee Airports Will Be Designated With Text "US CUSTOMS USER FEE ARPT." (boolean)
+  * `:cold_temperature_altitude_correction` - Cold Temperature Airport. Altitude Correction Required At or Below Temperature Given in Celsius
+  * `:eff_date` - The 28 Day NASR Subscription Effective Date in format 'YYYY/MM/DD'
   """
   import NASR.Utils
 
@@ -206,7 +206,102 @@ defmodule NASR.Entities.Airport do
     eff_date
   )a
 
-  @type t() :: %__MODULE__{}
+  @type t() :: %__MODULE__{
+          site_no: String.t(),
+          site_type_code: :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
+          arpt_id: String.t(),
+          city: String.t(),
+          state_code: String.t(),
+          country_code: String.t(),
+          region_code: String.t(),
+          ado_code: String.t(),
+          state_name: String.t(),
+          county_name: String.t(),
+          county_assoc_state: String.t(),
+          arpt_name: String.t(),
+          ownership_type_code: :public | :private | :air_force | :navy | :army | :coast_guard | String.t() | nil,
+          facility_use_code: :public | :private | String.t() | nil,
+          latitude: float() | nil,
+          longitude: float() | nil,
+          survey_method_code: :estimated | :surveyed | String.t() | nil,
+          elevation: float() | nil,
+          elevation_method_code: :estimated | :surveyed | String.t() | nil,
+          magnetic_variation: float() | nil,
+          magnetic_hemisphere: String.t(),
+          magnetic_variation_year: integer() | nil,
+          traffic_pattern_altitude: integer() | nil,
+          sectional_chart: String.t(),
+          distance_from_city: float() | nil,
+          direction_from_city: String.t(),
+          land_area_covered: float() | nil,
+          boundary_artcc_id: String.t(),
+          boundary_artcc_computer_id: String.t(),
+          boundary_artcc_name: String.t(),
+          fss_on_facility_flag: boolean() | nil,
+          fss_id: String.t(),
+          fss_name: String.t(),
+          fss_phone_no: String.t(),
+          fss_toll_free_no: String.t(),
+          alt_fss_id: String.t(),
+          alt_fss_name: String.t(),
+          alt_fss_toll_free_no: String.t(),
+          notam_facility_id: String.t(),
+          notam_service_flag: boolean() | nil,
+          activation_date: Date.t() | nil,
+          airport_status_code: :closed_indefinitely | :closed_permanently | :operational | String.t() | nil,
+          arff_certification_type: String.t(),
+          npias_federal_agreements_code: String.t(),
+          airspace_analysis_determination: String.t(),
+          customs_entry_airport_flag: boolean() | nil,
+          customs_landing_rights_flag: boolean() | nil,
+          joint_use_agreement_flag: boolean() | nil,
+          military_landing_rights_flag: boolean() | nil,
+          inspection_method_code: String.t(),
+          agency_performing_inspection: String.t(),
+          last_inspection_date: Date.t() | nil,
+          last_information_request_date: Date.t() | nil,
+          fuel_types: [String.t()],
+          airframe_repair_service: :major | :minor | :none | String.t() | nil,
+          power_plant_repair_service: :major | :minor | :none | String.t() | nil,
+          bottled_oxygen_type: :high | :low | :high_low | :none | String.t() | nil,
+          bulk_oxygen_type: :high | :low | :high_low | :none | String.t() | nil,
+          lighting_schedule: String.t(),
+          beacon_lighting_schedule: String.t(),
+          air_traffic_control_tower: :atct | :non_atct | :atct_approach | :atct_rapcon | :atct_ratcf | :atct_tracon | String.t() | nil,
+          segmented_circle_flag: :yes | :no | :none | :yes_lighted | String.t() | nil,
+          beacon_lens_color: String.t(),
+          landing_fee_flag: boolean() | nil,
+          medical_use_flag: boolean() | nil,
+          based_aircraft_single_engine: integer() | nil,
+          based_aircraft_multi_engine: integer() | nil,
+          based_aircraft_jet_engine: integer() | nil,
+          based_aircraft_helicopter: integer() | nil,
+          based_aircraft_gliders: integer() | nil,
+          based_aircraft_military: integer() | nil,
+          based_aircraft_ultralight: integer() | nil,
+          commercial_operations: integer() | nil,
+          commuter_operations: integer() | nil,
+          air_taxi_operations: integer() | nil,
+          local_operations: integer() | nil,
+          itinerant_operations: integer() | nil,
+          military_operations: integer() | nil,
+          operations_ending_date: Date.t() | nil,
+          airport_position_source: String.t(),
+          airport_position_source_date: Date.t() | nil,
+          airport_elevation_source: String.t(),
+          airport_elevation_source_date: Date.t() | nil,
+          contract_fuel_available_flag: boolean() | nil,
+          transient_storage_buoy_flag: boolean() | nil,
+          transient_storage_hangar_flag: boolean() | nil,
+          transient_storage_tiedown_flag: boolean() | nil,
+          other_services: [String.t()],
+          wind_indicator_flag: :no_wind_indicator | :unlighted_wind_indicator | :lighted_wind_indicator | String.t() | nil,
+          icao_id: String.t(),
+          minimum_operational_network: String.t(),
+          user_fee_flag: boolean() | nil,
+          cold_temperature_altitude_correction: float() | nil,
+          eff_date: Date.t() | nil
+        }
 
   @spec new(map()) :: t()
   def new(entity) do

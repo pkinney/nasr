@@ -19,10 +19,6 @@ defmodule NASR.Entities.Airport.AttendanceSchedule do
   * `:hours_attended` - Describes the hours within the day that the facility is attended
   * `:eff_date` - The 28 Day NASR Subscription Effective Date
 
-  ## Data Source
-
-  This data comes from the FAA's National Airspace System Resources (NASR) subscription,
-  specifically from the APT_ATT.csv file. The data is updated on a 28-day cycle.
   """
   import NASR.Utils
 
@@ -40,7 +36,19 @@ defmodule NASR.Entities.Airport.AttendanceSchedule do
     eff_date
   )a
 
-  @type t() :: %__MODULE__{}
+  @type t() :: %__MODULE__{
+          site_no: String.t(),
+          site_type_code: String.t(),
+          arpt_id: String.t(),
+          city: String.t(),
+          state_code: String.t(),
+          country_code: String.t(),
+          attendance_schedule_sequence_no: integer() | nil,
+          months_attended: String.t(),
+          days_attended: String.t(),
+          hours_attended: String.t(),
+          eff_date: Date.t() | nil
+        }
 
   @spec new(map()) :: t()
   def new(entity) do

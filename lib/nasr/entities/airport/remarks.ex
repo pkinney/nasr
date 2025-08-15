@@ -34,10 +34,6 @@ defmodule NASR.Entities.Airport.Remarks do
   - RUNWAY END OBSTN: RWY END ID
   - RUNWAY SURFACE TYPE: RWY ID
 
-  ## Data Source
-
-  This data comes from the FAA's National Airspace System Resources (NASR) subscription,
-  specifically from the APT_RMK.csv file. The data is updated on a 28-day cycle.
   """
   import NASR.Utils
 
@@ -57,7 +53,21 @@ defmodule NASR.Entities.Airport.Remarks do
     eff_date
   )a
 
-  @type t() :: %__MODULE__{}
+  @type t() :: %__MODULE__{
+          site_no: String.t(),
+          site_type_code: String.t(),
+          arpt_id: String.t(),
+          city: String.t(),
+          state_code: String.t(),
+          country_code: String.t(),
+          legacy_element_number: String.t(),
+          table_name: String.t(),
+          reference_column_name: String.t(),
+          element: String.t(),
+          reference_column_sequence_no: integer() | nil,
+          remark_text: String.t(),
+          eff_date: Date.t() | nil
+        }
 
   @spec new(map()) :: t()
   def new(entity) do

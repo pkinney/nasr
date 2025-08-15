@@ -24,10 +24,6 @@ defmodule NASR.Entities.Airport.Contact do
   * `:phone_number` - Contact Phone Number
   * `:eff_date` - The 28 Day NASR Subscription Effective Date
 
-  ## Data Source
-
-  This data comes from the FAA's National Airspace System Resources (NASR) subscription,
-  specifically from the APT_CON.csv file. The data is updated on a 28-day cycle.
   """
   import NASR.Utils
 
@@ -50,7 +46,24 @@ defmodule NASR.Entities.Airport.Contact do
     eff_date
   )a
 
-  @type t() :: %__MODULE__{}
+  @type t() :: %__MODULE__{
+          site_no: String.t(),
+          site_type_code: String.t(),
+          arpt_id: String.t(),
+          city: String.t(),
+          state_code: String.t(),
+          country_code: String.t(),
+          title: String.t(),
+          name: String.t(),
+          address_line_1: String.t(),
+          address_line_2: String.t(),
+          contact_city: String.t(),
+          contact_state: String.t(),
+          zip_code: String.t(),
+          zip_plus_four: String.t(),
+          phone_number: String.t(),
+          eff_date: Date.t() | nil
+        }
 
   @spec new(map()) :: t()
   def new(entity) do

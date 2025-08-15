@@ -1,48 +1,32 @@
 defmodule NASR.Entities.Fix do
   @moduledoc """
-  Represents an Airspace Fix (FIX) from the NASR FIX_BASE data.
+  Represents Airspace Fixes (FIX) information from the NASR FIX_BASE data.
 
-  A Fix is a geographical position identifier used for navigation and air traffic control.
+  A Fix is a Fixed Geographical Position Identifier used for navigation and air traffic control.
   Fixes are reference points in the National Airspace System used for routing, reporting,
-  and navigation purposes.
+  and navigation purposes. The FIX_BASE file was designed to replace the legacy FIX.txt
+  Subscriber File.
 
   ## Fields
 
-  * `:fix_id` - Fixed Geographical Position Identifier (5 characters)
-  * `:fix_id_old` - Previous name(s) of the Fix before it was renamed
-  * `:latitude` - Fix latitude in decimal format
-  * `:longitude` - Fix longitude in decimal format
-  * `:state_code` - Associated State Post Office Code (standard two letter abbreviation)
+  * `:fix_id` - Fixed Geographical Position Identifier
+  * `:fix_id_old` - Previous Name(s) of the Fix before It was Renamed
+  * `:latitude` - FIX Latitude in Decimal Format
+  * `:longitude` - FIX Longitude in Decimal Format
+  * `:state_code` - Associated State Post Office Code standard two letter abbreviation for US States and Territories
   * `:country_code` - Country Post Office Code
-  * `:icao_region_code` - ICAO Code where first letter refers to country, second discerns region
-  * `:fix_use_code` - Fix type, one of:
-    * `:computer_navigation_fix` - Computer Navigation Fix (CN)
-    * `:military_reporting_point` - Military Reporting Point (MR)
-    * `:military_waypoint` - Military Waypoint (MW)
-    * `:nrs_waypoint` - NRS Waypoint (NRS)
-    * `:radar` - Radar (RADAR)
-    * `:reporting_point` - Reporting Point (RP)
-    * `:vfr_waypoint` - VFR Waypoint (VFR)
-    * `:waypoint` - Waypoint (WP)
+  * `:icao_region_code` - International Civil Aviation Organization (ICAO) Code. In General, the First Letter of an ICAO Code refers to the Country. The Second Letter discerns the Region within the Country
+  * `:fix_use_code` - FIX Type. Values: `:computer_navigation_fix`, `:military_reporting_point`, `:military_waypoint`, `:nrs_waypoint`, `:radar`, `:reporting_point`, `:vfr_waypoint`, `:waypoint`
   * `:artcc_id_high` - Denotes High ARTCC Area Of Jurisdiction
   * `:artcc_id_low` - Denotes Low ARTCC Area Of Jurisdiction
-  * `:charting_remark` - Charting information (e.g., "RNAV")
-  * `:pitch_flag` - Pitch flag (boolean: true for Y, false for N)
-  * `:catch_flag` - Catch flag (boolean: true for Y, false for N)
-  * `:sua_atcaa_flag` - SUA/ATCAA flag (boolean: true for Y, false for N)
+  * `:charting_remark` - Charting Information
+  * `:pitch_flag` - Pitch (boolean: true for Y, false for N)
+  * `:catch_flag` - Catch (boolean: true for Y, false for N)
+  * `:sua_atcaa_flag` - SUA/ATCAA (boolean: true for Y, false for N)
   * `:min_recep_alt` - Fix Minimum Reception Altitude (MRA) in feet
-  * `:compulsory` - Compulsory fix classification:
-    * `:high` - High altitude compulsory
-    * `:low` - Low altitude compulsory
-    * `:low_high` - Both low and high altitude compulsory
-    * `nil` - Non-compulsory fix
-  * `:charts` - List of charts on which fix is depicted (e.g., ["CONTROLLER LOW", "ENROUTE LOW", "IAP", "STAR"])
-  * `:eff_date` - The 28 Day NASR Subscription Effective Date
-
-  ## Data Source
-
-  This data comes from the FAA's National Airspace System Resources (NASR) subscription,
-  specifically from the FIX_BASE.csv file. The data is updated on a 28-day cycle.
+  * `:compulsory` - Compulsory FIX identified as HIGH or LOW or LOW/HIGH. Null in this field identifies Non-Compulsory FIX. Values: `:high`, `:low`, `:low_high`, `nil`
+  * `:charts` - Concatenated list of the information found in the FIX_CHRT file separated by a comma (list of chart names)
+  * `:eff_date` - The 28 Day NASR Subscription Effective Date in format 'YYYY/MM/DD'
   """
   import NASR.Utils
 
@@ -67,7 +51,26 @@ defmodule NASR.Entities.Fix do
     eff_date
   )a
 
-  @type t() :: %__MODULE__{}
+  @type t() :: %__MODULE__{
+          fix_id: String.t(),
+          fix_id_old: String.t(),
+          latitude: float() | nil,
+          longitude: float() | nil,
+          state_code: String.t(),
+          country_code: String.t(),
+          icao_region_code: String.t(),
+          fix_use_code: :computer_navigation_fix | :military_reporting_point | :military_waypoint | :nrs_waypoint | :radar | :reporting_point | :vfr_waypoint | :waypoint | String.t() | nil,
+          artcc_id_high: String.t(),
+          artcc_id_low: String.t(),
+          charting_remark: String.t(),
+          pitch_flag: boolean() | nil,
+          catch_flag: boolean() | nil,
+          sua_atcaa_flag: boolean() | nil,
+          min_recep_alt: integer() | nil,
+          compulsory: :high | :low | :low_high | nil,
+          charts: [String.t()],
+          eff_date: Date.t() | nil
+        }
 
   @spec type() :: String.t()
   def type, do: "FIX_BASE"

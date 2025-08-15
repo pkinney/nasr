@@ -14,40 +14,24 @@ defmodule NASR.Entities.Airport.Runway do
   * `:state_code` - Associated State Post Office Code
   * `:country_code` - Country Post Office Code
   * `:runway_id` - Runway Identification
-  * `:runway_length` - Physical Runway Length (nearest foot)
-  * `:runway_width` - Physical Runway Width (nearest foot)
-  * `:surface_type_code` - Runway Surface Type
-  * `:surface_condition` - Runway Surface Condition (:excellent, :good, :fair, :poor, :failed)
-  * `:surface_treatment` - Runway Surface Treatment
-  * `:pavement_classification_number` - Pavement Classification Number (PCN)
-  * `:pavement_type` - Pavement Type (:rigid, :flexible)
-  * `:subgrade_strength` - Subgrade Strength (letters A-F)
-  * `:tire_pressure_code` - Tire Pressure Code (letters W-Z)
-  * `:determination_method` - Determination Method (:technical, :using_aircraft)
-  * `:runway_lights_edge_intensity` - Runway Lights Edge Intensity
+  * `:runway_length` - Physical Runway Length (Nearest Foot)
+  * `:runway_width` - Physical Runway Width (Nearest Foot)
+  * `:surface_type_code` - Runway Surface Type. Values: `:concrete`, `:asphalt`, `:snow`, `:ice`, `:mats`, `:treated`, `:gravel`, `:turf`, `:dirt`, `:pem`, `:roof_top`, `:water`
+  * `:surface_condition` - Runway Surface Condition. Values: `:excellent`, `:good`, `:fair`, `:poor`, `:failed`
+  * `:surface_treatment` - Runway Surface Treatment. Values: `:grooved`, `:porous_friction_course`, `:aggregate_friction_seal_coat`, `:rubberized_friction_seal_coat`, `:wire_comb`, `:none`
+  * `:pavement_classification_number` - Pavement Classification Number (PCN) - See FAA Advisory Circular 150/5335-5 for Code Definitions and PCN Determination Formula
+  * `:pavement_type` - Pavement Type. Values: `:rigid`, `:flexible`
+  * `:subgrade_strength` - Subgrade Strength (Letters A-F)
+  * `:tire_pressure_code` - Tire Pressure Code (Letters W-Z)
+  * `:determination_method` - Determination Method. Values: `:technical`, `:using_aircraft`
+  * `:runway_lights_edge_intensity` - Runway Lights Edge Intensity. Values: `:high`, `:medium`, `:low`, `:flood`, `:non_standard`, `:perimeter`, `:strobe`, `:none`
   * `:runway_length_source` - Runway Length Source
-  * `:runway_length_source_date` - Runway Length Source Date
-  * `:single_wheel_weight` - Weight-Bearing Capacity for Single Wheel Landing Gear
-  * `:dual_wheel_weight` - Weight-Bearing Capacity for Dual Wheel Landing Gear
-  * `:dual_tandem_weight` - Weight-Bearing Capacity for Two Dual Wheels in Tandem Landing Gear
-  * `:double_dual_tandem_weight` - Weight-Bearing Capacity for Two Dual Wheels in Tandem/Double Tandem Landing Gear
-  * `:eff_date` - The 28 Day NASR Subscription Effective Date
-
-  ## Surface Types
-
-  Common surface types include:
-  - CONC (Portland Cement Concrete)
-  - ASPH (Asphalt or Bituminous Concrete)
-  - GRAVEL (Gravel, Cinders, Crushed Rock, Coral or Shells, Slag)
-  - TURF (Grass, Sod)
-  - DIRT (Natural Soil)
-  - WATER (Water - for seaplane bases)
-  - And various other specialized surfaces
-
-  ## Data Source
-
-  This data comes from the FAA's National Airspace System Resources (NASR) subscription,
-  specifically from the APT_RWY.csv file. The data is updated on a 28-day cycle.
+  * `:runway_length_source_date` - Runway Length Source Date (YYYY/MM/DD)
+  * `:single_wheel_weight` - Runway Weight-Bearing Capacity for Single Wheel type Landing Gear
+  * `:dual_wheel_weight` - Runway Weight-Bearing Capacity for Dual Wheel type Landing Gear
+  * `:dual_tandem_weight` - Runway Weight-Bearing Capacity for Two Dual Wheels in tandem type Landing Gear
+  * `:double_dual_tandem_weight` - Runway Weight-Bearing Capacity for Two Dual Wheels in tandem/two dual wheels in double tandem body gear type Landing Gear
+  * `:eff_date` - The 28 Day NASR Subscription Effective Date in format 'YYYY/MM/DD'
   """
   import NASR.Utils
 
@@ -79,7 +63,33 @@ defmodule NASR.Entities.Airport.Runway do
     eff_date
   )a
 
-  @type t() :: %__MODULE__{}
+  @type t() :: %__MODULE__{
+          site_no: String.t(),
+          site_type_code: String.t(),
+          arpt_id: String.t(),
+          city: String.t(),
+          state_code: String.t(),
+          country_code: String.t(),
+          runway_id: String.t(),
+          runway_length: integer() | nil,
+          runway_width: integer() | nil,
+          surface_type_code: :concrete | :asphalt | :snow | :ice | :mats | :treated | :gravel | :turf | :dirt | :pem | :roof_top | :water | String.t() | nil,
+          surface_condition: :excellent | :good | :fair | :poor | :failed | String.t() | nil,
+          surface_treatment: :grooved | :porous_friction_course | :aggregate_friction_seal_coat | :rubberized_friction_seal_coat | :wire_comb | :none | String.t() | nil,
+          pavement_classification_number: String.t(),
+          pavement_type: :rigid | :flexible | String.t() | nil,
+          subgrade_strength: String.t(),
+          tire_pressure_code: String.t(),
+          determination_method: :technical | :using_aircraft | String.t() | nil,
+          runway_lights_edge_intensity: :high | :medium | :low | :flood | :non_standard | :perimeter | :strobe | :none | String.t() | nil,
+          runway_length_source: String.t(),
+          runway_length_source_date: Date.t() | nil,
+          single_wheel_weight: integer() | nil,
+          dual_wheel_weight: integer() | nil,
+          dual_tandem_weight: integer() | nil,
+          double_dual_tandem_weight: integer() | nil,
+          eff_date: Date.t() | nil
+        }
 
   @spec new(map()) :: t()
   def new(entity) do

@@ -26,10 +26,6 @@ defmodule NASR.Entities.Airport.ArrestingSystems do
   - EMAS (Engineered Material Arresting System)
   - M21, MA-1, MA-1A, MA-1A MOD
 
-  ## Data Source
-
-  This data comes from the FAA's National Airspace System Resources (NASR) subscription,
-  specifically from the APT_ARS.csv file. The data is updated on a 28-day cycle.
   """
   import NASR.Utils
 
@@ -46,7 +42,18 @@ defmodule NASR.Entities.Airport.ArrestingSystems do
     eff_date
   )a
 
-  @type t() :: %__MODULE__{}
+  @type t() :: %__MODULE__{
+          site_no: String.t(),
+          site_type_code: String.t(),
+          arpt_id: String.t(),
+          city: String.t(),
+          state_code: String.t(),
+          country_code: String.t(),
+          runway_id: String.t(),
+          runway_end_id: String.t(),
+          arresting_device_type: String.t(),
+          eff_date: Date.t() | nil
+        }
 
   @spec new(map()) :: t()
   def new(entity) do

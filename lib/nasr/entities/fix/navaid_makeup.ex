@@ -36,7 +36,17 @@ defmodule NASR.Entities.Fix.NavaidMakeup do
     effective_date
   )a
 
-  @type t() :: %__MODULE__{}
+  @type t() :: %__MODULE__{
+          fix_id: String.t(),
+          icao_region_code: String.t(),
+          state_code: String.t(),
+          country_code: String.t(),
+          nav_id: String.t(),
+          nav_type: String.t(),
+          bearing: float() | nil,
+          distance: float() | nil,
+          effective_date: Date.t() | nil
+        }
 
   @spec new(map()) :: t()
   def new(entity) do

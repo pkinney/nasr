@@ -30,7 +30,14 @@ defmodule NASR.Entities.Fix.ChartingInformation do
     effective_date
   )a
 
-  @type t() :: %__MODULE__{}
+  @type t() :: %__MODULE__{
+          fix_id: String.t(),
+          icao_region_code: String.t(),
+          state_code: String.t(),
+          country_code: String.t(),
+          charting_type_desc: String.t(),
+          effective_date: Date.t() | nil
+        }
 
   @spec new(map()) :: t()
   def new(entity) do

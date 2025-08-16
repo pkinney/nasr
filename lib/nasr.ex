@@ -43,6 +43,13 @@ defmodule NASR do
         |> NimbleCSV.RFC4180.parse_stream(skip_headers: false)
 
       [headers] = Enum.take(stream, 1)
+      # remove any non-ASCII characters from the headers
+
+      headers =
+        headers
+        |> Enum.map(&String.replace(&1, ~r/[^\x20-\x7E]/, ""))
+        |> Enum.map(&String.trim/1)
+
       lines = Stream.drop(stream, 1)
 
       Stream.map(lines, fn line ->
@@ -66,7 +73,10 @@ defmodule NASR do
   end
 
   def from_raw(%{"__TYPE__" => type} = raw) do
-    module_for_type(type).new(raw)
+    case module_for_type(type) do
+      nil -> nil
+      module -> module.new(raw)
+    end
   end
 
   def list_types(opts \\ []) do
@@ -87,7 +97,6 @@ defmodule NASR do
   end
 
   def module_for_type(type) do
-    # TODO: Make a better way of doing this
     types =
       :nasr
       |> Application.get_env(:modules_for_type)
@@ -110,7 +119,6 @@ defmodule NASR do
     {:ok, modules} = :application.get_key(:nasr, :modules)
 
     Enum.filter(modules, fn module ->
-      # Filter out modules that are not in the NASR.Entities namespace
       module
       |> Module.split()
       |> case do
@@ -242,8 +250,7 @@ defmodule NASR do
     csv_file_in_zip =
       stream
       |> Unzip.list_entries()
-      |> Enum.filter(&(String.starts_with?(&1.file_name, "CSV_Data") && String.ends_with?(&1.file_name, ".zip")))
-      |> List.first()
+      |> Enum.find(&(String.starts_with?(&1.file_name, "CSV_Data") && String.ends_with?(&1.file_name, ".zip")))
       |> then(fn
         nil ->
           raise "No CSV_Data zip file found in the NASR zip file"

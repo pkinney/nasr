@@ -1,5 +1,6 @@
 defmodule NASR.Entities.ILS.RemarksTest do
   use ExUnit.Case
+
   alias NASR.Entities.ILS.Remarks
 
   describe "new/1" do
@@ -59,13 +60,14 @@ defmodule NASR.Entities.ILS.RemarksTest do
     end
 
     test "handles different remark types" do
-      specific_remark = create_sample_data(%{
-        "TAB_NAME" => "ILS",
-        "ILS_COMP_TYPE_CODE" => "LOC",
-        "REF_COL_NAME" => "FREQ",
-        "REF_COL_SEQ_NO" => "1",
-        "REMARK" => "LOC FREQUENCY SUBJECT TO CHANGE NOTAM"
-      })
+      specific_remark =
+        create_sample_data(%{
+          "TAB_NAME" => "ILS",
+          "ILS_COMP_TYPE_CODE" => "LOC",
+          "REF_COL_NAME" => "FREQ",
+          "REF_COL_SEQ_NO" => "1",
+          "REMARK" => "LOC FREQUENCY SUBJECT TO CHANGE NOTAM"
+        })
 
       result = Remarks.new(specific_remark)
       assert result.table_name == "ILS"
@@ -76,11 +78,12 @@ defmodule NASR.Entities.ILS.RemarksTest do
     end
 
     test "handles localizer restrictions" do
-      localizer_remark = create_sample_data(%{
-        "REF_COL_NAME" => "GENERAL_REMARK",
-        "REF_COL_SEQ_NO" => "3",
-        "REMARK" => "LOC UNUSBL WI 0.6 NM; BYD 16 DEGS RIGHT OF CRS."
-      })
+      localizer_remark =
+        create_sample_data(%{
+          "REF_COL_NAME" => "GENERAL_REMARK",
+          "REF_COL_SEQ_NO" => "3",
+          "REMARK" => "LOC UNUSBL WI 0.6 NM; BYD 16 DEGS RIGHT OF CRS."
+        })
 
       result = Remarks.new(localizer_remark)
       assert result.reference_column_name == "GENERAL_REMARK"
@@ -89,11 +92,12 @@ defmodule NASR.Entities.ILS.RemarksTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "REF_COL_SEQ_NO" => "",
-        "REMARK" => "",
-        "ILS_COMP_TYPE_CODE" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "REF_COL_SEQ_NO" => "",
+          "REMARK" => "",
+          "ILS_COMP_TYPE_CODE" => ""
+        })
 
       result = Remarks.new(sample_data)
 
@@ -103,17 +107,19 @@ defmodule NASR.Entities.ILS.RemarksTest do
     end
 
     test "handles multiple remarks for same ILS" do
-      remark1 = create_sample_data(%{
-        "REF_COL_NAME" => "GENERAL_REMARK",
-        "REF_COL_SEQ_NO" => "2",
-        "REMARK" => "ILS CLASSIFICATION CODE IA"
-      })
+      remark1 =
+        create_sample_data(%{
+          "REF_COL_NAME" => "GENERAL_REMARK",
+          "REF_COL_SEQ_NO" => "2",
+          "REMARK" => "ILS CLASSIFICATION CODE IA"
+        })
 
-      remark2 = create_sample_data(%{
-        "REF_COL_NAME" => "GENERAL_REMARK",
-        "REF_COL_SEQ_NO" => "3",
-        "REMARK" => "LOC UNUSBL WI 0.6 NM; BYD 16 DEGS RIGHT OF CRS."
-      })
+      remark2 =
+        create_sample_data(%{
+          "REF_COL_NAME" => "GENERAL_REMARK",
+          "REF_COL_SEQ_NO" => "3",
+          "REMARK" => "LOC UNUSBL WI 0.6 NM; BYD 16 DEGS RIGHT OF CRS."
+        })
 
       result1 = Remarks.new(remark1)
       result2 = Remarks.new(remark2)
@@ -133,22 +139,25 @@ defmodule NASR.Entities.ILS.RemarksTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "SITE_NO" => "00128.",
-      "SITE_TYPE_CODE" => "A",
-      "STATE_CODE" => "AL",
-      "ARPT_ID" => "ANB",
-      "CITY" => "ANNISTON",
-      "COUNTRY_CODE" => "US",
-      "RWY_END_ID" => "05",
-      "ILS_LOC_ID" => "ANB",
-      "SYSTEM_TYPE_CODE" => "LS",
-      "TAB_NAME" => "ILS",
-      "ILS_COMP_TYPE_CODE" => "",
-      "REF_COL_NAME" => "GENERAL_REMARK",
-      "REF_COL_SEQ_NO" => "2",
-      "REMARK" => "ILS CLASSIFICATION CODE IA"
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "SITE_NO" => "00128.",
+        "SITE_TYPE_CODE" => "A",
+        "STATE_CODE" => "AL",
+        "ARPT_ID" => "ANB",
+        "CITY" => "ANNISTON",
+        "COUNTRY_CODE" => "US",
+        "RWY_END_ID" => "05",
+        "ILS_LOC_ID" => "ANB",
+        "SYSTEM_TYPE_CODE" => "LS",
+        "TAB_NAME" => "ILS",
+        "ILS_COMP_TYPE_CODE" => "",
+        "REF_COL_NAME" => "GENERAL_REMARK",
+        "REF_COL_SEQ_NO" => "2",
+        "REMARK" => "ILS CLASSIFICATION CODE IA"
+      },
+      overrides
+    )
   end
 end

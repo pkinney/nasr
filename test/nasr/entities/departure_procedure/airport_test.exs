@@ -1,5 +1,6 @@
 defmodule NASR.Entities.DepartureProcedure.AirportTest do
   use ExUnit.Case
+
   alias NASR.Entities.DepartureProcedure.Airport
 
   describe "new/1" do
@@ -19,13 +20,15 @@ defmodule NASR.Entities.DepartureProcedure.AirportTest do
     end
 
     test "handles different airports for same procedure" do
-      airport1 = create_sample_data(%{
-        "ARPT_ID" => "57C"
-      })
+      airport1 =
+        create_sample_data(%{
+          "ARPT_ID" => "57C"
+        })
 
-      airport2 = create_sample_data(%{
-        "ARPT_ID" => "BUU"
-      })
+      airport2 =
+        create_sample_data(%{
+          "ARPT_ID" => "BUU"
+        })
 
       result1 = Airport.new(airport1)
       result2 = Airport.new(airport2)
@@ -37,14 +40,16 @@ defmodule NASR.Entities.DepartureProcedure.AirportTest do
     end
 
     test "handles specific runway assignments" do
-      all_runways = create_sample_data(%{
-        "RWY_END_ID" => "ALL"
-      })
+      all_runways =
+        create_sample_data(%{
+          "RWY_END_ID" => "ALL"
+        })
 
-      specific_runway = create_sample_data(%{
-        "RWY_END_ID" => "09R",
-        "ARPT_ID" => "ATL"
-      })
+      specific_runway =
+        create_sample_data(%{
+          "RWY_END_ID" => "09R",
+          "ARPT_ID" => "ATL"
+        })
 
       all_result = Airport.new(all_runways)
       specific_result = Airport.new(specific_runway)
@@ -55,15 +60,17 @@ defmodule NASR.Entities.DepartureProcedure.AirportTest do
     end
 
     test "handles different body sequences" do
-      body1 = create_sample_data(%{
-        "BODY_SEQ" => "1",
-        "BODY_NAME" => "FANZI-ACCRA"
-      })
+      body1 =
+        create_sample_data(%{
+          "BODY_SEQ" => "1",
+          "BODY_NAME" => "FANZI-ACCRA"
+        })
 
-      body2 = create_sample_data(%{
-        "BODY_SEQ" => "2",
-        "BODY_NAME" => "RADAR-ACCRA"
-      })
+      body2 =
+        create_sample_data(%{
+          "BODY_SEQ" => "2",
+          "BODY_NAME" => "RADAR-ACCRA"
+        })
 
       result1 = Airport.new(body1)
       result2 = Airport.new(body2)
@@ -90,10 +97,11 @@ defmodule NASR.Entities.DepartureProcedure.AirportTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "EFF_DATE" => "",
-        "BODY_SEQ" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "EFF_DATE" => "",
+          "BODY_SEQ" => ""
+        })
 
       result = Airport.new(sample_data)
 
@@ -110,15 +118,18 @@ defmodule NASR.Entities.DepartureProcedure.AirportTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "DP_NAME" => "ACCRA",
-      "ARTCC" => "ZAU",
-      "DP_COMPUTER_CODE" => "ACCRA5.ACCRA",
-      "BODY_NAME" => "FANZI-ACCRA",
-      "BODY_SEQ" => "1",
-      "ARPT_ID" => "57C",
-      "RWY_END_ID" => "ALL"
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "DP_NAME" => "ACCRA",
+        "ARTCC" => "ZAU",
+        "DP_COMPUTER_CODE" => "ACCRA5.ACCRA",
+        "BODY_NAME" => "FANZI-ACCRA",
+        "BODY_SEQ" => "1",
+        "ARPT_ID" => "57C",
+        "RWY_END_ID" => "ALL"
+      },
+      overrides
+    )
   end
 end

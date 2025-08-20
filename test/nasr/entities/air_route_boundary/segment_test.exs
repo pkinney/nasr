@@ -1,5 +1,6 @@
 defmodule NASR.Entities.AirRouteBoundary.SegmentTest do
   use ExUnit.Case
+
   alias NASR.Entities.AirRouteBoundary.Segment
 
   describe "new/1" do
@@ -60,19 +61,20 @@ defmodule NASR.Entities.AirRouteBoundary.SegmentTest do
 
     test "handles different boundary point sequences" do
       # Test sequential boundary points
-      sequence_20 = create_sample_data(%{
-        "REC_ID" => "ZAB*H*53866",
-        "POINT_SEQ" => "20",
-        "LAT_DEG" => "35",
-        "LAT_MIN" => "42",
-        "LAT_SEC" => "0",
-        "LAT_DECIMAL" => "35.7",
-        "LONG_DEG" => "110",
-        "LONG_MIN" => "14",
-        "LONG_SEC" => "0",
-        "LONG_DECIMAL" => "-110.23333333",
-        "BNDRY_PT_DESCRIP" => "/COMMON ZAB-ZDV/ TO"
-      })
+      sequence_20 =
+        create_sample_data(%{
+          "REC_ID" => "ZAB*H*53866",
+          "POINT_SEQ" => "20",
+          "LAT_DEG" => "35",
+          "LAT_MIN" => "42",
+          "LAT_SEC" => "0",
+          "LAT_DECIMAL" => "35.7",
+          "LONG_DEG" => "110",
+          "LONG_MIN" => "14",
+          "LONG_SEC" => "0",
+          "LONG_DECIMAL" => "-110.23333333",
+          "BNDRY_PT_DESCRIP" => "/COMMON ZAB-ZDV/ TO"
+        })
 
       result = Segment.new(sequence_20)
       assert result.record_id == "ZAB*H*53866"
@@ -83,19 +85,20 @@ defmodule NASR.Entities.AirRouteBoundary.SegmentTest do
     end
 
     test "handles common boundary descriptions" do
-      common_boundary = create_sample_data(%{
-        "REC_ID" => "ZAB*H*53640",
-        "POINT_SEQ" => "70",
-        "LAT_DEG" => "37",
-        "LAT_MIN" => "30",
-        "LAT_SEC" => "0",
-        "LAT_DECIMAL" => "37.5",
-        "LONG_DEG" => "102",
-        "LONG_MIN" => "33",
-        "LONG_SEC" => "0",
-        "LONG_DECIMAL" => "-102.55",
-        "BNDRY_PT_DESCRIP" => "/COMMON ZKC-ZAB-ZDV/TO"
-      })
+      common_boundary =
+        create_sample_data(%{
+          "REC_ID" => "ZAB*H*53640",
+          "POINT_SEQ" => "70",
+          "LAT_DEG" => "37",
+          "LAT_MIN" => "30",
+          "LAT_SEC" => "0",
+          "LAT_DECIMAL" => "37.5",
+          "LONG_DEG" => "102",
+          "LONG_MIN" => "33",
+          "LONG_SEC" => "0",
+          "LONG_DECIMAL" => "-102.55",
+          "BNDRY_PT_DESCRIP" => "/COMMON ZKC-ZAB-ZDV/TO"
+        })
 
       result = Segment.new(common_boundary)
       assert result.record_id == "ZAB*H*53640"
@@ -104,19 +107,20 @@ defmodule NASR.Entities.AirRouteBoundary.SegmentTest do
     end
 
     test "handles simple boundary points" do
-      simple_boundary = create_sample_data(%{
-        "REC_ID" => "ZAB*H*53462",
-        "POINT_SEQ" => "40",
-        "LAT_DEG" => "36",
-        "LAT_MIN" => "12",
-        "LAT_SEC" => "0",
-        "LAT_DECIMAL" => "36.2",
-        "LONG_DEG" => "107",
-        "LONG_MIN" => "28",
-        "LONG_SEC" => "0",
-        "LONG_DECIMAL" => "-107.46666666",
-        "BNDRY_PT_DESCRIP" => "TO"
-      })
+      simple_boundary =
+        create_sample_data(%{
+          "REC_ID" => "ZAB*H*53462",
+          "POINT_SEQ" => "40",
+          "LAT_DEG" => "36",
+          "LAT_MIN" => "12",
+          "LAT_SEC" => "0",
+          "LAT_DECIMAL" => "36.2",
+          "LONG_DEG" => "107",
+          "LONG_MIN" => "28",
+          "LONG_SEC" => "0",
+          "LONG_DECIMAL" => "-107.46666666",
+          "BNDRY_PT_DESCRIP" => "TO"
+        })
 
       result = Segment.new(simple_boundary)
       assert result.record_id == "ZAB*H*53462"
@@ -128,16 +132,17 @@ defmodule NASR.Entities.AirRouteBoundary.SegmentTest do
 
     test "handles coordinate precision" do
       # Test fractional seconds
-      precise_coords = create_sample_data(%{
-        "LAT_DEG" => "35",
-        "LAT_MIN" => "49",
-        "LAT_SEC" => "45",
-        "LAT_DECIMAL" => "35.82916666",
-        "LONG_DEG" => "100",
-        "LONG_MIN" => "0",
-        "LONG_SEC" => "0",
-        "LONG_DECIMAL" => "-100"
-      })
+      precise_coords =
+        create_sample_data(%{
+          "LAT_DEG" => "35",
+          "LAT_MIN" => "49",
+          "LAT_SEC" => "45",
+          "LAT_DECIMAL" => "35.82916666",
+          "LONG_DEG" => "100",
+          "LONG_MIN" => "0",
+          "LONG_SEC" => "0",
+          "LONG_DECIMAL" => "-100"
+        })
 
       result = Segment.new(precise_coords)
       assert result.latitude_degrees == 35
@@ -152,12 +157,13 @@ defmodule NASR.Entities.AirRouteBoundary.SegmentTest do
 
     test "handles different ARTCCs" do
       # Test different ARTCC boundary segment
-      other_artcc = create_sample_data(%{
-        "LOCATION_ID" => "ZDV",
-        "LOCATION_NAME" => "DENVER",
-        "REC_ID" => "ZDV*H*12345",
-        "ALTITUDE" => "LOW"
-      })
+      other_artcc =
+        create_sample_data(%{
+          "LOCATION_ID" => "ZDV",
+          "LOCATION_NAME" => "DENVER",
+          "REC_ID" => "ZDV*H*12345",
+          "ALTITUDE" => "LOW"
+        })
 
       result = Segment.new(other_artcc)
       assert result.location_id == "ZDV"
@@ -167,21 +173,22 @@ defmodule NASR.Entities.AirRouteBoundary.SegmentTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "EFF_DATE" => "",
-        "ALTITUDE" => "",
-        "TYPE" => "",
-        "POINT_SEQ" => "",
-        "LAT_DEG" => "",
-        "LAT_MIN" => "",
-        "LAT_SEC" => "",
-        "LAT_DECIMAL" => "",
-        "LONG_DEG" => "",
-        "LONG_MIN" => "",
-        "LONG_SEC" => "",
-        "LONG_DECIMAL" => "",
-        "NAS_DESCRIP_FLAG" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "EFF_DATE" => "",
+          "ALTITUDE" => "",
+          "TYPE" => "",
+          "POINT_SEQ" => "",
+          "LAT_DEG" => "",
+          "LAT_MIN" => "",
+          "LAT_SEC" => "",
+          "LAT_DECIMAL" => "",
+          "LONG_DEG" => "",
+          "LONG_MIN" => "",
+          "LONG_SEC" => "",
+          "LONG_DECIMAL" => "",
+          "NAS_DESCRIP_FLAG" => ""
+        })
 
       result = Segment.new(sample_data)
 
@@ -201,11 +208,12 @@ defmodule NASR.Entities.AirRouteBoundary.SegmentTest do
     end
 
     test "handles complex boundary point descriptions" do
-      complex_boundary = create_sample_data(%{
-        "REC_ID" => "ZAB*H*53300",
-        "POINT_SEQ" => "90",
-        "BNDRY_PT_DESCRIP" => "/COMMON ZAB-ZKC-ZFW/ TO"
-      })
+      complex_boundary =
+        create_sample_data(%{
+          "REC_ID" => "ZAB*H*53300",
+          "POINT_SEQ" => "90",
+          "BNDRY_PT_DESCRIP" => "/COMMON ZAB-ZKC-ZFW/ TO"
+        })
 
       result = Segment.new(complex_boundary)
       assert result.record_id == "ZAB*H*53300"
@@ -214,9 +222,10 @@ defmodule NASR.Entities.AirRouteBoundary.SegmentTest do
     end
 
     test "handles NAS description flag" do
-      sample_data = create_sample_data(%{
-        "NAS_DESCRIP_FLAG" => "Y"
-      })
+      sample_data =
+        create_sample_data(%{
+          "NAS_DESCRIP_FLAG" => "Y"
+        })
 
       result = Segment.new(sample_data)
       assert result.nas_description_flag == "Y"
@@ -231,26 +240,29 @@ defmodule NASR.Entities.AirRouteBoundary.SegmentTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "REC_ID" => "ZAB*H*53855",
-      "LOCATION_ID" => "ZAB",
-      "LOCATION_NAME" => "ALBUQUERQUE",
-      "ALTITUDE" => "HIGH",
-      "TYPE" => "ARTCC",
-      "POINT_SEQ" => "10",
-      "LAT_DEG" => "35",
-      "LAT_MIN" => "46",
-      "LAT_SEC" => "0",
-      "LAT_HEMIS" => "N",
-      "LAT_DECIMAL" => "35.76666666",
-      "LONG_DEG" => "111",
-      "LONG_MIN" => "50",
-      "LONG_SEC" => "30",
-      "LONG_HEMIS" => "W",
-      "LONG_DECIMAL" => "-111.84166666",
-      "BNDRY_PT_DESCRIP" => "/COMMON ZAB-ZDV-ZLA/TO",
-      "NAS_DESCRIP_FLAG" => ""
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "REC_ID" => "ZAB*H*53855",
+        "LOCATION_ID" => "ZAB",
+        "LOCATION_NAME" => "ALBUQUERQUE",
+        "ALTITUDE" => "HIGH",
+        "TYPE" => "ARTCC",
+        "POINT_SEQ" => "10",
+        "LAT_DEG" => "35",
+        "LAT_MIN" => "46",
+        "LAT_SEC" => "0",
+        "LAT_HEMIS" => "N",
+        "LAT_DECIMAL" => "35.76666666",
+        "LONG_DEG" => "111",
+        "LONG_MIN" => "50",
+        "LONG_SEC" => "30",
+        "LONG_HEMIS" => "W",
+        "LONG_DECIMAL" => "-111.84166666",
+        "BNDRY_PT_DESCRIP" => "/COMMON ZAB-ZDV-ZLA/TO",
+        "NAS_DESCRIP_FLAG" => ""
+      },
+      overrides
+    )
   end
 end

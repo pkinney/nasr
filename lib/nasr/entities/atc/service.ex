@@ -35,7 +35,8 @@ defmodule NASR.Entities.ATC.Service do
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
           site_number: String.t(),
-          site_type_code: :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
+          site_type_code:
+            :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
           facility_type: String.t(),
           state_code: String.t(),
           facility_id: String.t(),
@@ -50,20 +51,21 @@ defmodule NASR.Entities.ATC.Service do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      site_number: Map.fetch!(entity, "SITE_NO"),
-      site_type_code: parse_site_type_code(Map.fetch!(entity, "SITE_TYPE_CODE")),
-      facility_type: Map.fetch!(entity, "FACILITY_TYPE"),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      facility_id: Map.fetch!(entity, "FACILITY_ID"),
-      city: Map.fetch!(entity, "CITY"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      control_service: Map.fetch!(entity, "CTL_SVC")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      site_number: Map.get(entity, "SITE_NO"),
+      site_type_code: parse_site_type_code(Map.get(entity, "SITE_TYPE_CODE")),
+      facility_type: Map.get(entity, "FACILITY_TYPE"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      facility_id: Map.get(entity, "FACILITY_ID"),
+      city: Map.get(entity, "CITY"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      control_service: Map.get(entity, "CTL_SVC")
     }
   end
 
   defp parse_site_type_code(nil), do: nil
   defp parse_site_type_code(""), do: nil
+
   defp parse_site_type_code(code) when is_binary(code) do
     case String.trim(code) do
       "A" -> :airport

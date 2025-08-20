@@ -46,17 +46,18 @@ defmodule NASR.Entities.MilitaryTrainingRoute do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      route_type_code: parse_route_type_code(Map.fetch!(entity, "ROUTE_TYPE_CODE")),
-      route_id: Map.fetch!(entity, "ROUTE_ID"),
-      artcc: Map.fetch!(entity, "ARTCC"),
-      fss: Map.fetch!(entity, "FSS"),
-      time_of_use: Map.fetch!(entity, "TIME_OF_USE")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      route_type_code: parse_route_type_code(Map.get(entity, "ROUTE_TYPE_CODE")),
+      route_id: Map.get(entity, "ROUTE_ID"),
+      artcc: Map.get(entity, "ARTCC"),
+      fss: Map.get(entity, "FSS"),
+      time_of_use: Map.get(entity, "TIME_OF_USE")
     }
   end
 
   defp parse_route_type_code(nil), do: nil
   defp parse_route_type_code(""), do: nil
+
   defp parse_route_type_code(code) when is_binary(code) do
     case String.trim(code) do
       "IR" -> :instrument_route

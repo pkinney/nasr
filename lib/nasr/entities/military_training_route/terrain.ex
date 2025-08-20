@@ -100,6 +100,6 @@ defmodule NASR.Entities.MilitaryTrainingRoute.Terrain do
   defp parse_route_type("AR"), do: :ar
   defp parse_route_type(nil), do: nil
   defp parse_route_type(""), do: nil
-  defp parse_route_type(code) when is_binary(code), do: String.downcase(code) |> String.to_atom()
+  defp parse_route_type(code) when is_binary(code), do: code |> String.downcase() |> String.to_atom()
   defp parse_route_type(_), do: nil
 end

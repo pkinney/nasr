@@ -1,5 +1,6 @@
 defmodule NASR.Entities.HoldingPatternTest do
   use ExUnit.Case
+
   alias NASR.Entities.HoldingPattern
 
   describe "new/1" do
@@ -26,20 +27,21 @@ defmodule NASR.Entities.HoldingPatternTest do
     end
 
     test "handles RNAV-based holding patterns" do
-      rnav_data = create_sample_data(%{
-        "HP_NAME" => "AADEN WP*GA*K7",
-        "NAV_ID" => "",
-        "NAV_TYPE" => "",
-        "HOLD_DIRECTION" => "S",
-        "HOLD_DEG_OR_CRS" => "165",
-        "AZIMUTH" => "RNAV",
-        "COURSE_INBOUND_DEG" => "345",
-        "TURN_DIRECTION" => "R",
-        "LEG_LENGTH_DIST" => "15"
-      })
+      rnav_data =
+        create_sample_data(%{
+          "HP_NAME" => "AADEN WP*GA*K7",
+          "NAV_ID" => "",
+          "NAV_TYPE" => "",
+          "HOLD_DIRECTION" => "S",
+          "HOLD_DEG_OR_CRS" => "165",
+          "AZIMUTH" => "RNAV",
+          "COURSE_INBOUND_DEG" => "345",
+          "TURN_DIRECTION" => "R",
+          "LEG_LENGTH_DIST" => "15"
+        })
 
       result = HoldingPattern.new(rnav_data)
-      
+
       assert result.hp_name == "AADEN WP*GA*K7"
       assert result.nav_id == ""
       assert result.nav_type == nil
@@ -115,14 +117,15 @@ defmodule NASR.Entities.HoldingPatternTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "HP_NO" => "",
-        "NAV_ID" => "",
-        "NAV_TYPE" => "",
-        "HOLD_DEG_OR_CRS" => "",
-        "COURSE_INBOUND_DEG" => "",
-        "LEG_LENGTH_DIST" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "HP_NO" => "",
+          "NAV_ID" => "",
+          "NAV_TYPE" => "",
+          "HOLD_DEG_OR_CRS" => "",
+          "COURSE_INBOUND_DEG" => "",
+          "LEG_LENGTH_DIST" => ""
+        })
 
       result = HoldingPattern.new(sample_data)
 
@@ -135,12 +138,13 @@ defmodule NASR.Entities.HoldingPatternTest do
     end
 
     test "handles invalid/unknown values" do
-      sample_data = create_sample_data(%{
-        "NAV_TYPE" => "UNKNOWN_TYPE",
-        "HOLD_DIRECTION" => "INVALID",
-        "AZIMUTH" => "UNKNOWN",
-        "TURN_DIRECTION" => "X"
-      })
+      sample_data =
+        create_sample_data(%{
+          "NAV_TYPE" => "UNKNOWN_TYPE",
+          "HOLD_DIRECTION" => "INVALID",
+          "AZIMUTH" => "UNKNOWN",
+          "TURN_DIRECTION" => "X"
+        })
 
       result = HoldingPattern.new(sample_data)
 
@@ -151,12 +155,13 @@ defmodule NASR.Entities.HoldingPatternTest do
     end
 
     test "handles numeric conversions for courses and distances" do
-      sample_data = create_sample_data(%{
-        "HP_NO" => "2",
-        "HOLD_DEG_OR_CRS" => "090",
-        "COURSE_INBOUND_DEG" => "270",
-        "LEG_LENGTH_DIST" => "10"
-      })
+      sample_data =
+        create_sample_data(%{
+          "HP_NO" => "2",
+          "HOLD_DEG_OR_CRS" => "090",
+          "COURSE_INBOUND_DEG" => "270",
+          "LEG_LENGTH_DIST" => "10"
+        })
 
       result = HoldingPattern.new(sample_data)
 
@@ -175,22 +180,25 @@ defmodule NASR.Entities.HoldingPatternTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "HP_NAME" => "AABEE INT*GA*K7",
-      "HP_NO" => "1",
-      "STATE_CODE" => "GA",
-      "COUNTRY_CODE" => "US",
-      "FIX_ID" => "AABEE",
-      "ICAO_REGION_CODE" => "K7",
-      "NAV_ID" => "PDK",
-      "NAV_TYPE" => "LD",
-      "HOLD_DIRECTION" => "NE",
-      "HOLD_DEG_OR_CRS" => "26",
-      "AZIMUTH" => "CRS",
-      "COURSE_INBOUND_DEG" => "206",
-      "TURN_DIRECTION" => "L",
-      "LEG_LENGTH_DIST" => ""
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "HP_NAME" => "AABEE INT*GA*K7",
+        "HP_NO" => "1",
+        "STATE_CODE" => "GA",
+        "COUNTRY_CODE" => "US",
+        "FIX_ID" => "AABEE",
+        "ICAO_REGION_CODE" => "K7",
+        "NAV_ID" => "PDK",
+        "NAV_TYPE" => "LD",
+        "HOLD_DIRECTION" => "NE",
+        "HOLD_DEG_OR_CRS" => "26",
+        "AZIMUTH" => "CRS",
+        "COURSE_INBOUND_DEG" => "206",
+        "TURN_DIRECTION" => "L",
+        "LEG_LENGTH_DIST" => ""
+      },
+      overrides
+    )
   end
 end

@@ -50,13 +50,13 @@ defmodule NASR.Entities.HoldingPattern.SpeedAltitude do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      hp_name: Map.fetch!(entity, "HP_NAME"),
-      hp_no: safe_str_to_int(Map.fetch!(entity, "HP_NO")),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      speed_range: safe_str_to_int(Map.fetch!(entity, "SPEED_RANGE")),
-      altitude: Map.fetch!(entity, "ALTITUDE")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      hp_name: Map.get(entity, "HP_NAME"),
+      hp_no: safe_str_to_int(Map.get(entity, "HP_NO")),
+      state_code: Map.get(entity, "STATE_CODE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      speed_range: safe_str_to_int(Map.get(entity, "SPEED_RANGE")),
+      altitude: Map.get(entity, "ALTITUDE")
     }
   end
 end

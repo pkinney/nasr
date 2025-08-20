@@ -104,44 +104,45 @@ defmodule NASR.Entities.Communication do
         }
 
   @spec type() :: String.t()
-  def type(), do: "COM"
+  def type, do: "COM"
 
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      comm_loc_id: Map.fetch!(entity, "COMM_LOC_ID"),
-      comm_type: Map.fetch!(entity, "COMM_TYPE"),
-      nav_id: Map.fetch!(entity, "NAV_ID"),
-      nav_type: Map.fetch!(entity, "NAV_TYPE"),
-      city: Map.fetch!(entity, "CITY"),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      region_code: parse_region_code(Map.fetch!(entity, "REGION_CODE")),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      comm_outlet_name: Map.fetch!(entity, "COMM_OUTLET_NAME"),
-      lat_deg: safe_str_to_int(Map.fetch!(entity, "LAT_DEG")),
-      lat_min: safe_str_to_int(Map.fetch!(entity, "LAT_MIN")),
-      lat_sec: safe_str_to_float(Map.fetch!(entity, "LAT_SEC")),
-      lat_hemis: Map.fetch!(entity, "LAT_HEMIS"),
-      latitude: safe_str_to_float(Map.fetch!(entity, "LAT_DECIMAL")),
-      long_deg: safe_str_to_int(Map.fetch!(entity, "LONG_DEG")),
-      long_min: safe_str_to_int(Map.fetch!(entity, "LONG_MIN")),
-      long_sec: safe_str_to_float(Map.fetch!(entity, "LONG_SEC")),
-      long_hemis: Map.fetch!(entity, "LONG_HEMIS"),
-      longitude: safe_str_to_float(Map.fetch!(entity, "LONG_DECIMAL")),
-      facility_id: Map.fetch!(entity, "FACILITY_ID"),
-      facility_name: Map.fetch!(entity, "FACILITY_NAME"),
-      alt_fss_id: Map.fetch!(entity, "ALT_FSS_ID"),
-      alt_fss_name: Map.fetch!(entity, "ALT_FSS_NAME"),
-      oper_hours: Map.fetch!(entity, "OPR_HRS"),
-      comm_status_code: parse_comm_status_code(Map.fetch!(entity, "COMM_STATUS_CODE")),
-      comm_status_date: Map.fetch!(entity, "COMM_STATUS_DATE"),
-      remark: Map.fetch!(entity, "REMARK")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      comm_loc_id: Map.get(entity, "COMM_LOC_ID"),
+      comm_type: Map.get(entity, "COMM_TYPE"),
+      nav_id: Map.get(entity, "NAV_ID"),
+      nav_type: Map.get(entity, "NAV_TYPE"),
+      city: Map.get(entity, "CITY"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      region_code: parse_region_code(Map.get(entity, "REGION_CODE")),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      comm_outlet_name: Map.get(entity, "COMM_OUTLET_NAME"),
+      lat_deg: safe_str_to_int(Map.get(entity, "LAT_DEG")),
+      lat_min: safe_str_to_int(Map.get(entity, "LAT_MIN")),
+      lat_sec: safe_str_to_float(Map.get(entity, "LAT_SEC")),
+      lat_hemis: Map.get(entity, "LAT_HEMIS"),
+      latitude: safe_str_to_float(Map.get(entity, "LAT_DECIMAL")),
+      long_deg: safe_str_to_int(Map.get(entity, "LONG_DEG")),
+      long_min: safe_str_to_int(Map.get(entity, "LONG_MIN")),
+      long_sec: safe_str_to_float(Map.get(entity, "LONG_SEC")),
+      long_hemis: Map.get(entity, "LONG_HEMIS"),
+      longitude: safe_str_to_float(Map.get(entity, "LONG_DECIMAL")),
+      facility_id: Map.get(entity, "FACILITY_ID"),
+      facility_name: Map.get(entity, "FACILITY_NAME"),
+      alt_fss_id: Map.get(entity, "ALT_FSS_ID"),
+      alt_fss_name: Map.get(entity, "ALT_FSS_NAME"),
+      oper_hours: Map.get(entity, "OPR_HRS"),
+      comm_status_code: parse_comm_status_code(Map.get(entity, "COMM_STATUS_CODE")),
+      comm_status_date: Map.get(entity, "COMM_STATUS_DATE"),
+      remark: Map.get(entity, "REMARK")
     }
   end
 
   defp parse_region_code(nil), do: nil
   defp parse_region_code(""), do: nil
+
   defp parse_region_code(code) when is_binary(code) do
     case String.trim(code) do
       "AAL" -> :aal
@@ -159,6 +160,7 @@ defmodule NASR.Entities.Communication do
 
   defp parse_comm_status_code(nil), do: nil
   defp parse_comm_status_code(""), do: nil
+
   defp parse_comm_status_code(code) when is_binary(code) do
     case String.trim(code) do
       "A" -> :active

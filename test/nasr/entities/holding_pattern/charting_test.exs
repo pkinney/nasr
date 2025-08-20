@@ -1,5 +1,6 @@
 defmodule NASR.Entities.HoldingPattern.ChartingTest do
   use ExUnit.Case
+
   alias NASR.Entities.HoldingPattern.Charting
 
   describe "new/1" do
@@ -35,46 +36,50 @@ defmodule NASR.Entities.HoldingPattern.ChartingTest do
     end
 
     test "handles STAR charting" do
-      star_data = create_sample_data(%{
-        "HP_NAME" => "AADEN WP*GA*K7",
-        "CHARTING_TYPE_DESC" => "STAR"
-      })
+      star_data =
+        create_sample_data(%{
+          "HP_NAME" => "AADEN WP*GA*K7",
+          "CHARTING_TYPE_DESC" => "STAR"
+        })
 
       result = Charting.new(star_data)
-      
+
       assert result.hp_name == "AADEN WP*GA*K7"
       assert result.charting_type_desc == :star
     end
 
     test "handles enroute high altitude charting" do
-      enroute_data = create_sample_data(%{
-        "HP_NAME" => "AADEN WP*GA*K7",
-        "CHARTING_TYPE_DESC" => "ENROUTE HIGH"
-      })
+      enroute_data =
+        create_sample_data(%{
+          "HP_NAME" => "AADEN WP*GA*K7",
+          "CHARTING_TYPE_DESC" => "ENROUTE HIGH"
+        })
 
       result = Charting.new(enroute_data)
-      
+
       assert result.hp_name == "AADEN WP*GA*K7"
       assert result.charting_type_desc == :enroute_high
     end
 
     test "handles military approach procedures" do
-      military_data = create_sample_data(%{
-        "HP_NAME" => "AAMMO WP*NC*K7",
-        "CHARTING_TYPE_DESC" => "MILITARY IAP"
-      })
+      military_data =
+        create_sample_data(%{
+          "HP_NAME" => "AAMMO WP*NC*K7",
+          "CHARTING_TYPE_DESC" => "MILITARY IAP"
+        })
 
       result = Charting.new(military_data)
-      
+
       assert result.hp_name == "AAMMO WP*NC*K7"
       assert result.charting_type_desc == :military_approach
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "HP_NO" => "",
-        "CHARTING_TYPE_DESC" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "HP_NO" => "",
+          "CHARTING_TYPE_DESC" => ""
+        })
 
       result = Charting.new(sample_data)
 
@@ -83,9 +88,10 @@ defmodule NASR.Entities.HoldingPattern.ChartingTest do
     end
 
     test "handles unknown chart types" do
-      sample_data = create_sample_data(%{
-        "CHARTING_TYPE_DESC" => "UNKNOWN_CHART_TYPE"
-      })
+      sample_data =
+        create_sample_data(%{
+          "CHARTING_TYPE_DESC" => "UNKNOWN_CHART_TYPE"
+        })
 
       result = Charting.new(sample_data)
 
@@ -94,15 +100,17 @@ defmodule NASR.Entities.HoldingPattern.ChartingTest do
 
     test "handles multiple chart entries for same holding pattern" do
       # Test that same holding pattern can appear on multiple chart types
-      chart1 = create_sample_data(%{
-        "HP_NAME" => "AADEN WP*GA*K7",
-        "CHARTING_TYPE_DESC" => "ENROUTE HIGH"
-      })
-      
-      chart2 = create_sample_data(%{
-        "HP_NAME" => "AADEN WP*GA*K7",
-        "CHARTING_TYPE_DESC" => "STAR"
-      })
+      chart1 =
+        create_sample_data(%{
+          "HP_NAME" => "AADEN WP*GA*K7",
+          "CHARTING_TYPE_DESC" => "ENROUTE HIGH"
+        })
+
+      chart2 =
+        create_sample_data(%{
+          "HP_NAME" => "AADEN WP*GA*K7",
+          "CHARTING_TYPE_DESC" => "STAR"
+        })
 
       result1 = Charting.new(chart1)
       result2 = Charting.new(chart2)
@@ -113,9 +121,10 @@ defmodule NASR.Entities.HoldingPattern.ChartingTest do
     end
 
     test "handles numeric conversion for holding pattern number" do
-      sample_data = create_sample_data(%{
-        "HP_NO" => "2"
-      })
+      sample_data =
+        create_sample_data(%{
+          "HP_NO" => "2"
+        })
 
       result = Charting.new(sample_data)
       assert result.hp_no == 2
@@ -130,13 +139,16 @@ defmodule NASR.Entities.HoldingPattern.ChartingTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "HP_NAME" => "AABEE INT*GA*K7",
-      "HP_NO" => "1",
-      "STATE_CODE" => "GA",
-      "COUNTRY_CODE" => "US",
-      "CHARTING_TYPE_DESC" => "IAP"
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "HP_NAME" => "AABEE INT*GA*K7",
+        "HP_NO" => "1",
+        "STATE_CODE" => "GA",
+        "COUNTRY_CODE" => "US",
+        "CHARTING_TYPE_DESC" => "IAP"
+      },
+      overrides
+    )
   end
 end

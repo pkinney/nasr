@@ -90,31 +90,32 @@ defmodule NASR.Entities.AirRouteBoundary do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      location_id: Map.fetch!(entity, "LOCATION_ID"),
-      location_name: Map.fetch!(entity, "LOCATION_NAME"),
-      computer_id: Map.fetch!(entity, "COMPUTER_ID"),
-      icao_id: Map.fetch!(entity, "ICAO_ID"),
-      location_type: parse_location_type(Map.fetch!(entity, "LOCATION_TYPE")),
-      city: Map.fetch!(entity, "CITY"),
-      state: Map.fetch!(entity, "STATE"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      latitude_degrees: safe_str_to_int(Map.fetch!(entity, "LAT_DEG")),
-      latitude_minutes: safe_str_to_int(Map.fetch!(entity, "LAT_MIN")),
-      latitude_seconds: safe_str_to_float(Map.fetch!(entity, "LAT_SEC")),
-      latitude_hemisphere: Map.fetch!(entity, "LAT_HEMIS"),
-      latitude_decimal: safe_str_to_float(Map.fetch!(entity, "LAT_DECIMAL")),
-      longitude_degrees: safe_str_to_int(Map.fetch!(entity, "LONG_DEG")),
-      longitude_minutes: safe_str_to_int(Map.fetch!(entity, "LONG_MIN")),
-      longitude_seconds: safe_str_to_float(Map.fetch!(entity, "LONG_SEC")),
-      longitude_hemisphere: Map.fetch!(entity, "LONG_HEMIS"),
-      longitude_decimal: safe_str_to_float(Map.fetch!(entity, "LONG_DECIMAL")),
-      cross_reference: Map.fetch!(entity, "CROSS_REF")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      location_id: Map.get(entity, "LOCATION_ID"),
+      location_name: Map.get(entity, "LOCATION_NAME"),
+      computer_id: Map.get(entity, "COMPUTER_ID"),
+      icao_id: Map.get(entity, "ICAO_ID"),
+      location_type: parse_location_type(Map.get(entity, "LOCATION_TYPE")),
+      city: Map.get(entity, "CITY"),
+      state: Map.get(entity, "STATE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      latitude_degrees: safe_str_to_int(Map.get(entity, "LAT_DEG")),
+      latitude_minutes: safe_str_to_int(Map.get(entity, "LAT_MIN")),
+      latitude_seconds: safe_str_to_float(Map.get(entity, "LAT_SEC")),
+      latitude_hemisphere: Map.get(entity, "LAT_HEMIS"),
+      latitude_decimal: safe_str_to_float(Map.get(entity, "LAT_DECIMAL")),
+      longitude_degrees: safe_str_to_int(Map.get(entity, "LONG_DEG")),
+      longitude_minutes: safe_str_to_int(Map.get(entity, "LONG_MIN")),
+      longitude_seconds: safe_str_to_float(Map.get(entity, "LONG_SEC")),
+      longitude_hemisphere: Map.get(entity, "LONG_HEMIS"),
+      longitude_decimal: safe_str_to_float(Map.get(entity, "LONG_DECIMAL")),
+      cross_reference: Map.get(entity, "CROSS_REF")
     }
   end
 
   defp parse_location_type(nil), do: nil
   defp parse_location_type(""), do: nil
+
   defp parse_location_type(type) when is_binary(type) do
     case String.trim(type) do
       "ARTCC" -> :artcc

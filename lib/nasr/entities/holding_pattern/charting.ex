@@ -37,7 +37,16 @@ defmodule NASR.Entities.HoldingPattern.Charting do
           hp_no: integer() | nil,
           state_code: String.t(),
           country_code: String.t(),
-          charting_type_desc: :approach | :departure | :enroute_high | :enroute_low | :military_approach | :star | :area_chart | String.t() | nil
+          charting_type_desc:
+            :approach
+            | :departure
+            | :enroute_high
+            | :enroute_low
+            | :military_approach
+            | :star
+            | :area_chart
+            | String.t()
+            | nil
         }
 
   @spec type() :: String.t()
@@ -46,17 +55,18 @@ defmodule NASR.Entities.HoldingPattern.Charting do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      hp_name: Map.fetch!(entity, "HP_NAME"),
-      hp_no: safe_str_to_int(Map.fetch!(entity, "HP_NO")),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      charting_type_desc: parse_charting_type(Map.fetch!(entity, "CHARTING_TYPE_DESC"))
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      hp_name: Map.get(entity, "HP_NAME"),
+      hp_no: safe_str_to_int(Map.get(entity, "HP_NO")),
+      state_code: Map.get(entity, "STATE_CODE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      charting_type_desc: parse_charting_type(Map.get(entity, "CHARTING_TYPE_DESC"))
     }
   end
 
   defp parse_charting_type(nil), do: nil
   defp parse_charting_type(""), do: nil
+
   defp parse_charting_type(type) when is_binary(type) do
     case String.trim(type) do
       "IAP" -> :approach

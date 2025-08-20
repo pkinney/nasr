@@ -44,7 +44,8 @@ defmodule NASR.Entities.MilitaryOperations do
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
           site_number: String.t(),
-          site_type_code: :airport | :heliport | :seaplane_base | :gliderport | :balloonport | :ultralight | String.t() | nil,
+          site_type_code:
+            :airport | :heliport | :seaplane_base | :gliderport | :balloonport | :ultralight | String.t() | nil,
           state_code: String.t(),
           airport_id: String.t(),
           city: String.t(),
@@ -63,24 +64,25 @@ defmodule NASR.Entities.MilitaryOperations do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      site_number: Map.fetch!(entity, "SITE_NO"),
-      site_type_code: parse_site_type_code(Map.fetch!(entity, "SITE_TYPE_CODE")),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      airport_id: Map.fetch!(entity, "ARPT_ID"),
-      city: Map.fetch!(entity, "CITY"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      military_operations_code: parse_military_operations_code(Map.fetch!(entity, "MIL_OPS_OPER_CODE")),
-      military_operations_call: Map.fetch!(entity, "MIL_OPS_CALL"),
-      military_operations_hours: Map.fetch!(entity, "MIL_OPS_HRS"),
-      amcp_hours: Map.fetch!(entity, "AMCP_HRS"),
-      pmsv_hours: Map.fetch!(entity, "PMSV_HRS"),
-      remark: Map.fetch!(entity, "REMARK")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      site_number: Map.get(entity, "SITE_NO"),
+      site_type_code: parse_site_type_code(Map.get(entity, "SITE_TYPE_CODE")),
+      state_code: Map.get(entity, "STATE_CODE"),
+      airport_id: Map.get(entity, "ARPT_ID"),
+      city: Map.get(entity, "CITY"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      military_operations_code: parse_military_operations_code(Map.get(entity, "MIL_OPS_OPER_CODE")),
+      military_operations_call: Map.get(entity, "MIL_OPS_CALL"),
+      military_operations_hours: Map.get(entity, "MIL_OPS_HRS"),
+      amcp_hours: Map.get(entity, "AMCP_HRS"),
+      pmsv_hours: Map.get(entity, "PMSV_HRS"),
+      remark: Map.get(entity, "REMARK")
     }
   end
 
   defp parse_site_type_code(nil), do: nil
   defp parse_site_type_code(""), do: nil
+
   defp parse_site_type_code(code) when is_binary(code) do
     case String.trim(code) do
       "A" -> :airport
@@ -95,6 +97,7 @@ defmodule NASR.Entities.MilitaryOperations do
 
   defp parse_military_operations_code(nil), do: nil
   defp parse_military_operations_code(""), do: nil
+
   defp parse_military_operations_code(code) when is_binary(code) do
     case String.trim(code) do
       "A" -> :active

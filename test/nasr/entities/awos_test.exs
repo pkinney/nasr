@@ -1,5 +1,6 @@
 defmodule NASR.Entities.AWOSTest do
   use ExUnit.Case
+
   alias NASR.Entities.AWOS
 
   describe "new/1" do

@@ -48,14 +48,14 @@ defmodule NASR.Entities.STAR do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      arrival_name: Map.fetch!(entity, "ARRIVAL_NAME"),
-      amendment_number: Map.fetch!(entity, "AMENDMENT_NO"),
-      artcc: Map.fetch!(entity, "ARTCC"),
-      star_amendment_effective_date: parse_date(Map.fetch!(entity, "STAR_AMEND_EFF_DATE")),
-      rnav_flag: convert_yn(Map.fetch!(entity, "RNAV_FLAG")),
-      star_computer_code: Map.fetch!(entity, "STAR_COMPUTER_CODE"),
-      served_airports: Map.fetch!(entity, "SERVED_ARPT")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      arrival_name: Map.get(entity, "ARRIVAL_NAME"),
+      amendment_number: Map.get(entity, "AMENDMENT_NO"),
+      artcc: Map.get(entity, "ARTCC"),
+      star_amendment_effective_date: parse_date(Map.get(entity, "STAR_AMEND_EFF_DATE")),
+      rnav_flag: convert_yn(Map.get(entity, "RNAV_FLAG")),
+      star_computer_code: Map.get(entity, "STAR_COMPUTER_CODE"),
+      served_airports: Map.get(entity, "SERVED_ARPT")
     }
   end
 end

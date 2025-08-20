@@ -1,5 +1,6 @@
 defmodule NASR.Entities.NavTest do
   use ExUnit.Case
+
   alias NASR.Entities.Nav
 
   describe "new/1" do
@@ -163,17 +164,18 @@ defmodule NASR.Entities.NavTest do
 
     test "handles Y/N flags correctly" do
       # Test with Y values
-      sample_data = create_sample_data(%{
-        "NAS_USE_FLAG" => "Y",
-        "PUBLIC_USE_FLAG" => "Y",
-        "SIMUL_VOICE_FLAG" => "Y",
-        "AUTO_VOICE_ID_FLAG" => "Y",
-        "LOW_NAV_ON_HIGH_CHART_FLAG" => "Y",
-        "Z_MKR_FLAG" => "Y",
-        "PITCH_FLAG" => "Y",
-        "CATCH_FLAG" => "Y",
-        "SUA_ATCAA_FLAG" => "Y"
-      })
+      sample_data =
+        create_sample_data(%{
+          "NAS_USE_FLAG" => "Y",
+          "PUBLIC_USE_FLAG" => "Y",
+          "SIMUL_VOICE_FLAG" => "Y",
+          "AUTO_VOICE_ID_FLAG" => "Y",
+          "LOW_NAV_ON_HIGH_CHART_FLAG" => "Y",
+          "Z_MKR_FLAG" => "Y",
+          "PITCH_FLAG" => "Y",
+          "CATCH_FLAG" => "Y",
+          "SUA_ATCAA_FLAG" => "Y"
+        })
 
       result = Nav.new(sample_data)
       assert result.nas_use_flag == true
@@ -187,17 +189,18 @@ defmodule NASR.Entities.NavTest do
       assert result.sua_atcaa_flag == true
 
       # Test with N values
-      sample_data = create_sample_data(%{
-        "NAS_USE_FLAG" => "N",
-        "PUBLIC_USE_FLAG" => "N",
-        "SIMUL_VOICE_FLAG" => "N",
-        "AUTO_VOICE_ID_FLAG" => "N",
-        "LOW_NAV_ON_HIGH_CHART_FLAG" => "N",
-        "Z_MKR_FLAG" => "N",
-        "PITCH_FLAG" => "N",
-        "CATCH_FLAG" => "N",
-        "SUA_ATCAA_FLAG" => "N"
-      })
+      sample_data =
+        create_sample_data(%{
+          "NAS_USE_FLAG" => "N",
+          "PUBLIC_USE_FLAG" => "N",
+          "SIMUL_VOICE_FLAG" => "N",
+          "AUTO_VOICE_ID_FLAG" => "N",
+          "LOW_NAV_ON_HIGH_CHART_FLAG" => "N",
+          "Z_MKR_FLAG" => "N",
+          "PITCH_FLAG" => "N",
+          "CATCH_FLAG" => "N",
+          "SUA_ATCAA_FLAG" => "N"
+        })
 
       result = Nav.new(sample_data)
       assert result.nas_use_flag == false
@@ -212,15 +215,16 @@ defmodule NASR.Entities.NavTest do
     end
 
     test "handles VOR navaid" do
-      vor_data = create_sample_data(%{
-        "NAV_ID" => "SEA",
-        "NAV_TYPE" => "VOR",
-        "NAME" => "SEATTLE",
-        "FREQ" => "116.8",
-        "ALT_CODE" => "H",
-        "DME_SSV" => "",
-        "VOICE_CALL" => "SEATTLE VOR"
-      })
+      vor_data =
+        create_sample_data(%{
+          "NAV_ID" => "SEA",
+          "NAV_TYPE" => "VOR",
+          "NAME" => "SEATTLE",
+          "FREQ" => "116.8",
+          "ALT_CODE" => "H",
+          "DME_SSV" => "",
+          "VOICE_CALL" => "SEATTLE VOR"
+        })
 
       result = Nav.new(vor_data)
       assert result.nav_id == "SEA"
@@ -233,15 +237,16 @@ defmodule NASR.Entities.NavTest do
     end
 
     test "handles VORTAC with separate TACAN location" do
-      vortac_data = create_sample_data(%{
-        "NAV_TYPE" => "VORTAC",
-        "TACAN_DME_STATUS" => "OPERATIONAL",
-        "TACAN_DME_LAT_DECIMAL" => "47.4397",
-        "TACAN_DME_LONG_DECIMAL" => "-122.3094",
-        "ALT_CODE" => "H",
-        "DME_SSV" => "H",
-        "CHAN" => "114"
-      })
+      vortac_data =
+        create_sample_data(%{
+          "NAV_TYPE" => "VORTAC",
+          "TACAN_DME_STATUS" => "OPERATIONAL",
+          "TACAN_DME_LAT_DECIMAL" => "47.4397",
+          "TACAN_DME_LONG_DECIMAL" => "-122.3094",
+          "ALT_CODE" => "H",
+          "DME_SSV" => "H",
+          "CHAN" => "114"
+        })
 
       result = Nav.new(vortac_data)
       assert result.nav_type == :vortac
@@ -254,19 +259,20 @@ defmodule NASR.Entities.NavTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "FAN_MARKER" => "",
-        "TACAN_DME_STATUS" => "",
-        "TACAN_DME_LAT_DECIMAL" => "",
-        "TACAN_DME_LONG_DECIMAL" => "",
-        "ALT_CODE" => "",
-        "DME_SSV" => "",
-        "CHAN" => "",
-        "FREQ" => "",
-        "MKR_IDENT" => "",
-        "MKR_SHAPE" => "",
-        "MKR_BRG" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "FAN_MARKER" => "",
+          "TACAN_DME_STATUS" => "",
+          "TACAN_DME_LAT_DECIMAL" => "",
+          "TACAN_DME_LONG_DECIMAL" => "",
+          "ALT_CODE" => "",
+          "DME_SSV" => "",
+          "CHAN" => "",
+          "FREQ" => "",
+          "MKR_IDENT" => "",
+          "MKR_SHAPE" => "",
+          "MKR_BRG" => ""
+        })
 
       result = Nav.new(sample_data)
 
@@ -292,79 +298,82 @@ defmodule NASR.Entities.NavTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "NAV_ID" => "AA",
-      "NAV_TYPE" => "NDB",
-      "STATE_CODE" => "ND",
-      "CITY" => "FARGO",
-      "COUNTRY_CODE" => "US",
-      "NAV_STATUS" => "OPERATIONAL IFR",
-      "NAME" => "KENIE",
-      "STATE_NAME" => "NORTH DAKOTA",
-      "REGION_CODE" => "AGL",
-      "COUNTRY_NAME" => "UNITED STATES",
-      "FAN_MARKER" => "",
-      "OWNER" => "F-FEDERAL AVIATION ADMIN",
-      "OPERATOR" => "F-FEDERAL AVIATION ADMIN",
-      "NAS_USE_FLAG" => "Y",
-      "PUBLIC_USE_FLAG" => "Y",
-      "NDB_CLASS_CODE" => "HW/LOM",
-      "OPER_HOURS" => "24",
-      "HIGH_ALT_ARTCC_ID" => "ZMP",
-      "HIGH_ARTCC_NAME" => "MINNEAPOLIS",
-      "LOW_ALT_ARTCC_ID" => "ZMP",
-      "LOW_ARTCC_NAME" => "MINNEAPOLIS",
-      "LAT_DEG" => "47",
-      "LAT_MIN" => "0",
-      "LAT_SEC" => "32.5878",
-      "LAT_HEMIS" => "N",
-      "LAT_DECIMAL" => "47.00905216",
-      "LONG_DEG" => "96",
-      "LONG_MIN" => "48",
-      "LONG_SEC" => "54.6606",
-      "LONG_HEMIS" => "W",
-      "LONG_DECIMAL" => "-96.8151835",
-      "SURVEY_ACCURACY_CODE" => "6",
-      "TACAN_DME_STATUS" => "",
-      "TACAN_DME_LAT_DEG" => "",
-      "TACAN_DME_LAT_MIN" => "",
-      "TACAN_DME_LAT_SEC" => "",
-      "TACAN_DME_LAT_HEMIS" => "",
-      "TACAN_DME_LAT_DECIMAL" => "",
-      "TACAN_DME_LONG_DEG" => "",
-      "TACAN_DME_LONG_MIN" => "",
-      "TACAN_DME_LONG_SEC" => "",
-      "TACAN_DME_LONG_HEMIS" => "",
-      "TACAN_DME_LONG_DECIMAL" => "",
-      "ELEV" => "890.6",
-      "MAG_VARN" => "4",
-      "MAG_VARN_HEMIS" => "E",
-      "MAG_VARN_YEAR" => "2005",
-      "SIMUL_VOICE_FLAG" => "N",
-      "PWR_OUTPUT" => "100",
-      "AUTO_VOICE_ID_FLAG" => "N",
-      "MNT_CAT_CODE" => "1",
-      "VOICE_CALL" => "NONE",
-      "CHAN" => "",
-      "FREQ" => "365",
-      "MKR_IDENT" => "",
-      "MKR_SHAPE" => "",
-      "MKR_BRG" => "",
-      "ALT_CODE" => "",
-      "DME_SSV" => "",
-      "LOW_NAV_ON_HIGH_CHART_FLAG" => "N",
-      "Z_MKR_FLAG" => "N",
-      "FSS_ID" => "GFK",
-      "FSS_NAME" => "GRAND FORKS",
-      "FSS_HOURS" => "24",
-      "NOTAM_ID" => "FAR",
-      "QUAD_IDENT" => "",
-      "PITCH_FLAG" => "N",
-      "CATCH_FLAG" => "N",
-      "SUA_ATCAA_FLAG" => "N",
-      "RESTRICTION_FLAG" => "",
-      "HIWAS_FLAG" => ""
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "NAV_ID" => "AA",
+        "NAV_TYPE" => "NDB",
+        "STATE_CODE" => "ND",
+        "CITY" => "FARGO",
+        "COUNTRY_CODE" => "US",
+        "NAV_STATUS" => "OPERATIONAL IFR",
+        "NAME" => "KENIE",
+        "STATE_NAME" => "NORTH DAKOTA",
+        "REGION_CODE" => "AGL",
+        "COUNTRY_NAME" => "UNITED STATES",
+        "FAN_MARKER" => "",
+        "OWNER" => "F-FEDERAL AVIATION ADMIN",
+        "OPERATOR" => "F-FEDERAL AVIATION ADMIN",
+        "NAS_USE_FLAG" => "Y",
+        "PUBLIC_USE_FLAG" => "Y",
+        "NDB_CLASS_CODE" => "HW/LOM",
+        "OPER_HOURS" => "24",
+        "HIGH_ALT_ARTCC_ID" => "ZMP",
+        "HIGH_ARTCC_NAME" => "MINNEAPOLIS",
+        "LOW_ALT_ARTCC_ID" => "ZMP",
+        "LOW_ARTCC_NAME" => "MINNEAPOLIS",
+        "LAT_DEG" => "47",
+        "LAT_MIN" => "0",
+        "LAT_SEC" => "32.5878",
+        "LAT_HEMIS" => "N",
+        "LAT_DECIMAL" => "47.00905216",
+        "LONG_DEG" => "96",
+        "LONG_MIN" => "48",
+        "LONG_SEC" => "54.6606",
+        "LONG_HEMIS" => "W",
+        "LONG_DECIMAL" => "-96.8151835",
+        "SURVEY_ACCURACY_CODE" => "6",
+        "TACAN_DME_STATUS" => "",
+        "TACAN_DME_LAT_DEG" => "",
+        "TACAN_DME_LAT_MIN" => "",
+        "TACAN_DME_LAT_SEC" => "",
+        "TACAN_DME_LAT_HEMIS" => "",
+        "TACAN_DME_LAT_DECIMAL" => "",
+        "TACAN_DME_LONG_DEG" => "",
+        "TACAN_DME_LONG_MIN" => "",
+        "TACAN_DME_LONG_SEC" => "",
+        "TACAN_DME_LONG_HEMIS" => "",
+        "TACAN_DME_LONG_DECIMAL" => "",
+        "ELEV" => "890.6",
+        "MAG_VARN" => "4",
+        "MAG_VARN_HEMIS" => "E",
+        "MAG_VARN_YEAR" => "2005",
+        "SIMUL_VOICE_FLAG" => "N",
+        "PWR_OUTPUT" => "100",
+        "AUTO_VOICE_ID_FLAG" => "N",
+        "MNT_CAT_CODE" => "1",
+        "VOICE_CALL" => "NONE",
+        "CHAN" => "",
+        "FREQ" => "365",
+        "MKR_IDENT" => "",
+        "MKR_SHAPE" => "",
+        "MKR_BRG" => "",
+        "ALT_CODE" => "",
+        "DME_SSV" => "",
+        "LOW_NAV_ON_HIGH_CHART_FLAG" => "N",
+        "Z_MKR_FLAG" => "N",
+        "FSS_ID" => "GFK",
+        "FSS_NAME" => "GRAND FORKS",
+        "FSS_HOURS" => "24",
+        "NOTAM_ID" => "FAR",
+        "QUAD_IDENT" => "",
+        "PITCH_FLAG" => "N",
+        "CATCH_FLAG" => "N",
+        "SUA_ATCAA_FLAG" => "N",
+        "RESTRICTION_FLAG" => "",
+        "HIWAS_FLAG" => ""
+      },
+      overrides
+    )
   end
 end

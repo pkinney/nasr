@@ -1,5 +1,6 @@
 defmodule NASR.Entities.Nav.CheckpointTest do
   use ExUnit.Case
+
   alias NASR.Entities.Nav.Checkpoint
 
   describe "new/1" do
@@ -37,11 +38,12 @@ defmodule NASR.Entities.Nav.CheckpointTest do
     end
 
     test "handles air checkpoint with altitude" do
-      air_checkpoint = create_sample_data(%{
-        "ALTITUDE" => "5000",
-        "AIR_GND_CODE" => "A",
-        "CHK_DESC" => "5.2 NM ENE AT 5000 FT"
-      })
+      air_checkpoint =
+        create_sample_data(%{
+          "ALTITUDE" => "5000",
+          "AIR_GND_CODE" => "A",
+          "CHK_DESC" => "5.2 NM ENE AT 5000 FT"
+        })
 
       result = Checkpoint.new(air_checkpoint)
       assert result.altitude == 5000
@@ -50,13 +52,14 @@ defmodule NASR.Entities.Nav.CheckpointTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "ALTITUDE" => "",
-        "BRG" => "",
-        "AIR_GND_CODE" => "",
-        "CHK_DESC" => "",
-        "ARPT_ID" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "ALTITUDE" => "",
+          "BRG" => "",
+          "AIR_GND_CODE" => "",
+          "CHK_DESC" => "",
+          "ARPT_ID" => ""
+        })
 
       result = Checkpoint.new(sample_data)
 
@@ -86,19 +89,22 @@ defmodule NASR.Entities.Nav.CheckpointTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "NAV_ID" => "ACK",
-      "NAV_TYPE" => "VOR/DME",
-      "STATE_CODE" => "MA",
-      "CITY" => "NANTUCKET",
-      "COUNTRY_CODE" => "US",
-      "ALTITUDE" => "",
-      "BRG" => "242",
-      "AIR_GND_CODE" => "G",
-      "CHK_DESC" => "1.9 NM ON RUNUP AREA AT APCH END RWY 24.",
-      "ARPT_ID" => "ACK",
-      "STATE_CHK_CODE" => "MA"
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "NAV_ID" => "ACK",
+        "NAV_TYPE" => "VOR/DME",
+        "STATE_CODE" => "MA",
+        "CITY" => "NANTUCKET",
+        "COUNTRY_CODE" => "US",
+        "ALTITUDE" => "",
+        "BRG" => "242",
+        "AIR_GND_CODE" => "G",
+        "CHK_DESC" => "1.9 NM ON RUNUP AREA AT APCH END RWY 24.",
+        "ARPT_ID" => "ACK",
+        "STATE_CHK_CODE" => "MA"
+      },
+      overrides
+    )
   end
 end

@@ -1,5 +1,6 @@
 defmodule NASR.Entities.DepartureProcedure.RouteTest do
   use ExUnit.Case
+
   alias NASR.Entities.DepartureProcedure.Route
 
   describe "new/1" do
@@ -21,18 +22,22 @@ defmodule NASR.Entities.DepartureProcedure.RouteTest do
       assert result.icao_region_code == "K5"
       assert result.point_type == "WP   "
       assert result.next_point == "HHHUL"
-      assert result.airport_runway_association == "57C, BUU, ENW, ETB, HXF, MKE/01L, MKE/01R, MKE/07L, MKE/07R, MKE/13, MKE/19L, MKE/19R, MKE/25L, MKE/25R, MKE/31, MWC, RAC, UES"
+
+      assert result.airport_runway_association ==
+               "57C, BUU, ENW, ETB, HXF, MKE/01L, MKE/01R, MKE/07L, MKE/07R, MKE/13, MKE/19L, MKE/19R, MKE/25L, MKE/25R, MKE/31, MWC, RAC, UES"
     end
 
     test "handles different route portion types" do
-      body_route = create_sample_data(%{
-        "ROUTE_PORTION_TYPE" => "BODY"
-      })
+      body_route =
+        create_sample_data(%{
+          "ROUTE_PORTION_TYPE" => "BODY"
+        })
 
-      transition_route = create_sample_data(%{
-        "ROUTE_PORTION_TYPE" => "TRANSITION",
-        "TRANSITION_COMPUTER_CODE" => "ACCRA5.FANZI"
-      })
+      transition_route =
+        create_sample_data(%{
+          "ROUTE_PORTION_TYPE" => "TRANSITION",
+          "TRANSITION_COMPUTER_CODE" => "ACCRA5.FANZI"
+        })
 
       body_result = Route.new(body_route)
       transition_result = Route.new(transition_route)
@@ -43,20 +48,23 @@ defmodule NASR.Entities.DepartureProcedure.RouteTest do
     end
 
     test "handles different point types" do
-      waypoint = create_sample_data(%{
-        "POINT" => "ACCRA",
-        "POINT_TYPE" => "WP   "
-      })
+      waypoint =
+        create_sample_data(%{
+          "POINT" => "ACCRA",
+          "POINT_TYPE" => "WP   "
+        })
 
-      vor_point = create_sample_data(%{
-        "POINT" => "ATL",
-        "POINT_TYPE" => "VOR"
-      })
+      vor_point =
+        create_sample_data(%{
+          "POINT" => "ATL",
+          "POINT_TYPE" => "VOR"
+        })
 
-      ndb_point = create_sample_data(%{
-        "POINT" => "GQO",
-        "POINT_TYPE" => "NDB"
-      })
+      ndb_point =
+        create_sample_data(%{
+          "POINT" => "GQO",
+          "POINT_TYPE" => "NDB"
+        })
 
       wp_result = Route.new(waypoint)
       vor_result = Route.new(vor_point)
@@ -71,17 +79,19 @@ defmodule NASR.Entities.DepartureProcedure.RouteTest do
     end
 
     test "handles point sequences" do
-      point1 = create_sample_data(%{
-        "POINT_SEQ" => "10",
-        "POINT" => "ACCRA",
-        "NEXT_POINT" => "HHHUL"
-      })
+      point1 =
+        create_sample_data(%{
+          "POINT_SEQ" => "10",
+          "POINT" => "ACCRA",
+          "NEXT_POINT" => "HHHUL"
+        })
 
-      point2 = create_sample_data(%{
-        "POINT_SEQ" => "20",
-        "POINT" => "HHHUL",
-        "NEXT_POINT" => "LVENS"
-      })
+      point2 =
+        create_sample_data(%{
+          "POINT_SEQ" => "20",
+          "POINT" => "HHHUL",
+          "NEXT_POINT" => "LVENS"
+        })
 
       result1 = Route.new(point1)
       result2 = Route.new(point2)
@@ -95,14 +105,16 @@ defmodule NASR.Entities.DepartureProcedure.RouteTest do
     end
 
     test "handles ICAO region codes" do
-      us_point = create_sample_data(%{
-        "ICAO_REGION_CODE" => "K5"
-      })
+      us_point =
+        create_sample_data(%{
+          "ICAO_REGION_CODE" => "K5"
+        })
 
-      canada_point = create_sample_data(%{
-        "ICAO_REGION_CODE" => "C",
-        "POINT" => "TORONTO"
-      })
+      canada_point =
+        create_sample_data(%{
+          "ICAO_REGION_CODE" => "C",
+          "POINT" => "TORONTO"
+        })
 
       us_result = Route.new(us_point)
       canada_result = Route.new(canada_point)
@@ -113,28 +125,34 @@ defmodule NASR.Entities.DepartureProcedure.RouteTest do
     end
 
     test "handles complex airport runway associations" do
-      complex_assoc = create_sample_data(%{
-        "ARPT_RWY_ASSOC" => "ATL/08L, ATL/08R, ATL/09L, ATL/09R, ATL/10, ATL/26L, ATL/26R, ATL/27L, ATL/27R, ATL/28, PDK, FTY"
-      })
+      complex_assoc =
+        create_sample_data(%{
+          "ARPT_RWY_ASSOC" =>
+            "ATL/08L, ATL/08R, ATL/09L, ATL/09R, ATL/10, ATL/26L, ATL/26R, ATL/27L, ATL/27R, ATL/28, PDK, FTY"
+        })
 
-      simple_assoc = create_sample_data(%{
-        "ARPT_RWY_ASSOC" => "BOS/04L, BOS/04R"
-      })
+      simple_assoc =
+        create_sample_data(%{
+          "ARPT_RWY_ASSOC" => "BOS/04L, BOS/04R"
+        })
 
       complex_result = Route.new(complex_assoc)
       simple_result = Route.new(simple_assoc)
 
-      assert complex_result.airport_runway_association == "ATL/08L, ATL/08R, ATL/09L, ATL/09R, ATL/10, ATL/26L, ATL/26R, ATL/27L, ATL/27R, ATL/28, PDK, FTY"
+      assert complex_result.airport_runway_association ==
+               "ATL/08L, ATL/08R, ATL/09L, ATL/09R, ATL/10, ATL/26L, ATL/26R, ATL/27L, ATL/27R, ATL/28, PDK, FTY"
+
       assert simple_result.airport_runway_association == "BOS/04L, BOS/04R"
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "EFF_DATE" => "",
-        "BODY_SEQ" => "",
-        "POINT_SEQ" => "",
-        "TRANSITION_COMPUTER_CODE" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "EFF_DATE" => "",
+          "BODY_SEQ" => "",
+          "POINT_SEQ" => "",
+          "TRANSITION_COMPUTER_CODE" => ""
+        })
 
       result = Route.new(sample_data)
 
@@ -153,21 +171,25 @@ defmodule NASR.Entities.DepartureProcedure.RouteTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "DP_NAME" => "ACCRA",
-      "ARTCC" => "ZAU",
-      "DP_COMPUTER_CODE" => "ACCRA5.ACCRA",
-      "ROUTE_PORTION_TYPE" => "BODY",
-      "ROUTE_NAME" => "FANZI-ACCRA",
-      "BODY_SEQ" => "1",
-      "TRANSITION_COMPUTER_CODE" => "",
-      "POINT_SEQ" => "10",
-      "POINT" => "ACCRA",
-      "ICAO_REGION_CODE" => "K5",
-      "POINT_TYPE" => "WP   ",
-      "NEXT_POINT" => "HHHUL",
-      "ARPT_RWY_ASSOC" => "57C, BUU, ENW, ETB, HXF, MKE/01L, MKE/01R, MKE/07L, MKE/07R, MKE/13, MKE/19L, MKE/19R, MKE/25L, MKE/25R, MKE/31, MWC, RAC, UES"
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "DP_NAME" => "ACCRA",
+        "ARTCC" => "ZAU",
+        "DP_COMPUTER_CODE" => "ACCRA5.ACCRA",
+        "ROUTE_PORTION_TYPE" => "BODY",
+        "ROUTE_NAME" => "FANZI-ACCRA",
+        "BODY_SEQ" => "1",
+        "TRANSITION_COMPUTER_CODE" => "",
+        "POINT_SEQ" => "10",
+        "POINT" => "ACCRA",
+        "ICAO_REGION_CODE" => "K5",
+        "POINT_TYPE" => "WP   ",
+        "NEXT_POINT" => "HHHUL",
+        "ARPT_RWY_ASSOC" =>
+          "57C, BUU, ENW, ETB, HXF, MKE/01L, MKE/01R, MKE/07L, MKE/07R, MKE/13, MKE/19L, MKE/19R, MKE/25L, MKE/25R, MKE/31, MWC, RAC, UES"
+      },
+      overrides
+    )
   end
 end

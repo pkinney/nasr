@@ -87,32 +87,33 @@ defmodule NASR.Entities.MilitaryTrainingRoute.Point do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      route_type_code: parse_route_type_code(Map.fetch!(entity, "ROUTE_TYPE_CODE")),
-      route_id: Map.fetch!(entity, "ROUTE_ID"),
-      artcc: Map.fetch!(entity, "ARTCC"),
-      route_point_sequence: safe_str_to_int(Map.fetch!(entity, "ROUTE_PT_SEQ")),
-      route_point_id: Map.fetch!(entity, "ROUTE_PT_ID"),
-      next_route_point_id: Map.fetch!(entity, "NEXT_ROUTE_PT_ID"),
-      segment_text: Map.fetch!(entity, "SEGMENT_TEXT"),
-      latitude_degrees: safe_str_to_int(Map.fetch!(entity, "LAT_DEG")),
-      latitude_minutes: safe_str_to_int(Map.fetch!(entity, "LAT_MIN")),
-      latitude_seconds: safe_str_to_float(Map.fetch!(entity, "LAT_SEC")),
-      latitude_hemisphere: Map.fetch!(entity, "LAT_HEMIS"),
-      latitude: safe_str_to_float(Map.fetch!(entity, "LAT_DECIMAL")),
-      longitude_degrees: safe_str_to_int(Map.fetch!(entity, "LONG_DEG")),
-      longitude_minutes: safe_str_to_int(Map.fetch!(entity, "LONG_MIN")),
-      longitude_seconds: safe_str_to_float(Map.fetch!(entity, "LONG_SEC")),
-      longitude_hemisphere: Map.fetch!(entity, "LONG_HEMIS"),
-      longitude: safe_str_to_float(Map.fetch!(entity, "LONG_DECIMAL")),
-      navaid_id: Map.fetch!(entity, "NAV_ID"),
-      navaid_bearing: safe_str_to_int(Map.fetch!(entity, "NAVAID_BEARING")),
-      navaid_distance: safe_str_to_int(Map.fetch!(entity, "NAVAID_DIST"))
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      route_type_code: parse_route_type_code(Map.get(entity, "ROUTE_TYPE_CODE")),
+      route_id: Map.get(entity, "ROUTE_ID"),
+      artcc: Map.get(entity, "ARTCC"),
+      route_point_sequence: safe_str_to_int(Map.get(entity, "ROUTE_PT_SEQ")),
+      route_point_id: Map.get(entity, "ROUTE_PT_ID"),
+      next_route_point_id: Map.get(entity, "NEXT_ROUTE_PT_ID"),
+      segment_text: Map.get(entity, "SEGMENT_TEXT"),
+      latitude_degrees: safe_str_to_int(Map.get(entity, "LAT_DEG")),
+      latitude_minutes: safe_str_to_int(Map.get(entity, "LAT_MIN")),
+      latitude_seconds: safe_str_to_float(Map.get(entity, "LAT_SEC")),
+      latitude_hemisphere: Map.get(entity, "LAT_HEMIS"),
+      latitude: safe_str_to_float(Map.get(entity, "LAT_DECIMAL")),
+      longitude_degrees: safe_str_to_int(Map.get(entity, "LONG_DEG")),
+      longitude_minutes: safe_str_to_int(Map.get(entity, "LONG_MIN")),
+      longitude_seconds: safe_str_to_float(Map.get(entity, "LONG_SEC")),
+      longitude_hemisphere: Map.get(entity, "LONG_HEMIS"),
+      longitude: safe_str_to_float(Map.get(entity, "LONG_DECIMAL")),
+      navaid_id: Map.get(entity, "NAV_ID"),
+      navaid_bearing: safe_str_to_int(Map.get(entity, "NAVAID_BEARING")),
+      navaid_distance: safe_str_to_int(Map.get(entity, "NAVAID_DIST"))
     }
   end
 
   defp parse_route_type_code(nil), do: nil
   defp parse_route_type_code(""), do: nil
+
   defp parse_route_type_code(code) when is_binary(code) do
     case String.trim(code) do
       "IR" -> :instrument_route

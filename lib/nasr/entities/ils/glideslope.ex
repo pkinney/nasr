@@ -72,14 +72,22 @@ defmodule NASR.Entities.ILS.Glideslope do
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
           site_number: String.t(),
-          site_type_code: :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
+          site_type_code:
+            :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
           state_code: String.t(),
           airport_id: String.t(),
           city: String.t(),
           country_code: String.t(),
           runway_end_id: String.t(),
           ils_localizer_id: String.t(),
-          system_type_code: :ils | :localizer_only | :simplified_directional_facility | :localizer_directional_aid | :microwave_landing_system | String.t() | nil,
+          system_type_code:
+            :ils
+            | :localizer_only
+            | :simplified_directional_facility
+            | :localizer_directional_aid
+            | :microwave_landing_system
+            | String.t()
+            | nil,
           component_status: String.t(),
           component_status_date: Date.t() | nil,
           latitude_degrees: integer() | nil,
@@ -105,38 +113,39 @@ defmodule NASR.Entities.ILS.Glideslope do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      site_number: Map.fetch!(entity, "SITE_NO"),
-      site_type_code: parse_site_type_code(Map.fetch!(entity, "SITE_TYPE_CODE")),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      airport_id: Map.fetch!(entity, "ARPT_ID"),
-      city: Map.fetch!(entity, "CITY"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      runway_end_id: Map.fetch!(entity, "RWY_END_ID"),
-      ils_localizer_id: Map.fetch!(entity, "ILS_LOC_ID"),
-      system_type_code: parse_system_type_code(Map.fetch!(entity, "SYSTEM_TYPE_CODE")),
-      component_status: Map.fetch!(entity, "COMPONENT_STATUS"),
-      component_status_date: parse_date(Map.fetch!(entity, "COMPONENT_STATUS_DATE")),
-      latitude_degrees: safe_str_to_int(Map.fetch!(entity, "LAT_DEG")),
-      latitude_minutes: safe_str_to_int(Map.fetch!(entity, "LAT_MIN")),
-      latitude_seconds: safe_str_to_float(Map.fetch!(entity, "LAT_SEC")),
-      latitude_hemisphere: parse_hemisphere(Map.fetch!(entity, "LAT_HEMIS")),
-      latitude_decimal: safe_str_to_float(Map.fetch!(entity, "LAT_DECIMAL")),
-      longitude_degrees: safe_str_to_int(Map.fetch!(entity, "LONG_DEG")),
-      longitude_minutes: safe_str_to_int(Map.fetch!(entity, "LONG_MIN")),
-      longitude_seconds: safe_str_to_float(Map.fetch!(entity, "LONG_SEC")),
-      longitude_hemisphere: parse_hemisphere(Map.fetch!(entity, "LONG_HEMIS")),
-      longitude_decimal: safe_str_to_float(Map.fetch!(entity, "LONG_DECIMAL")),
-      latitude_longitude_source_code: Map.fetch!(entity, "LAT_LONG_SOURCE_CODE"),
-      site_elevation: safe_str_to_float(Map.fetch!(entity, "SITE_ELEVATION")),
-      glideslope_type_code: Map.fetch!(entity, "G_S_TYPE_CODE"),
-      glideslope_angle: safe_str_to_int(Map.fetch!(entity, "G_S_ANGLE")),
-      glideslope_frequency: safe_str_to_float(Map.fetch!(entity, "G_S_FREQ"))
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      site_number: Map.get(entity, "SITE_NO"),
+      site_type_code: parse_site_type_code(Map.get(entity, "SITE_TYPE_CODE")),
+      state_code: Map.get(entity, "STATE_CODE"),
+      airport_id: Map.get(entity, "ARPT_ID"),
+      city: Map.get(entity, "CITY"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      runway_end_id: Map.get(entity, "RWY_END_ID"),
+      ils_localizer_id: Map.get(entity, "ILS_LOC_ID"),
+      system_type_code: parse_system_type_code(Map.get(entity, "SYSTEM_TYPE_CODE")),
+      component_status: Map.get(entity, "COMPONENT_STATUS"),
+      component_status_date: parse_date(Map.get(entity, "COMPONENT_STATUS_DATE")),
+      latitude_degrees: safe_str_to_int(Map.get(entity, "LAT_DEG")),
+      latitude_minutes: safe_str_to_int(Map.get(entity, "LAT_MIN")),
+      latitude_seconds: safe_str_to_float(Map.get(entity, "LAT_SEC")),
+      latitude_hemisphere: parse_hemisphere(Map.get(entity, "LAT_HEMIS")),
+      latitude_decimal: safe_str_to_float(Map.get(entity, "LAT_DECIMAL")),
+      longitude_degrees: safe_str_to_int(Map.get(entity, "LONG_DEG")),
+      longitude_minutes: safe_str_to_int(Map.get(entity, "LONG_MIN")),
+      longitude_seconds: safe_str_to_float(Map.get(entity, "LONG_SEC")),
+      longitude_hemisphere: parse_hemisphere(Map.get(entity, "LONG_HEMIS")),
+      longitude_decimal: safe_str_to_float(Map.get(entity, "LONG_DECIMAL")),
+      latitude_longitude_source_code: Map.get(entity, "LAT_LONG_SOURCE_CODE"),
+      site_elevation: safe_str_to_float(Map.get(entity, "SITE_ELEVATION")),
+      glideslope_type_code: Map.get(entity, "G_S_TYPE_CODE"),
+      glideslope_angle: safe_str_to_int(Map.get(entity, "G_S_ANGLE")),
+      glideslope_frequency: safe_str_to_float(Map.get(entity, "G_S_FREQ"))
     }
   end
 
   defp parse_site_type_code(nil), do: nil
   defp parse_site_type_code(""), do: nil
+
   defp parse_site_type_code(code) when is_binary(code) do
     case String.trim(code) do
       "A" -> :airport
@@ -151,6 +160,7 @@ defmodule NASR.Entities.ILS.Glideslope do
 
   defp parse_system_type_code(nil), do: nil
   defp parse_system_type_code(""), do: nil
+
   defp parse_system_type_code(code) when is_binary(code) do
     case String.trim(code) do
       "LS" -> :ils
@@ -164,6 +174,7 @@ defmodule NASR.Entities.ILS.Glideslope do
 
   defp parse_hemisphere(nil), do: nil
   defp parse_hemisphere(""), do: nil
+
   defp parse_hemisphere(hemisphere) when is_binary(hemisphere) do
     case String.trim(hemisphere) do
       "N" -> :north

@@ -1,5 +1,6 @@
 defmodule NASR.Entities.ILS.MarkerTest do
   use ExUnit.Case
+
   alias NASR.Entities.ILS.Marker
 
   describe "new/1" do
@@ -84,10 +85,12 @@ defmodule NASR.Entities.ILS.MarkerTest do
       ]
 
       for {input, expected} <- test_cases do
-        sample_data = create_sample_data(%{
-          "LAT_HEMIS" => input,
-          "LONG_HEMIS" => input
-        })
+        sample_data =
+          create_sample_data(%{
+            "LAT_HEMIS" => input,
+            "LONG_HEMIS" => input
+          })
+
         result = Marker.new(sample_data)
         assert result.latitude_hemisphere == expected
         assert result.longitude_hemisphere == expected
@@ -95,20 +98,23 @@ defmodule NASR.Entities.ILS.MarkerTest do
     end
 
     test "handles marker types" do
-      outer_marker = create_sample_data(%{
-        "ILS_COMP_TYPE_CODE" => "OM",
-        "MKR_FAC_TYPE_CODE" => "MR"
-      })
+      outer_marker =
+        create_sample_data(%{
+          "ILS_COMP_TYPE_CODE" => "OM",
+          "MKR_FAC_TYPE_CODE" => "MR"
+        })
 
-      middle_marker = create_sample_data(%{
-        "ILS_COMP_TYPE_CODE" => "MM",
-        "MKR_FAC_TYPE_CODE" => "M"
-      })
+      middle_marker =
+        create_sample_data(%{
+          "ILS_COMP_TYPE_CODE" => "MM",
+          "MKR_FAC_TYPE_CODE" => "M"
+        })
 
-      inner_marker = create_sample_data(%{
-        "ILS_COMP_TYPE_CODE" => "IM",
-        "MKR_FAC_TYPE_CODE" => "M"
-      })
+      inner_marker =
+        create_sample_data(%{
+          "ILS_COMP_TYPE_CODE" => "IM",
+          "MKR_FAC_TYPE_CODE" => "M"
+        })
 
       outer_result = Marker.new(outer_marker)
       middle_result = Marker.new(middle_marker)
@@ -125,10 +131,11 @@ defmodule NASR.Entities.ILS.MarkerTest do
     end
 
     test "handles numeric conversions" do
-      test_data = create_sample_data(%{
-        "FREQ" => "215",
-        "SITE_ELEVATION" => "1250.8"
-      })
+      test_data =
+        create_sample_data(%{
+          "FREQ" => "215",
+          "SITE_ELEVATION" => "1250.8"
+        })
 
       result = Marker.new(test_data)
 
@@ -137,15 +144,16 @@ defmodule NASR.Entities.ILS.MarkerTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "EFF_DATE" => "",
-        "LAT_DEG" => "",
-        "FREQ" => "",
-        "SITE_ELEVATION" => "",
-        "COMPASS_LOCATOR_NAME" => "",
-        "NAV_ID" => "",
-        "NAV_TYPE" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "EFF_DATE" => "",
+          "LAT_DEG" => "",
+          "FREQ" => "",
+          "SITE_ELEVATION" => "",
+          "COMPASS_LOCATOR_NAME" => "",
+          "NAV_ID" => "",
+          "NAV_TYPE" => ""
+        })
 
       result = Marker.new(sample_data)
 
@@ -167,39 +175,42 @@ defmodule NASR.Entities.ILS.MarkerTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "SITE_NO" => "00128.",
-      "SITE_TYPE_CODE" => "A",
-      "STATE_CODE" => "AL",
-      "ARPT_ID" => "ANB",
-      "CITY" => "ANNISTON",
-      "COUNTRY_CODE" => "US",
-      "RWY_END_ID" => "05",
-      "ILS_LOC_ID" => "ANB",
-      "SYSTEM_TYPE_CODE" => "LS",
-      "ILS_COMP_TYPE_CODE" => "OM",
-      "COMPONENT_STATUS" => "OPERATIONAL IFR",
-      "COMPONENT_STATUS_DATE" => "2011/08/30",
-      "LAT_DEG" => "33",
-      "LAT_MIN" => "32",
-      "LAT_SEC" => "3.6585",
-      "LAT_HEMIS" => "N",
-      "LAT_DECIMAL" => "33.53434958",
-      "LONG_DEG" => "85",
-      "LONG_MIN" => "55",
-      "LONG_SEC" => "50.8501",
-      "LONG_HEMIS" => "W",
-      "LONG_DECIMAL" => "-85.93079169",
-      "LAT_LONG_SOURCE_CODE" => "K",
-      "SITE_ELEVATION" => "589.9",
-      "MKR_FAC_TYPE_CODE" => "MR",
-      "MARKER_ID_BEACON" => "AN",
-      "COMPASS_LOCATOR_NAME" => "BOGGA",
-      "FREQ" => "211",
-      "NAV_ID" => "AN",
-      "NAV_TYPE" => "NDB",
-      "LOW_POWERED_NDB_STATUS" => ""
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "SITE_NO" => "00128.",
+        "SITE_TYPE_CODE" => "A",
+        "STATE_CODE" => "AL",
+        "ARPT_ID" => "ANB",
+        "CITY" => "ANNISTON",
+        "COUNTRY_CODE" => "US",
+        "RWY_END_ID" => "05",
+        "ILS_LOC_ID" => "ANB",
+        "SYSTEM_TYPE_CODE" => "LS",
+        "ILS_COMP_TYPE_CODE" => "OM",
+        "COMPONENT_STATUS" => "OPERATIONAL IFR",
+        "COMPONENT_STATUS_DATE" => "2011/08/30",
+        "LAT_DEG" => "33",
+        "LAT_MIN" => "32",
+        "LAT_SEC" => "3.6585",
+        "LAT_HEMIS" => "N",
+        "LAT_DECIMAL" => "33.53434958",
+        "LONG_DEG" => "85",
+        "LONG_MIN" => "55",
+        "LONG_SEC" => "50.8501",
+        "LONG_HEMIS" => "W",
+        "LONG_DECIMAL" => "-85.93079169",
+        "LAT_LONG_SOURCE_CODE" => "K",
+        "SITE_ELEVATION" => "589.9",
+        "MKR_FAC_TYPE_CODE" => "MR",
+        "MARKER_ID_BEACON" => "AN",
+        "COMPASS_LOCATOR_NAME" => "BOGGA",
+        "FREQ" => "211",
+        "NAV_ID" => "AN",
+        "NAV_TYPE" => "NDB",
+        "LOW_POWERED_NDB_STATUS" => ""
+      },
+      overrides
+    )
   end
 end

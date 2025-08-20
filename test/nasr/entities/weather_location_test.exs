@@ -1,5 +1,6 @@
 defmodule NASR.Entities.WeatherLocationTest do
   use ExUnit.Case
+
   alias NASR.Entities.WeatherLocation
 
   describe "new/1" do
@@ -47,7 +48,7 @@ defmodule NASR.Entities.WeatherLocationTest do
       assert weather_location.weather_id == "0CO"
       assert weather_location.city == "EMPIRE"
       assert weather_location.state_code == "CO"
-      assert weather_location.elevation == 12493
+      assert weather_location.elevation == 12_493
       assert weather_location.survey_method_code == :surveyed
     end
 
@@ -112,8 +113,7 @@ defmodule NASR.Entities.WeatherLocationTest do
     end
 
     test "preserves unknown survey method codes" do
-      raw_data = create_sample_data()
-        |> Map.put("SURVEY_METHOD_CODE", "X")
+      raw_data = Map.put(create_sample_data(), "SURVEY_METHOD_CODE", "X")
 
       weather_location = WeatherLocation.new(raw_data)
 
@@ -121,8 +121,7 @@ defmodule NASR.Entities.WeatherLocationTest do
     end
 
     test "handles zero elevation" do
-      raw_data = create_sample_data()
-        |> Map.put("ELEV", "0")
+      raw_data = Map.put(create_sample_data(), "ELEV", "0")
 
       weather_location = WeatherLocation.new(raw_data)
 
@@ -130,8 +129,7 @@ defmodule NASR.Entities.WeatherLocationTest do
     end
 
     test "handles negative elevation (below sea level)" do
-      raw_data = create_sample_data()
-        |> Map.put("ELEV", "-100")
+      raw_data = Map.put(create_sample_data(), "ELEV", "-100")
 
       weather_location = WeatherLocation.new(raw_data)
 

@@ -47,14 +47,22 @@ defmodule NASR.Entities.ILS.Remarks do
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
           site_number: String.t(),
-          site_type_code: :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
+          site_type_code:
+            :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
           state_code: String.t(),
           airport_id: String.t(),
           city: String.t(),
           country_code: String.t(),
           runway_end_id: String.t(),
           ils_localizer_id: String.t(),
-          system_type_code: :ils | :localizer_only | :simplified_directional_facility | :localizer_directional_aid | :microwave_landing_system | String.t() | nil,
+          system_type_code:
+            :ils
+            | :localizer_only
+            | :simplified_directional_facility
+            | :localizer_directional_aid
+            | :microwave_landing_system
+            | String.t()
+            | nil,
           table_name: String.t(),
           ils_component_type_code: String.t(),
           reference_column_name: String.t(),
@@ -68,26 +76,27 @@ defmodule NASR.Entities.ILS.Remarks do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      site_number: Map.fetch!(entity, "SITE_NO"),
-      site_type_code: parse_site_type_code(Map.fetch!(entity, "SITE_TYPE_CODE")),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      airport_id: Map.fetch!(entity, "ARPT_ID"),
-      city: Map.fetch!(entity, "CITY"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      runway_end_id: Map.fetch!(entity, "RWY_END_ID"),
-      ils_localizer_id: Map.fetch!(entity, "ILS_LOC_ID"),
-      system_type_code: parse_system_type_code(Map.fetch!(entity, "SYSTEM_TYPE_CODE")),
-      table_name: Map.fetch!(entity, "TAB_NAME"),
-      ils_component_type_code: Map.fetch!(entity, "ILS_COMP_TYPE_CODE"),
-      reference_column_name: Map.fetch!(entity, "REF_COL_NAME"),
-      reference_column_sequence_no: safe_str_to_int(Map.fetch!(entity, "REF_COL_SEQ_NO")),
-      remark_text: Map.fetch!(entity, "REMARK")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      site_number: Map.get(entity, "SITE_NO"),
+      site_type_code: parse_site_type_code(Map.get(entity, "SITE_TYPE_CODE")),
+      state_code: Map.get(entity, "STATE_CODE"),
+      airport_id: Map.get(entity, "ARPT_ID"),
+      city: Map.get(entity, "CITY"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      runway_end_id: Map.get(entity, "RWY_END_ID"),
+      ils_localizer_id: Map.get(entity, "ILS_LOC_ID"),
+      system_type_code: parse_system_type_code(Map.get(entity, "SYSTEM_TYPE_CODE")),
+      table_name: Map.get(entity, "TAB_NAME"),
+      ils_component_type_code: Map.get(entity, "ILS_COMP_TYPE_CODE"),
+      reference_column_name: Map.get(entity, "REF_COL_NAME"),
+      reference_column_sequence_no: safe_str_to_int(Map.get(entity, "REF_COL_SEQ_NO")),
+      remark_text: Map.get(entity, "REMARK")
     }
   end
 
   defp parse_site_type_code(nil), do: nil
   defp parse_site_type_code(""), do: nil
+
   defp parse_site_type_code(code) when is_binary(code) do
     case String.trim(code) do
       "A" -> :airport
@@ -102,6 +111,7 @@ defmodule NASR.Entities.ILS.Remarks do
 
   defp parse_system_type_code(nil), do: nil
   defp parse_system_type_code(""), do: nil
+
   defp parse_system_type_code(code) when is_binary(code) do
     case String.trim(code) do
       "LS" -> :ils

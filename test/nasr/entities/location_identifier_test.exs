@@ -37,12 +37,13 @@ defmodule NASR.Entities.LocationIdentifierTest do
     end
 
     test "handles airport landing facility" do
-      sample_data = create_sample_data(%{
-        "LOC_ID" => "LAX",
-        "LID_GROUP" => "LANDING FACILITY",
-        "FAC_TYPE" => "A",
-        "FAC_NAME" => "LOS ANGELES INTERNATIONAL"
-      })
+      sample_data =
+        create_sample_data(%{
+          "LOC_ID" => "LAX",
+          "LID_GROUP" => "LANDING FACILITY",
+          "FAC_TYPE" => "A",
+          "FAC_NAME" => "LOS ANGELES INTERNATIONAL"
+        })
 
       result = LocationIdentifier.new(sample_data)
 
@@ -53,12 +54,13 @@ defmodule NASR.Entities.LocationIdentifierTest do
     end
 
     test "handles navigation aid facility" do
-      sample_data = create_sample_data(%{
-        "LOC_ID" => "VOR",
-        "LID_GROUP" => "NAVIGATION AID",
-        "FAC_TYPE" => "VOR",
-        "FAC_NAME" => "TEST VOR"
-      })
+      sample_data =
+        create_sample_data(%{
+          "LOC_ID" => "VOR",
+          "LID_GROUP" => "NAVIGATION AID",
+          "FAC_TYPE" => "VOR",
+          "FAC_NAME" => "TEST VOR"
+        })
 
       result = LocationIdentifier.new(sample_data)
 
@@ -69,12 +71,13 @@ defmodule NASR.Entities.LocationIdentifierTest do
     end
 
     test "handles weather reporting station" do
-      sample_data = create_sample_data(%{
-        "LOC_ID" => "WX1",
-        "LID_GROUP" => "WEATHER REPORTING STATION",
-        "FAC_TYPE" => "AWOS-3",
-        "FAC_NAME" => "AUTOMATED WEATHER STATION"
-      })
+      sample_data =
+        create_sample_data(%{
+          "LOC_ID" => "WX1",
+          "LID_GROUP" => "WEATHER REPORTING STATION",
+          "FAC_TYPE" => "AWOS-3",
+          "FAC_NAME" => "AUTOMATED WEATHER STATION"
+        })
 
       result = LocationIdentifier.new(sample_data)
 
@@ -112,10 +115,11 @@ defmodule NASR.Entities.LocationIdentifierTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "LID_GROUP" => "",
-        "EFF_DATE" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "LID_GROUP" => "",
+          "EFF_DATE" => ""
+        })
 
       result = LocationIdentifier.new(sample_data)
 
@@ -125,15 +129,24 @@ defmodule NASR.Entities.LocationIdentifierTest do
 
     test "handles various facility types" do
       facility_types = [
-        "A",         # Airport
-        "H",         # Heliport
-        "VOR",       # VOR
-        "VORTAC",    # VORTAC
-        "NDB",       # NDB
-        "AWOS-3",    # Weather station
-        "ASOS",      # Weather station
-        "ILS",       # ILS
-        "DME"        # DME
+        # Airport
+        "A",
+        # Heliport
+        "H",
+        # VOR
+        "VOR",
+        # VORTAC
+        "VORTAC",
+        # NDB
+        "NDB",
+        # Weather station
+        "AWOS-3",
+        # Weather station
+        "ASOS",
+        # ILS
+        "ILS",
+        # DME
+        "DME"
       ]
 
       for fac_type <- facility_types do

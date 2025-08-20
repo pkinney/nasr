@@ -51,18 +51,18 @@ defmodule NASR.Entities.Fix.NavaidMakeup do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      fix_id: Map.fetch!(entity, "FIX_ID"),
-      icao_region_code: Map.fetch!(entity, "ICAO_REGION_CODE"),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      nav_id: Map.fetch!(entity, "NAV_ID"),
-      nav_type: Map.fetch!(entity, "NAV_TYPE"),
-      bearing: safe_str_to_float(Map.fetch!(entity, "BEARING")),
-      distance: safe_str_to_float(Map.fetch!(entity, "DISTANCE")),
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
+      fix_id: Map.get(entity, "FIX_ID"),
+      icao_region_code: Map.get(entity, "ICAO_REGION_CODE"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      nav_id: Map.get(entity, "NAV_ID"),
+      nav_type: Map.get(entity, "NAV_TYPE"),
+      bearing: safe_str_to_float(Map.get(entity, "BEARING")),
+      distance: safe_str_to_float(Map.get(entity, "DISTANCE")),
+      effective_date: parse_date(Map.get(entity, "EFF_DATE"))
     }
   end
 
   @spec type() :: String.t()
-  def type(), do: "FIX_NAV"
+  def type, do: "FIX_NAV"
 end

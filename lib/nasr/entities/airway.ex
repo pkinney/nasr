@@ -34,7 +34,20 @@ defmodule NASR.Entities.Airway do
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
           regulatory: boolean() | nil,
-          airway_designation: :amber | :atlantic | :blue | :bahama | :green | :jet | :pacific | :puerto_rico | :red | :gps_rnav | :vor | String.t() | nil,
+          airway_designation:
+            :amber
+            | :atlantic
+            | :blue
+            | :bahama
+            | :green
+            | :jet
+            | :pacific
+            | :puerto_rico
+            | :red
+            | :gps_rnav
+            | :vor
+            | String.t()
+            | nil,
           airway_location: :alaska | :hawaii | :contiguous_us | String.t() | nil,
           airway_id: String.t(),
           update_date: Date.t() | nil,
@@ -48,19 +61,20 @@ defmodule NASR.Entities.Airway do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      regulatory: convert_yn(Map.fetch!(entity, "REGULATORY")),
-      airway_designation: parse_airway_designation(Map.fetch!(entity, "AWY_DESIGNATION")),
-      airway_location: parse_airway_location(Map.fetch!(entity, "AWY_LOCATION")),
-      airway_id: Map.fetch!(entity, "AWY_ID"),
-      update_date: parse_date(Map.fetch!(entity, "UPDATE_DATE")),
-      remark: Map.fetch!(entity, "REMARK"),
-      airway_string: Map.fetch!(entity, "AIRWAY_STRING")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      regulatory: convert_yn(Map.get(entity, "REGULATORY")),
+      airway_designation: parse_airway_designation(Map.get(entity, "AWY_DESIGNATION")),
+      airway_location: parse_airway_location(Map.get(entity, "AWY_LOCATION")),
+      airway_id: Map.get(entity, "AWY_ID"),
+      update_date: parse_date(Map.get(entity, "UPDATE_DATE")),
+      remark: Map.get(entity, "REMARK"),
+      airway_string: Map.get(entity, "AIRWAY_STRING")
     }
   end
 
   defp parse_airway_designation(nil), do: nil
   defp parse_airway_designation(""), do: nil
+
   defp parse_airway_designation(designation) when is_binary(designation) do
     case String.trim(designation) do
       "A" -> :amber
@@ -80,6 +94,7 @@ defmodule NASR.Entities.Airway do
 
   defp parse_airway_location(nil), do: nil
   defp parse_airway_location(""), do: nil
+
   defp parse_airway_location(location) when is_binary(location) do
     case String.trim(location) do
       "A" -> :alaska

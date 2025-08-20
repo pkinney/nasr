@@ -62,19 +62,19 @@ defmodule NASR.Entities.STAR.Route do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      star_computer_code: Map.fetch!(entity, "STAR_COMPUTER_CODE"),
-      artcc: Map.fetch!(entity, "ARTCC"),
-      route_portion_type: Map.fetch!(entity, "ROUTE_PORTION_TYPE"),
-      route_name: Map.fetch!(entity, "ROUTE_NAME"),
-      body_sequence: safe_str_to_int(Map.fetch!(entity, "BODY_SEQ")),
-      transition_computer_code: Map.fetch!(entity, "TRANSITION_COMPUTER_CODE"),
-      point_sequence: safe_str_to_int(Map.fetch!(entity, "POINT_SEQ")),
-      point: Map.fetch!(entity, "POINT"),
-      icao_region_code: Map.fetch!(entity, "ICAO_REGION_CODE"),
-      point_type: Map.fetch!(entity, "POINT_TYPE"),
-      next_point: Map.fetch!(entity, "NEXT_POINT"),
-      airport_runway_association: Map.fetch!(entity, "ARPT_RWY_ASSOC")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      star_computer_code: Map.get(entity, "STAR_COMPUTER_CODE"),
+      artcc: Map.get(entity, "ARTCC"),
+      route_portion_type: Map.get(entity, "ROUTE_PORTION_TYPE"),
+      route_name: Map.get(entity, "ROUTE_NAME"),
+      body_sequence: safe_str_to_int(Map.get(entity, "BODY_SEQ")),
+      transition_computer_code: Map.get(entity, "TRANSITION_COMPUTER_CODE"),
+      point_sequence: safe_str_to_int(Map.get(entity, "POINT_SEQ")),
+      point: Map.get(entity, "POINT"),
+      icao_region_code: Map.get(entity, "ICAO_REGION_CODE"),
+      point_type: Map.get(entity, "POINT_TYPE"),
+      next_point: Map.get(entity, "NEXT_POINT"),
+      airport_runway_association: Map.get(entity, "ARPT_RWY_ASSOC")
     }
   end
 end

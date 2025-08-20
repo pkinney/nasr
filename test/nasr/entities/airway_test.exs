@@ -1,5 +1,6 @@
 defmodule NASR.Entities.AirwayTest do
   use ExUnit.Case
+
   alias NASR.Entities.Airway
 
   describe "new/1" do
@@ -68,12 +69,13 @@ defmodule NASR.Entities.AirwayTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "EFF_DATE" => "",
-        "UPDATE_DATE" => "",
-        "AWY_DESIGNATION" => "",
-        "AWY_LOCATION" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "EFF_DATE" => "",
+          "UPDATE_DATE" => "",
+          "AWY_DESIGNATION" => "",
+          "AWY_LOCATION" => ""
+        })
 
       result = Airway.new(sample_data)
 
@@ -84,11 +86,12 @@ defmodule NASR.Entities.AirwayTest do
     end
 
     test "handles VOR airways" do
-      vor_airway = create_sample_data(%{
-        "AWY_DESIGNATION" => "V",
-        "AWY_ID" => "V123",
-        "AIRWAY_STRING" => "VOR1 VOR2 VOR3"
-      })
+      vor_airway =
+        create_sample_data(%{
+          "AWY_DESIGNATION" => "V",
+          "AWY_ID" => "V123",
+          "AIRWAY_STRING" => "VOR1 VOR2 VOR3"
+        })
 
       result = Airway.new(vor_airway)
       assert result.airway_designation == :vor
@@ -97,11 +100,12 @@ defmodule NASR.Entities.AirwayTest do
     end
 
     test "handles GPS RNAV airways" do
-      rnav_airway = create_sample_data(%{
-        "AWY_DESIGNATION" => "RN",
-        "AWY_ID" => "T123",
-        "AIRWAY_STRING" => "WAYPOINT1 WAYPOINT2 WAYPOINT3"
-      })
+      rnav_airway =
+        create_sample_data(%{
+          "AWY_DESIGNATION" => "RN",
+          "AWY_ID" => "T123",
+          "AIRWAY_STRING" => "WAYPOINT1 WAYPOINT2 WAYPOINT3"
+        })
 
       result = Airway.new(rnav_airway)
       assert result.airway_designation == :gps_rnav
@@ -118,15 +122,18 @@ defmodule NASR.Entities.AirwayTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "REGULATORY" => "Y",
-      "AWY_DESIGNATION" => "J",
-      "AWY_LOCATION" => "C",
-      "AWY_ID" => "J1",
-      "UPDATE_DATE" => "2025/07/01",
-      "REMARK" => "JET ROUTE",
-      "AIRWAY_STRING" => "ATL MACON VOR GAZ VOR ATL"
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "REGULATORY" => "Y",
+        "AWY_DESIGNATION" => "J",
+        "AWY_LOCATION" => "C",
+        "AWY_ID" => "J1",
+        "UPDATE_DATE" => "2025/07/01",
+        "REMARK" => "JET ROUTE",
+        "AIRWAY_STRING" => "ATL MACON VOR GAZ VOR ATL"
+      },
+      overrides
+    )
   end
 end

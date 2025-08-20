@@ -73,15 +73,38 @@ defmodule NASR.Entities.Airport.Runway do
           runway_id: String.t(),
           runway_length: integer() | nil,
           runway_width: integer() | nil,
-          surface_type_code: :concrete | :asphalt | :snow | :ice | :mats | :treated | :gravel | :turf | :dirt | :pem | :roof_top | :water | String.t() | nil,
+          surface_type_code:
+            :concrete
+            | :asphalt
+            | :snow
+            | :ice
+            | :mats
+            | :treated
+            | :gravel
+            | :turf
+            | :dirt
+            | :pem
+            | :roof_top
+            | :water
+            | String.t()
+            | nil,
           surface_condition: :excellent | :good | :fair | :poor | :failed | String.t() | nil,
-          surface_treatment: :grooved | :porous_friction_course | :aggregate_friction_seal_coat | :rubberized_friction_seal_coat | :wire_comb | :none | String.t() | nil,
+          surface_treatment:
+            :grooved
+            | :porous_friction_course
+            | :aggregate_friction_seal_coat
+            | :rubberized_friction_seal_coat
+            | :wire_comb
+            | :none
+            | String.t()
+            | nil,
           pavement_classification_number: String.t(),
           pavement_type: :rigid | :flexible | String.t() | nil,
           subgrade_strength: String.t(),
           tire_pressure_code: String.t(),
           determination_method: :technical | :using_aircraft | String.t() | nil,
-          runway_lights_edge_intensity: :high | :medium | :low | :flood | :non_standard | :perimeter | :strobe | :none | String.t() | nil,
+          runway_lights_edge_intensity:
+            :high | :medium | :low | :flood | :non_standard | :perimeter | :strobe | :none | String.t() | nil,
           runway_length_source: String.t(),
           runway_length_source_date: Date.t() | nil,
           single_wheel_weight: integer() | nil,
@@ -94,39 +117,40 @@ defmodule NASR.Entities.Airport.Runway do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      site_no: Map.fetch!(entity, "SITE_NO"),
-      site_type_code: Map.fetch!(entity, "SITE_TYPE_CODE"),
-      arpt_id: Map.fetch!(entity, "ARPT_ID"),
-      city: Map.fetch!(entity, "CITY"),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      runway_id: Map.fetch!(entity, "RWY_ID"),
-      runway_length: safe_str_to_int(Map.fetch!(entity, "RWY_LEN")),
-      runway_width: safe_str_to_int(Map.fetch!(entity, "RWY_WIDTH")),
-      surface_type_code: parse_surface_type_code(Map.fetch!(entity, "SURFACE_TYPE_CODE")),
-      surface_condition: parse_surface_condition(Map.fetch!(entity, "COND")),
-      surface_treatment: parse_surface_treatment(Map.fetch!(entity, "TREATMENT_CODE")),
-      pavement_classification_number: Map.fetch!(entity, "PCN"),
-      pavement_type: parse_pavement_type(Map.fetch!(entity, "PAVEMENT_TYPE_CODE")),
-      subgrade_strength: Map.fetch!(entity, "SUBGRADE_STRENGTH_CODE"),
-      tire_pressure_code: Map.fetch!(entity, "TIRE_PRES_CODE"),
-      determination_method: parse_determination_method(Map.fetch!(entity, "DTRM_METHOD_CODE")),
-      runway_lights_edge_intensity: parse_runway_lights_intensity(Map.fetch!(entity, "RWY_LGT_CODE")),
-      runway_length_source: Map.fetch!(entity, "RWY_LEN_SOURCE"),
-      runway_length_source_date: parse_date(Map.fetch!(entity, "LENGTH_SOURCE_DATE")),
-      single_wheel_weight: safe_str_to_int(Map.fetch!(entity, "GROSS_WT_SW")),
-      dual_wheel_weight: safe_str_to_int(Map.fetch!(entity, "GROSS_WT_DW")),
-      dual_tandem_weight: safe_str_to_int(Map.fetch!(entity, "GROSS_WT_DTW")),
-      double_dual_tandem_weight: safe_str_to_int(Map.fetch!(entity, "GROSS_WT_DDTW")),
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
+      site_no: Map.get(entity, "SITE_NO"),
+      site_type_code: Map.get(entity, "SITE_TYPE_CODE"),
+      arpt_id: Map.get(entity, "ARPT_ID"),
+      city: Map.get(entity, "CITY"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      runway_id: Map.get(entity, "RWY_ID"),
+      runway_length: safe_str_to_int(Map.get(entity, "RWY_LEN")),
+      runway_width: safe_str_to_int(Map.get(entity, "RWY_WIDTH")),
+      surface_type_code: parse_surface_type_code(Map.get(entity, "SURFACE_TYPE_CODE")),
+      surface_condition: parse_surface_condition(Map.get(entity, "COND")),
+      surface_treatment: parse_surface_treatment(Map.get(entity, "TREATMENT_CODE")),
+      pavement_classification_number: Map.get(entity, "PCN"),
+      pavement_type: parse_pavement_type(Map.get(entity, "PAVEMENT_TYPE_CODE")),
+      subgrade_strength: Map.get(entity, "SUBGRADE_STRENGTH_CODE"),
+      tire_pressure_code: Map.get(entity, "TIRE_PRES_CODE"),
+      determination_method: parse_determination_method(Map.get(entity, "DTRM_METHOD_CODE")),
+      runway_lights_edge_intensity: parse_runway_lights_intensity(Map.get(entity, "RWY_LGT_CODE")),
+      runway_length_source: Map.get(entity, "RWY_LEN_SOURCE"),
+      runway_length_source_date: parse_date(Map.get(entity, "LENGTH_SOURCE_DATE")),
+      single_wheel_weight: safe_str_to_int(Map.get(entity, "GROSS_WT_SW")),
+      dual_wheel_weight: safe_str_to_int(Map.get(entity, "GROSS_WT_DW")),
+      dual_tandem_weight: safe_str_to_int(Map.get(entity, "GROSS_WT_DTW")),
+      double_dual_tandem_weight: safe_str_to_int(Map.get(entity, "GROSS_WT_DDTW")),
+      effective_date: parse_date(Map.get(entity, "EFF_DATE"))
     }
   end
 
   @spec type() :: String.t()
-  def type(), do: "APT_RWY"
+  def type, do: "APT_RWY"
 
   defp parse_surface_type_code(nil), do: nil
   defp parse_surface_type_code(""), do: nil
+
   defp parse_surface_type_code(surface) when is_binary(surface) do
     surface
     |> String.trim()
@@ -149,6 +173,7 @@ defmodule NASR.Entities.Airport.Runway do
 
   defp parse_surface_condition(nil), do: nil
   defp parse_surface_condition(""), do: nil
+
   defp parse_surface_condition(condition) when is_binary(condition) do
     condition
     |> String.trim()
@@ -164,6 +189,7 @@ defmodule NASR.Entities.Airport.Runway do
 
   defp parse_surface_treatment(nil), do: nil
   defp parse_surface_treatment(""), do: nil
+
   defp parse_surface_treatment(treatment) when is_binary(treatment) do
     treatment
     |> String.trim()
@@ -180,6 +206,7 @@ defmodule NASR.Entities.Airport.Runway do
 
   defp parse_pavement_type(nil), do: nil
   defp parse_pavement_type(""), do: nil
+
   defp parse_pavement_type(type) when is_binary(type) do
     case String.trim(type) do
       "R" -> :rigid
@@ -190,6 +217,7 @@ defmodule NASR.Entities.Airport.Runway do
 
   defp parse_determination_method(nil), do: nil
   defp parse_determination_method(""), do: nil
+
   defp parse_determination_method(method) when is_binary(method) do
     case String.trim(method) do
       "T" -> :technical
@@ -200,6 +228,7 @@ defmodule NASR.Entities.Airport.Runway do
 
   defp parse_runway_lights_intensity(nil), do: nil
   defp parse_runway_lights_intensity(""), do: nil
+
   defp parse_runway_lights_intensity(intensity) when is_binary(intensity) do
     intensity
     |> String.trim()

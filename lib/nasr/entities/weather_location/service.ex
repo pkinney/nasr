@@ -41,23 +41,24 @@ defmodule NASR.Entities.WeatherLocation.Service do
         }
 
   @spec type() :: String.t()
-  def type(), do: "WXL_SVC"
+  def type, do: "WXL_SVC"
 
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      weather_id: Map.fetch!(entity, "WEA_ID"),
-      city: Map.fetch!(entity, "CITY"),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      service_type: parse_service_type(Map.fetch!(entity, "WEA_SVC_TYPE_CODE")),
-      service_area: Map.fetch!(entity, "WEA_AFFECT_AREA")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      weather_id: Map.get(entity, "WEA_ID"),
+      city: Map.get(entity, "CITY"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      service_type: parse_service_type(Map.get(entity, "WEA_SVC_TYPE_CODE")),
+      service_area: Map.get(entity, "WEA_AFFECT_AREA")
     }
   end
 
   defp parse_service_type(nil), do: nil
   defp parse_service_type(""), do: nil
+
   defp parse_service_type(type) when is_binary(type) do
     case String.trim(String.upcase(type)) do
       "METAR" -> :metar

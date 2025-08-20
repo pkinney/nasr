@@ -74,15 +74,15 @@ defmodule NASR.Entities.Radar do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      facility_id: Map.fetch!(entity, "FACILITY_ID"),
-      facility_type: parse_facility_type(Map.fetch!(entity, "FACILITY_TYPE")),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      radar_type: parse_radar_type(Map.fetch!(entity, "RADAR_TYPE")),
-      radar_number: safe_str_to_int(Map.fetch!(entity, "RADAR_NO")),
-      radar_hours: Map.fetch!(entity, "RADAR_HRS"),
-      remark: Map.fetch!(entity, "REMARK"),
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
+      facility_id: Map.get(entity, "FACILITY_ID"),
+      facility_type: parse_facility_type(Map.get(entity, "FACILITY_TYPE")),
+      state_code: Map.get(entity, "STATE_CODE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      radar_type: parse_radar_type(Map.get(entity, "RADAR_TYPE")),
+      radar_number: safe_str_to_int(Map.get(entity, "RADAR_NO")),
+      radar_hours: Map.get(entity, "RADAR_HRS"),
+      remark: Map.get(entity, "REMARK"),
+      effective_date: parse_date(Map.get(entity, "EFF_DATE"))
     }
   end
 

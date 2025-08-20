@@ -1,5 +1,6 @@
 defmodule NASR.Entities.FlightServiceStationTest do
   use ExUnit.Case
+
   alias NASR.Entities.FlightServiceStation
 
   describe "new/1" do
@@ -125,7 +126,8 @@ defmodule NASR.Entities.FlightServiceStationTest do
     end
 
     test "preserves unknown facility types and statuses" do
-      raw_data = create_sample_data()
+      raw_data =
+        create_sample_data()
         |> Map.put("FSS_FAC_TYPE", "UNKNOWN_TYPE")
         |> Map.put("FAC_STATUS", "X")
 

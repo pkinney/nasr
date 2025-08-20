@@ -42,15 +42,15 @@ defmodule NASR.Entities.Fix.ChartingInformation do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      fix_id: Map.fetch!(entity, "FIX_ID"),
-      icao_region_code: Map.fetch!(entity, "ICAO_REGION_CODE"),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      charting_type_desc: Map.fetch!(entity, "CHARTING_TYPE_DESC"),
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
+      fix_id: Map.get(entity, "FIX_ID"),
+      icao_region_code: Map.get(entity, "ICAO_REGION_CODE"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      charting_type_desc: Map.get(entity, "CHARTING_TYPE_DESC"),
+      effective_date: parse_date(Map.get(entity, "EFF_DATE"))
     }
   end
 
   @spec type() :: String.t()
-  def type(), do: "FIX_CHRT"
+  def type, do: "FIX_CHRT"
 end

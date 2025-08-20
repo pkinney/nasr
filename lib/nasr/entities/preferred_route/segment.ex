@@ -125,7 +125,7 @@ defmodule NASR.Entities.PreferredRoute.Segment do
   defp parse_route_type("RNAV"), do: :rnav
   defp parse_route_type(nil), do: nil
   defp parse_route_type(""), do: nil
-  defp parse_route_type(code) when is_binary(code), do: String.downcase(code) |> String.to_atom()
+  defp parse_route_type(code) when is_binary(code), do: code |> String.downcase() |> String.to_atom()
   defp parse_route_type(_), do: nil
 
   defp parse_segment_type("NAVAID"), do: :navaid
@@ -136,7 +136,7 @@ defmodule NASR.Entities.PreferredRoute.Segment do
   defp parse_segment_type("AIRPORT"), do: :airport
   defp parse_segment_type(nil), do: nil
   defp parse_segment_type(""), do: nil
-  defp parse_segment_type(type) when is_binary(type), do: String.downcase(type) |> String.to_atom()
+  defp parse_segment_type(type) when is_binary(type), do: type |> String.downcase() |> String.to_atom()
   defp parse_segment_type(_), do: nil
 
   defp parse_nav_type("VOR"), do: :vor
@@ -153,6 +153,6 @@ defmodule NASR.Entities.PreferredRoute.Segment do
   defp parse_nav_type("SDF"), do: :sdf
   defp parse_nav_type(nil), do: nil
   defp parse_nav_type(""), do: nil
-  defp parse_nav_type(type) when is_binary(type), do: String.downcase(type) |> String.to_atom()
+  defp parse_nav_type(type) when is_binary(type), do: type |> String.downcase() |> String.to_atom()
   defp parse_nav_type(_), do: nil
 end

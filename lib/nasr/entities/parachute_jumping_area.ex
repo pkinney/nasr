@@ -125,41 +125,42 @@ defmodule NASR.Entities.ParachuteJumpingArea do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      pja_id: Map.fetch!(entity, "PJA_ID"),
-      nav_id: Map.fetch!(entity, "NAV_ID"),
-      nav_type: parse_nav_type(Map.fetch!(entity, "NAV_TYPE")),
-      radial: safe_str_to_float(Map.fetch!(entity, "RADIAL")),
-      distance: safe_str_to_float(Map.fetch!(entity, "DISTANCE")),
-      navaid_name: Map.fetch!(entity, "NAVAID_NAME"),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      city: Map.fetch!(entity, "CITY"),
-      latitude: Map.fetch!(entity, "LATITUDE"),
-      latitude_decimal: safe_str_to_float(Map.fetch!(entity, "LAT_DECIMAL")),
-      longitude: Map.fetch!(entity, "LONGITUDE"),
-      longitude_decimal: safe_str_to_float(Map.fetch!(entity, "LONG_DECIMAL")),
-      arpt_id: Map.fetch!(entity, "ARPT_ID"),
-      site_no: Map.fetch!(entity, "SITE_NO"),
-      site_type_code: Map.fetch!(entity, "SITE_TYPE_CODE"),
-      drop_zone_name: Map.fetch!(entity, "DROP_ZONE_NAME"),
-      max_altitude: safe_str_to_int(Map.fetch!(entity, "MAX_ALTITUDE")),
-      max_altitude_type: parse_altitude_type(Map.fetch!(entity, "MAX_ALTITUDE_TYPE_CODE")),
-      pja_radius: safe_str_to_int(Map.fetch!(entity, "PJA_RADIUS")),
-      chart_request_flag: convert_yn(Map.fetch!(entity, "CHART_REQUEST_FLAG")),
-      publish_criteria: convert_yn(Map.fetch!(entity, "PUBLISH_CRITERIA")),
-      description: Map.fetch!(entity, "DESCRIPTION"),
-      time_of_use: Map.fetch!(entity, "TIME_OF_USE"),
-      fss_id: Map.fetch!(entity, "FSS_ID"),
-      fss_name: Map.fetch!(entity, "FSS_NAME"),
-      pja_use: parse_pja_use(Map.fetch!(entity, "PJA_USE")),
-      volume: Map.fetch!(entity, "VOLUME"),
-      pja_user: Map.fetch!(entity, "PJA_USER"),
-      remark: Map.fetch!(entity, "REMARK")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      pja_id: Map.get(entity, "PJA_ID"),
+      nav_id: Map.get(entity, "NAV_ID"),
+      nav_type: parse_nav_type(Map.get(entity, "NAV_TYPE")),
+      radial: safe_str_to_float(Map.get(entity, "RADIAL")),
+      distance: safe_str_to_float(Map.get(entity, "DISTANCE")),
+      navaid_name: Map.get(entity, "NAVAID_NAME"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      city: Map.get(entity, "CITY"),
+      latitude: Map.get(entity, "LATITUDE"),
+      latitude_decimal: safe_str_to_float(Map.get(entity, "LAT_DECIMAL")),
+      longitude: Map.get(entity, "LONGITUDE"),
+      longitude_decimal: safe_str_to_float(Map.get(entity, "LONG_DECIMAL")),
+      arpt_id: Map.get(entity, "ARPT_ID"),
+      site_no: Map.get(entity, "SITE_NO"),
+      site_type_code: Map.get(entity, "SITE_TYPE_CODE"),
+      drop_zone_name: Map.get(entity, "DROP_ZONE_NAME"),
+      max_altitude: safe_str_to_int(Map.get(entity, "MAX_ALTITUDE")),
+      max_altitude_type: parse_altitude_type(Map.get(entity, "MAX_ALTITUDE_TYPE_CODE")),
+      pja_radius: safe_str_to_int(Map.get(entity, "PJA_RADIUS")),
+      chart_request_flag: convert_yn(Map.get(entity, "CHART_REQUEST_FLAG")),
+      publish_criteria: convert_yn(Map.get(entity, "PUBLISH_CRITERIA")),
+      description: Map.get(entity, "DESCRIPTION"),
+      time_of_use: Map.get(entity, "TIME_OF_USE"),
+      fss_id: Map.get(entity, "FSS_ID"),
+      fss_name: Map.get(entity, "FSS_NAME"),
+      pja_use: parse_pja_use(Map.get(entity, "PJA_USE")),
+      volume: Map.get(entity, "VOLUME"),
+      pja_user: Map.get(entity, "PJA_USER"),
+      remark: Map.get(entity, "REMARK")
     }
   end
 
   defp parse_nav_type(nil), do: nil
   defp parse_nav_type(""), do: nil
+
   defp parse_nav_type(type) when is_binary(type) do
     case String.trim(type) do
       "VOR" -> :vor
@@ -171,6 +172,7 @@ defmodule NASR.Entities.ParachuteJumpingArea do
 
   defp parse_altitude_type(nil), do: nil
   defp parse_altitude_type(""), do: nil
+
   defp parse_altitude_type(type) when is_binary(type) do
     case String.trim(type) do
       "MSL" -> :msl
@@ -181,6 +183,7 @@ defmodule NASR.Entities.ParachuteJumpingArea do
 
   defp parse_pja_use(nil), do: nil
   defp parse_pja_use(""), do: nil
+
   defp parse_pja_use(use) when is_binary(use) do
     case String.trim(use) do
       "MILITARY" -> :military

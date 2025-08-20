@@ -10,8 +10,8 @@ defmodule NasrTest do
     test "get a list of all types", %{nasr_file_path: path} do
       types = NASR.list_types(file: path)
       assert length(types) == 63
-      assert Enum.member?(types, "AWOS")
-      assert Enum.member?(types, "APT_BASE")
+      assert "AWOS" in types
+      assert "APT_BASE" in types
     end
 
     test "gets a raw stream of all data in CSV files", %{nasr_file_path: path} do

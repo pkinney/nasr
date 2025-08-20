@@ -1,5 +1,6 @@
 defmodule NASR.Entities.FlightServiceStation.RemarksTest do
   use ExUnit.Case
+
   alias NASR.Entities.FlightServiceStation.Remarks
 
   describe "new/1" do
@@ -40,7 +41,9 @@ defmodule NASR.Entities.FlightServiceStation.RemarksTest do
       assert remarks.name == "KENAI"
       assert remarks.reference_column_name == "GENERAL_REMARK"
       assert remarks.reference_column_sequence == 3
-      assert remarks.remark_text == "DOPPLER VHF/DF AVAILABLE FOR KODIAK ARPT; DF LOCATED AT LAT 60-34-50.947N LONG 151-15-08.028W"
+
+      assert remarks.remark_text ==
+               "DOPPLER VHF/DF AVAILABLE FOR KODIAK ARPT; DF LOCATED AT LAT 60-34-50.947N LONG 151-15-08.028W"
     end
 
     test "handles frequency information remarks" do
@@ -82,8 +85,7 @@ defmodule NASR.Entities.FlightServiceStation.RemarksTest do
     end
 
     test "handles zero sequence number" do
-      raw_data = create_sample_data()
-        |> Map.put("REF_COL_SEQ_NO", "0")
+      raw_data = Map.put(create_sample_data(), "REF_COL_SEQ_NO", "0")
 
       remarks = Remarks.new(raw_data)
 
@@ -91,8 +93,7 @@ defmodule NASR.Entities.FlightServiceStation.RemarksTest do
     end
 
     test "handles large sequence numbers" do
-      raw_data = create_sample_data()
-        |> Map.put("REF_COL_SEQ_NO", "14")
+      raw_data = Map.put(create_sample_data(), "REF_COL_SEQ_NO", "14")
 
       remarks = Remarks.new(raw_data)
 

@@ -1,5 +1,6 @@
 defmodule NASR.Entities.STAR.RouteTest do
   use ExUnit.Case
+
   alias NASR.Entities.STAR.Route
 
   describe "new/1" do
@@ -24,14 +25,16 @@ defmodule NASR.Entities.STAR.RouteTest do
     end
 
     test "handles different route portion types" do
-      body_route = create_sample_data(%{
-        "ROUTE_PORTION_TYPE" => "BODY"
-      })
+      body_route =
+        create_sample_data(%{
+          "ROUTE_PORTION_TYPE" => "BODY"
+        })
 
-      transition_route = create_sample_data(%{
-        "ROUTE_PORTION_TYPE" => "TRANSITION",
-        "TRANSITION_COMPUTER_CODE" => "BLAID2.AALAN"
-      })
+      transition_route =
+        create_sample_data(%{
+          "ROUTE_PORTION_TYPE" => "TRANSITION",
+          "TRANSITION_COMPUTER_CODE" => "BLAID2.AALAN"
+        })
 
       body_result = Route.new(body_route)
       transition_result = Route.new(transition_route)
@@ -42,20 +45,23 @@ defmodule NASR.Entities.STAR.RouteTest do
     end
 
     test "handles different point types" do
-      reporting_point = create_sample_data(%{
-        "POINT" => "BLAID",
-        "POINT_TYPE" => "RP   "
-      })
+      reporting_point =
+        create_sample_data(%{
+          "POINT" => "BLAID",
+          "POINT_TYPE" => "RP   "
+        })
 
-      waypoint = create_sample_data(%{
-        "POINT" => "AALLE",
-        "POINT_TYPE" => "WP   "
-      })
+      waypoint =
+        create_sample_data(%{
+          "POINT" => "AALLE",
+          "POINT_TYPE" => "WP   "
+        })
 
-      vor_point = create_sample_data(%{
-        "POINT" => "LAS",
-        "POINT_TYPE" => "VOR"
-      })
+      vor_point =
+        create_sample_data(%{
+          "POINT" => "LAS",
+          "POINT_TYPE" => "VOR"
+        })
 
       rp_result = Route.new(reporting_point)
       wp_result = Route.new(waypoint)
@@ -70,17 +76,19 @@ defmodule NASR.Entities.STAR.RouteTest do
     end
 
     test "handles point sequences" do
-      point1 = create_sample_data(%{
-        "POINT_SEQ" => "10",
-        "POINT" => "BLAID",
-        "NEXT_POINT" => "AALAN"
-      })
+      point1 =
+        create_sample_data(%{
+          "POINT_SEQ" => "10",
+          "POINT" => "BLAID",
+          "NEXT_POINT" => "AALAN"
+        })
 
-      point2 = create_sample_data(%{
-        "POINT_SEQ" => "20",
-        "POINT" => "AALAN",
-        "NEXT_POINT" => ""
-      })
+      point2 =
+        create_sample_data(%{
+          "POINT_SEQ" => "20",
+          "POINT" => "AALAN",
+          "NEXT_POINT" => ""
+        })
 
       result1 = Route.new(point1)
       result2 = Route.new(point2)
@@ -94,14 +102,16 @@ defmodule NASR.Entities.STAR.RouteTest do
     end
 
     test "handles ICAO region codes" do
-      west_coast = create_sample_data(%{
-        "ICAO_REGION_CODE" => "K2"
-      })
+      west_coast =
+        create_sample_data(%{
+          "ICAO_REGION_CODE" => "K2"
+        })
 
-      east_coast = create_sample_data(%{
-        "ICAO_REGION_CODE" => "K1",
-        "POINT" => "COATE"
-      })
+      east_coast =
+        create_sample_data(%{
+          "ICAO_REGION_CODE" => "K1",
+          "POINT" => "COATE"
+        })
 
       west_result = Route.new(west_coast)
       east_result = Route.new(east_coast)
@@ -112,18 +122,21 @@ defmodule NASR.Entities.STAR.RouteTest do
     end
 
     test "handles different airport runway associations" do
-      single_airport = create_sample_data(%{
-        "ARPT_RWY_ASSOC" => "LAS"
-      })
+      single_airport =
+        create_sample_data(%{
+          "ARPT_RWY_ASSOC" => "LAS"
+        })
 
-      specific_runways = create_sample_data(%{
-        "ARPT_RWY_ASSOC" => "DEN/25",
-        "STAR_COMPUTER_CODE" => "AALLE.AALLE4"
-      })
+      specific_runways =
+        create_sample_data(%{
+          "ARPT_RWY_ASSOC" => "DEN/25",
+          "STAR_COMPUTER_CODE" => "AALLE.AALLE4"
+        })
 
-      multiple_runways = create_sample_data(%{
-        "ARPT_RWY_ASSOC" => "ATL/08L, ATL/08R, ATL/09L, ATL/09R, ATL/10"
-      })
+      multiple_runways =
+        create_sample_data(%{
+          "ARPT_RWY_ASSOC" => "ATL/08L, ATL/08R, ATL/09L, ATL/09R, ATL/10"
+        })
 
       single_result = Route.new(single_airport)
       specific_result = Route.new(specific_runways)
@@ -136,12 +149,13 @@ defmodule NASR.Entities.STAR.RouteTest do
     end
 
     test "handles final approach points" do
-      final_point = create_sample_data(%{
-        "POINT_SEQ" => "20",
-        "POINT" => "AALAN",
-        "NEXT_POINT" => "",
-        "ARPT_RWY_ASSOC" => "LAS"
-      })
+      final_point =
+        create_sample_data(%{
+          "POINT_SEQ" => "20",
+          "POINT" => "AALAN",
+          "NEXT_POINT" => "",
+          "ARPT_RWY_ASSOC" => "LAS"
+        })
 
       result = Route.new(final_point)
 
@@ -152,13 +166,14 @@ defmodule NASR.Entities.STAR.RouteTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "EFF_DATE" => "",
-        "BODY_SEQ" => "",
-        "POINT_SEQ" => "",
-        "TRANSITION_COMPUTER_CODE" => "",
-        "NEXT_POINT" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "EFF_DATE" => "",
+          "BODY_SEQ" => "",
+          "POINT_SEQ" => "",
+          "TRANSITION_COMPUTER_CODE" => "",
+          "NEXT_POINT" => ""
+        })
 
       result = Route.new(sample_data)
 
@@ -178,20 +193,23 @@ defmodule NASR.Entities.STAR.RouteTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "STAR_COMPUTER_CODE" => "AALAN.BLAID2",
-      "ARTCC" => "ZLA",
-      "ROUTE_PORTION_TYPE" => "BODY",
-      "ROUTE_NAME" => "AALAN-BLAID",
-      "BODY_SEQ" => "1",
-      "TRANSITION_COMPUTER_CODE" => "",
-      "POINT_SEQ" => "10",
-      "POINT" => "BLAID",
-      "ICAO_REGION_CODE" => "K2",
-      "POINT_TYPE" => "RP   ",
-      "NEXT_POINT" => "AALAN",
-      "ARPT_RWY_ASSOC" => "LAS"
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "STAR_COMPUTER_CODE" => "AALAN.BLAID2",
+        "ARTCC" => "ZLA",
+        "ROUTE_PORTION_TYPE" => "BODY",
+        "ROUTE_NAME" => "AALAN-BLAID",
+        "BODY_SEQ" => "1",
+        "TRANSITION_COMPUTER_CODE" => "",
+        "POINT_SEQ" => "10",
+        "POINT" => "BLAID",
+        "ICAO_REGION_CODE" => "K2",
+        "POINT_TYPE" => "RP   ",
+        "NEXT_POINT" => "AALAN",
+        "ARPT_RWY_ASSOC" => "LAS"
+      },
+      overrides
+    )
   end
 end

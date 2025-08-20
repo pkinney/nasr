@@ -67,7 +67,21 @@ defmodule NASR.Entities.Frequency do
           tower_hrs: String.t(),
           serviced_facility: String.t(),
           serviced_fac_name: String.t(),
-          serviced_site_type: :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | :awos_1 | :awos_2 | :awos_3 | :awos_a | :awos_av | :asos | String.t() | nil,
+          serviced_site_type:
+            :airport
+            | :balloonport
+            | :seaplane_base
+            | :gliderport
+            | :heliport
+            | :ultralight
+            | :awos_1
+            | :awos_2
+            | :awos_3
+            | :awos_a
+            | :awos_av
+            | :asos
+            | String.t()
+            | nil,
           latitude: float() | nil,
           longitude: float() | nil,
           serviced_city: String.t(),
@@ -77,42 +91,58 @@ defmodule NASR.Entities.Frequency do
           primary_approach_radio_call: String.t(),
           frequency: float() | nil,
           sectorization: String.t(),
-          freq_use: :approach | :arrival | :atis | :clearance_delivery | :ctaf | :departure | :emergency | :ground | :multicom | :tower | :unicom | :awos | :asos | String.t() | nil,
+          freq_use:
+            :approach
+            | :arrival
+            | :atis
+            | :clearance_delivery
+            | :ctaf
+            | :departure
+            | :emergency
+            | :ground
+            | :multicom
+            | :tower
+            | :unicom
+            | :awos
+            | :asos
+            | String.t()
+            | nil,
           remark: String.t()
         }
 
   @spec type() :: String.t()
-  def type(), do: "FRQ"
+  def type, do: "FRQ"
 
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      facility: Map.fetch!(entity, "FACILITY"),
-      fac_name: Map.fetch!(entity, "FAC_NAME"),
-      facility_type: parse_facility_type(Map.fetch!(entity, "FACILITY_TYPE")),
-      artcc_or_fss_id: Map.fetch!(entity, "ARTCC_OR_FSS_ID"),
-      cpdlc: Map.fetch!(entity, "CPDLC"),
-      tower_hrs: Map.fetch!(entity, "TOWER_HRS"),
-      serviced_facility: Map.fetch!(entity, "SERVICED_FACILITY"),
-      serviced_fac_name: Map.fetch!(entity, "SERVICED_FAC_NAME"),
-      serviced_site_type: parse_serviced_site_type(Map.fetch!(entity, "SERVICED_SITE_TYPE")),
-      latitude: safe_str_to_float(Map.fetch!(entity, "LAT_DECIMAL")),
-      longitude: safe_str_to_float(Map.fetch!(entity, "LONG_DECIMAL")),
-      serviced_city: Map.fetch!(entity, "SERVICED_CITY"),
-      serviced_state: Map.fetch!(entity, "SERVICED_STATE"),
-      serviced_country: Map.fetch!(entity, "SERVICED_COUNTRY"),
-      tower_or_comm_call: Map.fetch!(entity, "TOWER_OR_COMM_CALL"),
-      primary_approach_radio_call: Map.fetch!(entity, "PRIMARY_APPROACH_RADIO_CALL"),
-      frequency: safe_str_to_float(Map.fetch!(entity, "FREQ")),
-      sectorization: Map.fetch!(entity, "SECTORIZATION"),
-      freq_use: parse_freq_use(Map.fetch!(entity, "FREQ_USE")),
-      remark: Map.fetch!(entity, "REMARK")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      facility: Map.get(entity, "FACILITY"),
+      fac_name: Map.get(entity, "FAC_NAME"),
+      facility_type: parse_facility_type(Map.get(entity, "FACILITY_TYPE")),
+      artcc_or_fss_id: Map.get(entity, "ARTCC_OR_FSS_ID"),
+      cpdlc: Map.get(entity, "CPDLC"),
+      tower_hrs: Map.get(entity, "TOWER_HRS"),
+      serviced_facility: Map.get(entity, "SERVICED_FACILITY"),
+      serviced_fac_name: Map.get(entity, "SERVICED_FAC_NAME"),
+      serviced_site_type: parse_serviced_site_type(Map.get(entity, "SERVICED_SITE_TYPE")),
+      latitude: safe_str_to_float(Map.get(entity, "LAT_DECIMAL")),
+      longitude: safe_str_to_float(Map.get(entity, "LONG_DECIMAL")),
+      serviced_city: Map.get(entity, "SERVICED_CITY"),
+      serviced_state: Map.get(entity, "SERVICED_STATE"),
+      serviced_country: Map.get(entity, "SERVICED_COUNTRY"),
+      tower_or_comm_call: Map.get(entity, "TOWER_OR_COMM_CALL"),
+      primary_approach_radio_call: Map.get(entity, "PRIMARY_APPROACH_RADIO_CALL"),
+      frequency: safe_str_to_float(Map.get(entity, "FREQ")),
+      sectorization: Map.get(entity, "SECTORIZATION"),
+      freq_use: parse_freq_use(Map.get(entity, "FREQ_USE")),
+      remark: Map.get(entity, "REMARK")
     }
   end
 
   defp parse_facility_type(nil), do: nil
   defp parse_facility_type(""), do: nil
+
   defp parse_facility_type(type) when is_binary(type) do
     case String.trim(type) do
       "ATCT" -> :atct
@@ -124,6 +154,7 @@ defmodule NASR.Entities.Frequency do
 
   defp parse_serviced_site_type(nil), do: nil
   defp parse_serviced_site_type(""), do: nil
+
   defp parse_serviced_site_type(type) when is_binary(type) do
     case String.trim(type) do
       "AIRPORT" -> :airport
@@ -144,25 +175,54 @@ defmodule NASR.Entities.Frequency do
 
   defp parse_freq_use(nil), do: nil
   defp parse_freq_use(""), do: nil
+
   defp parse_freq_use(use) when is_binary(use) do
-    trimmed_use = String.trim(use) |> String.upcase()
-    
+    trimmed_use = use |> String.trim() |> String.upcase()
+
     case trimmed_use do
-      "APPROACH" -> :approach
-      "ARRIVAL" -> :arrival
-      "ATIS" -> :atis
-      "CLEARANCE DELIVERY" -> :clearance_delivery
-      "CD" -> :clearance_delivery
-      "CTAF" -> :ctaf
-      "DEPARTURE" -> :departure
-      "EMERGENCY" -> :emergency
-      "GND" -> :ground
-      "GROUND" -> :ground
-      "MULTICOM" -> :multicom
-      "TOWER" -> :tower
-      "TWR" -> :tower
-      "UNICOM" -> :unicom
-      other -> 
+      "APPROACH" ->
+        :approach
+
+      "ARRIVAL" ->
+        :arrival
+
+      "ATIS" ->
+        :atis
+
+      "CLEARANCE DELIVERY" ->
+        :clearance_delivery
+
+      "CD" ->
+        :clearance_delivery
+
+      "CTAF" ->
+        :ctaf
+
+      "DEPARTURE" ->
+        :departure
+
+      "EMERGENCY" ->
+        :emergency
+
+      "GND" ->
+        :ground
+
+      "GROUND" ->
+        :ground
+
+      "MULTICOM" ->
+        :multicom
+
+      "TOWER" ->
+        :tower
+
+      "TWR" ->
+        :tower
+
+      "UNICOM" ->
+        :unicom
+
+      other ->
         cond do
           String.contains?(other, "AWOS") -> :awos
           String.contains?(other, "ASOS") -> :asos

@@ -1,5 +1,6 @@
 defmodule NASR.Entities.STAR.AirportTest do
   use ExUnit.Case
+
   alias NASR.Entities.STAR.Airport
 
   describe "new/1" do
@@ -18,15 +19,17 @@ defmodule NASR.Entities.STAR.AirportTest do
     end
 
     test "handles different STAR computer codes" do
-      las_star = create_sample_data(%{
-        "STAR_COMPUTER_CODE" => "AALAN.BLAID2"
-      })
+      las_star =
+        create_sample_data(%{
+          "STAR_COMPUTER_CODE" => "AALAN.BLAID2"
+        })
 
-      den_star = create_sample_data(%{
-        "STAR_COMPUTER_CODE" => "AALLE.AALLE4",
-        "ARTCC" => "ZDV",
-        "AIRPORT_ID" => "DEN"
-      })
+      den_star =
+        create_sample_data(%{
+          "STAR_COMPUTER_CODE" => "AALLE.AALLE4",
+          "ARTCC" => "ZDV",
+          "AIRPORT_ID" => "DEN"
+        })
 
       las_result = Airport.new(las_star)
       den_result = Airport.new(den_star)
@@ -37,15 +40,17 @@ defmodule NASR.Entities.STAR.AirportTest do
     end
 
     test "handles specific runway assignments" do
-      all_runways = create_sample_data(%{
-        "RWY_END_ID" => "ALL"
-      })
+      all_runways =
+        create_sample_data(%{
+          "RWY_END_ID" => "ALL"
+        })
 
-      specific_runway = create_sample_data(%{
-        "RWY_END_ID" => "25",
-        "STAR_COMPUTER_CODE" => "AALLE.AALLE4",
-        "ARPT_ID" => "DEN"
-      })
+      specific_runway =
+        create_sample_data(%{
+          "RWY_END_ID" => "25",
+          "STAR_COMPUTER_CODE" => "AALLE.AALLE4",
+          "ARPT_ID" => "DEN"
+        })
 
       all_result = Airport.new(all_runways)
       specific_result = Airport.new(specific_runway)
@@ -57,15 +62,17 @@ defmodule NASR.Entities.STAR.AirportTest do
     end
 
     test "handles different body sequences" do
-      body1 = create_sample_data(%{
-        "BODY_SEQ" => "1",
-        "BODY_NAME" => "AALAN-BLAID"
-      })
+      body1 =
+        create_sample_data(%{
+          "BODY_SEQ" => "1",
+          "BODY_NAME" => "AALAN-BLAID"
+        })
 
-      body2 = create_sample_data(%{
-        "BODY_SEQ" => "2",
-        "BODY_NAME" => "RADAR-VECTOR"
-      })
+      body2 =
+        create_sample_data(%{
+          "BODY_SEQ" => "2",
+          "BODY_NAME" => "RADAR-VECTOR"
+        })
 
       result1 = Airport.new(body1)
       result2 = Airport.new(body2)
@@ -102,10 +109,11 @@ defmodule NASR.Entities.STAR.AirportTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "EFF_DATE" => "",
-        "BODY_SEQ" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "EFF_DATE" => "",
+          "BODY_SEQ" => ""
+        })
 
       result = Airport.new(sample_data)
 
@@ -122,14 +130,17 @@ defmodule NASR.Entities.STAR.AirportTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "STAR_COMPUTER_CODE" => "AALAN.BLAID2",
-      "ARTCC" => "ZLA",
-      "BODY_NAME" => "AALAN-BLAID",
-      "BODY_SEQ" => "1",
-      "ARPT_ID" => "LAS",
-      "RWY_END_ID" => "ALL"
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "STAR_COMPUTER_CODE" => "AALAN.BLAID2",
+        "ARTCC" => "ZLA",
+        "BODY_NAME" => "AALAN-BLAID",
+        "BODY_SEQ" => "1",
+        "ARPT_ID" => "LAS",
+        "RWY_END_ID" => "ALL"
+      },
+      overrides
+    )
   end
 end

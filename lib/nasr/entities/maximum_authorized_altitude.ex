@@ -72,7 +72,18 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude do
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
           maa_id: String.t(),
-          maa_type_name: :aerobatic_practice | :alert_area | :controlled_firing_area | :military_operations_area | :national_security_area | :prohibited_area | :restricted_area | :temporary_flight_restriction | :warning_area | String.t() | nil,
+          maa_type_name:
+            :aerobatic_practice
+            | :alert_area
+            | :controlled_firing_area
+            | :military_operations_area
+            | :national_security_area
+            | :prohibited_area
+            | :restricted_area
+            | :temporary_flight_restriction
+            | :warning_area
+            | String.t()
+            | nil,
           nav_id: String.t(),
           nav_type: String.t(),
           nav_radial: integer() | nil,
@@ -102,35 +113,36 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      maa_id: Map.fetch!(entity, "MAA_ID"),
-      maa_type_name: parse_maa_type(Map.fetch!(entity, "MAA_TYPE_NAME")),
-      nav_id: Map.fetch!(entity, "NAV_ID"),
-      nav_type: Map.fetch!(entity, "NAV_TYPE"),
-      nav_radial: safe_str_to_int(Map.fetch!(entity, "NAV_RADIAL")),
-      nav_distance: safe_str_to_float(Map.fetch!(entity, "NAV_DISTANCE")),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      city: Map.fetch!(entity, "CITY"),
-      latitude: parse_coordinate(Map.fetch!(entity, "LATITUDE")),
-      longitude: parse_coordinate(Map.fetch!(entity, "LONGITUDE")),
-      arpt_ids: Map.fetch!(entity, "ARPT_IDS"),
-      nearest_arpt: Map.fetch!(entity, "NEAREST_ARPT"),
-      nearest_arpt_dist: safe_str_to_float(Map.fetch!(entity, "NEAREST_ARPT_DIST")),
-      nearest_arpt_dir: Map.fetch!(entity, "NEAREST_ARPT_DIR"),
-      maa_name: Map.fetch!(entity, "MAA_NAME"),
-      max_alt: Map.fetch!(entity, "MAX_ALT"),
-      min_alt: Map.fetch!(entity, "MIN_ALT"),
-      maa_radius: safe_str_to_int(Map.fetch!(entity, "MAA_RADIUS")),
-      description: Map.fetch!(entity, "DESCRIPTION"),
-      maa_use: parse_maa_use(Map.fetch!(entity, "MAA_USE")),
-      check_notams: Map.fetch!(entity, "CHECK_NOTAMS"),
-      time_of_use: Map.fetch!(entity, "TIME_OF_USE"),
-      user_group_name: Map.fetch!(entity, "USER_GROUP_NAME")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      maa_id: Map.get(entity, "MAA_ID"),
+      maa_type_name: parse_maa_type(Map.get(entity, "MAA_TYPE_NAME")),
+      nav_id: Map.get(entity, "NAV_ID"),
+      nav_type: Map.get(entity, "NAV_TYPE"),
+      nav_radial: safe_str_to_int(Map.get(entity, "NAV_RADIAL")),
+      nav_distance: safe_str_to_float(Map.get(entity, "NAV_DISTANCE")),
+      state_code: Map.get(entity, "STATE_CODE"),
+      city: Map.get(entity, "CITY"),
+      latitude: parse_coordinate(Map.get(entity, "LATITUDE")),
+      longitude: parse_coordinate(Map.get(entity, "LONGITUDE")),
+      arpt_ids: Map.get(entity, "ARPT_IDS"),
+      nearest_arpt: Map.get(entity, "NEAREST_ARPT"),
+      nearest_arpt_dist: safe_str_to_float(Map.get(entity, "NEAREST_ARPT_DIST")),
+      nearest_arpt_dir: Map.get(entity, "NEAREST_ARPT_DIR"),
+      maa_name: Map.get(entity, "MAA_NAME"),
+      max_alt: Map.get(entity, "MAX_ALT"),
+      min_alt: Map.get(entity, "MIN_ALT"),
+      maa_radius: safe_str_to_int(Map.get(entity, "MAA_RADIUS")),
+      description: Map.get(entity, "DESCRIPTION"),
+      maa_use: parse_maa_use(Map.get(entity, "MAA_USE")),
+      check_notams: Map.get(entity, "CHECK_NOTAMS"),
+      time_of_use: Map.get(entity, "TIME_OF_USE"),
+      user_group_name: Map.get(entity, "USER_GROUP_NAME")
     }
   end
 
   defp parse_maa_type(nil), do: nil
   defp parse_maa_type(""), do: nil
+
   defp parse_maa_type(type) when is_binary(type) do
     case String.trim(type) do
       "AEROBATIC PRACTICE" -> :aerobatic_practice
@@ -148,6 +160,7 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude do
 
   defp parse_maa_use(nil), do: nil
   defp parse_maa_use(""), do: nil
+
   defp parse_maa_use(use) when is_binary(use) do
     case String.trim(use) do
       "CIVIL" -> :civil
@@ -159,39 +172,38 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude do
 
   defp parse_coordinate(nil), do: nil
   defp parse_coordinate(""), do: nil
+
   defp parse_coordinate(coord) when is_binary(coord) do
     # Parse coordinates in format like "33-54-12.8500N" or "087-19-53.7600W"
     coord = String.trim(coord)
-    
-    cond do
-      String.ends_with?(coord, "N") or String.ends_with?(coord, "S") or 
-      String.ends_with?(coord, "E") or String.ends_with?(coord, "W") ->
-        parse_dms_coordinate(coord)
-      
-      true ->
-        safe_str_to_float(coord)
+
+    if String.ends_with?(coord, "N") or String.ends_with?(coord, "S") or
+         String.ends_with?(coord, "E") or String.ends_with?(coord, "W") do
+      parse_dms_coordinate(coord)
+    else
+      safe_str_to_float(coord)
     end
   end
 
   defp parse_dms_coordinate(coord) do
     direction = String.last(coord)
     coord_without_dir = String.slice(coord, 0, String.length(coord) - 1)
-    
+
     case String.split(coord_without_dir, "-") do
       [degrees, minutes, seconds] ->
         deg = safe_str_to_float(degrees) || 0
         min = safe_str_to_float(minutes) || 0
         sec = safe_str_to_float(seconds) || 0
-        
-        decimal = deg + (min / 60.0) + (sec / 3600.0)
-        
+
+        decimal = deg + min / 60.0 + sec / 3600.0
+
         # Apply negative for South/West coordinates
         case direction do
           "S" -> -decimal
           "W" -> -decimal
           _ -> decimal
         end
-      
+
       _ ->
         safe_str_to_float(coord_without_dir)
     end

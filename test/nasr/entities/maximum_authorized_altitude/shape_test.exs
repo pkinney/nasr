@@ -1,5 +1,6 @@
 defmodule NASR.Entities.MaximumAuthorizedAltitude.ShapeTest do
   use ExUnit.Case
+
   alias NASR.Entities.MaximumAuthorizedAltitude.Shape
 
   describe "new/1" do
@@ -24,10 +25,12 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.ShapeTest do
       ]
 
       for {lat_dms, lon_dms, expected_lat, expected_lon} <- coordinate_test_cases do
-        sample_data = create_sample_data(%{
-          "LATITUDE" => lat_dms,
-          "LONGITUDE" => lon_dms
-        })
+        sample_data =
+          create_sample_data(%{
+            "LATITUDE" => lat_dms,
+            "LONGITUDE" => lon_dms
+          })
+
         result = Shape.new(sample_data)
         assert_in_delta result.latitude, expected_lat, 0.01
         assert_in_delta result.longitude, expected_lon, 0.01
@@ -47,22 +50,26 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.ShapeTest do
       ]
 
       for {seq, lat, lon} <- boundary_points do
-        sample_data = create_sample_data(%{
-          "POINT_SEQ" => Integer.to_string(seq),
-          "LATITUDE" => lat,
-          "LONGITUDE" => lon
-        })
+        sample_data =
+          create_sample_data(%{
+            "POINT_SEQ" => Integer.to_string(seq),
+            "LATITUDE" => lat,
+            "LONGITUDE" => lon
+          })
+
         result = Shape.new(sample_data)
         assert result.point_seq == seq
-        assert result.latitude != nil
-        assert result.longitude != nil
+        assert result.latitude
+        assert result.longitude
       end
     end
 
     test "handles different MAA area shapes" do
       maa_shapes = [
-        {"AAL001", 8},  # 8-sided irregular shape
-        {"AAL002", 4},  # 4-sided shape
+        # 8-sided irregular shape
+        {"AAL001", 8},
+        # 4-sided shape
+        {"AAL002", 4}
       ]
 
       for {maa_id, _expected_points} <- maa_shapes do
@@ -73,37 +80,45 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.ShapeTest do
     end
 
     test "handles North and South latitude coordinates" do
-      north_coord = create_sample_data(%{
-        "LATITUDE" => "33-54-12.8500N"
-      })
+      north_coord =
+        create_sample_data(%{
+          "LATITUDE" => "33-54-12.8500N"
+        })
 
       # Test a southern coordinate (hypothetical)
-      south_coord = create_sample_data(%{
-        "LATITUDE" => "25-45-30.0000S"
-      })
+      south_coord =
+        create_sample_data(%{
+          "LATITUDE" => "25-45-30.0000S"
+        })
 
       north_result = Shape.new(north_coord)
       south_result = Shape.new(south_coord)
 
-      assert north_result.latitude > 0  # Northern hemisphere
-      assert south_result.latitude < 0  # Southern hemisphere
+      # Northern hemisphere
+      assert north_result.latitude > 0
+      # Southern hemisphere
+      assert south_result.latitude < 0
     end
 
     test "handles East and West longitude coordinates" do
-      west_coord = create_sample_data(%{
-        "LONGITUDE" => "087-19-53.7600W"
-      })
+      west_coord =
+        create_sample_data(%{
+          "LONGITUDE" => "087-19-53.7600W"
+        })
 
       # Test an eastern coordinate (hypothetical)
-      east_coord = create_sample_data(%{
-        "LONGITUDE" => "087-19-53.7600E"
-      })
+      east_coord =
+        create_sample_data(%{
+          "LONGITUDE" => "087-19-53.7600E"
+        })
 
       west_result = Shape.new(west_coord)
       east_result = Shape.new(east_coord)
 
-      assert west_result.longitude < 0  # Western hemisphere
-      assert east_result.longitude > 0  # Eastern hemisphere
+      # Western hemisphere
+      assert west_result.longitude < 0
+      # Eastern hemisphere
+      assert east_result.longitude > 0
     end
 
     test "handles precise coordinate parsing" do
@@ -117,20 +132,22 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.ShapeTest do
       ]
 
       for {coord_str, expected_decimal} <- precise_coordinates do
-        sample_data = if String.ends_with?(coord_str, "N") or String.ends_with?(coord_str, "S") do
-          create_sample_data(%{"LATITUDE" => coord_str})
-        else
-          create_sample_data(%{"LONGITUDE" => coord_str})
-        end
-        
+        sample_data =
+          if String.ends_with?(coord_str, "N") or String.ends_with?(coord_str, "S") do
+            create_sample_data(%{"LATITUDE" => coord_str})
+          else
+            create_sample_data(%{"LONGITUDE" => coord_str})
+          end
+
         result = Shape.new(sample_data)
-        
-        actual_value = if String.ends_with?(coord_str, "N") or String.ends_with?(coord_str, "S") do
-          result.latitude
-        else
-          result.longitude
-        end
-        
+
+        actual_value =
+          if String.ends_with?(coord_str, "N") or String.ends_with?(coord_str, "S") do
+            result.latitude
+          else
+            result.longitude
+          end
+
         assert_in_delta actual_value, expected_decimal, 0.01
       end
     end
@@ -148,37 +165,46 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.ShapeTest do
         {8, "33-53-56.1400N", "087-19-53.3700W"}
       ]
 
-      results = Enum.map(aal001_points, fn {seq, lat, lon} ->
-        sample_data = create_sample_data(%{
-          "MAA_ID" => "AAL001",
-          "POINT_SEQ" => Integer.to_string(seq),
-          "LATITUDE" => lat,
-          "LONGITUDE" => lon
-        })
-        Shape.new(sample_data)
-      end)
+      results =
+        Enum.map(aal001_points, fn {seq, lat, lon} ->
+          sample_data =
+            create_sample_data(%{
+              "MAA_ID" => "AAL001",
+              "POINT_SEQ" => Integer.to_string(seq),
+              "LATITUDE" => lat,
+              "LONGITUDE" => lon
+            })
+
+          Shape.new(sample_data)
+        end)
 
       # Verify all points belong to same MAA
       assert Enum.all?(results, fn result -> result.maa_id == "AAL001" end)
-      
+
       # Verify sequential ordering
       sequences = Enum.map(results, & &1.point_seq)
       assert sequences == [1, 2, 3, 4, 5, 6, 7, 8]
-      
+
       # Verify all coordinates are in Alabama/Georgia region
       latitudes = Enum.map(results, & &1.latitude)
       longitudes = Enum.map(results, & &1.longitude)
-      
-      assert Enum.all?(latitudes, fn lat -> lat > 33.0 and lat < 35.0 end)  # Alabama latitude range
-      assert Enum.all?(longitudes, fn lon -> lon > -89.0 and lon < -85.0 end)  # Alabama longitude range
+
+      # Alabama latitude range
+      assert Enum.all?(latitudes, fn lat -> lat > 33.0 and lat < 35.0 end)
+      # Alabama longitude range
+      assert Enum.all?(longitudes, fn lon -> lon > -89.0 and lon < -85.0 end)
     end
 
     test "handles different MAA area identifiers" do
       maa_identifiers = [
-        "AAL001",  # Alabama area 1
-        "AAL002",  # Alabama area 2
-        "AAR001",  # Arkansas area 1
-        "ACA001"   # California area 1
+        # Alabama area 1
+        "AAL001",
+        # Alabama area 2
+        "AAL002",
+        # Arkansas area 1
+        "AAR001",
+        # California area 1
+        "ACA001"
       ]
 
       for maa_id <- maa_identifiers do
@@ -189,11 +215,12 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.ShapeTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "POINT_SEQ" => "",
-        "LATITUDE" => "",
-        "LONGITUDE" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "POINT_SEQ" => "",
+          "LATITUDE" => "",
+          "LONGITUDE" => ""
+        })
 
       result = Shape.new(sample_data)
 
@@ -203,40 +230,47 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.ShapeTest do
     end
 
     test "handles decimal coordinate format" do
-      decimal_data = create_sample_data(%{
-        "LATITUDE" => "33.903569",
-        "LONGITUDE" => "-87.331600"
-      })
+      decimal_data =
+        create_sample_data(%{
+          "LATITUDE" => "33.903569",
+          "LONGITUDE" => "-87.331600"
+        })
 
       result = Shape.new(decimal_data)
-      
+
       assert_in_delta result.latitude, 33.903569, 0.000001
       assert_in_delta result.longitude, -87.331600, 0.000001
     end
 
     test "validates coordinate boundary limits" do
       # Test coordinates within valid ranges
-      valid_data = create_sample_data(%{
-        "LATITUDE" => "33-54-12.8500N",   # Valid US latitude
-        "LONGITUDE" => "087-19-53.7600W"  # Valid US longitude
-      })
+      valid_data =
+        create_sample_data(%{
+          # Valid US latitude
+          "LATITUDE" => "33-54-12.8500N",
+          # Valid US longitude
+          "LONGITUDE" => "087-19-53.7600W"
+        })
 
       result = Shape.new(valid_data)
-      
+
       # Verify coordinates are within continental US bounds
-      assert result.latitude >= 24.0 and result.latitude <= 49.0  # Continental US latitude range
-      assert result.longitude >= -125.0 and result.longitude <= -66.0  # Continental US longitude range
+      # Continental US latitude range
+      assert result.latitude >= 24.0 and result.latitude <= 49.0
+      # Continental US longitude range
+      assert result.longitude >= -125.0 and result.longitude <= -66.0
     end
 
     test "handles coordinate precision for aviation accuracy" do
       # Test high precision coordinates needed for aviation
-      high_precision_data = create_sample_data(%{
-        "LATITUDE" => "33-54-12.8500N",
-        "LONGITUDE" => "087-19-53.7600W"
-      })
+      high_precision_data =
+        create_sample_data(%{
+          "LATITUDE" => "33-54-12.8500N",
+          "LONGITUDE" => "087-19-53.7600W"
+        })
 
       result = Shape.new(high_precision_data)
-      
+
       # Verify precision is maintained (within 1 meter accuracy)
       assert_in_delta result.latitude, 33.903569, 0.00001
       assert_in_delta result.longitude, -87.331600, 0.00001
@@ -251,12 +285,15 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.ShapeTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "MAA_ID" => "AAL001",
-      "POINT_SEQ" => "1",
-      "LATITUDE" => "33-54-12.8500N",
-      "LONGITUDE" => "087-19-53.7600W"
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "MAA_ID" => "AAL001",
+        "POINT_SEQ" => "1",
+        "LATITUDE" => "33-54-12.8500N",
+        "LONGITUDE" => "087-19-53.7600W"
+      },
+      overrides
+    )
   end
 end

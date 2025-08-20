@@ -1,6 +1,8 @@
 defmodule NASR.Entities.Fix.ChartingInformationTest do
   use ExUnit.Case
 
+  alias NASR.Entities.Fix.ChartingInformation
+
   describe "new/1" do
     test "creates struct from real-world FIX_CHRT sample data" do
       sample_data = %{
@@ -12,7 +14,7 @@ defmodule NASR.Entities.Fix.ChartingInformationTest do
         "CHARTING_TYPE_DESC" => "CONTROLLER LOW"
       }
 
-      result = NASR.Entities.Fix.ChartingInformation.new(sample_data)
+      result = ChartingInformation.new(sample_data)
 
       assert result.fix_id == "SASIE"
       assert result.icao_region_code == "K4"
@@ -42,7 +44,7 @@ defmodule NASR.Entities.Fix.ChartingInformationTest do
           "CHARTING_TYPE_DESC" => chart_type
         }
 
-        result = NASR.Entities.Fix.ChartingInformation.new(sample_data)
+        result = ChartingInformation.new(sample_data)
         assert result.charting_type_desc == chart_type
       end
     end
@@ -57,12 +59,12 @@ defmodule NASR.Entities.Fix.ChartingInformationTest do
         "CHARTING_TYPE_DESC" => "IAP"
       }
 
-      result = NASR.Entities.Fix.ChartingInformation.new(sample_data)
+      result = ChartingInformation.new(sample_data)
       assert result.effective_date == nil
     end
 
     test "type/0 returns correct type string" do
-      assert NASR.Entities.Fix.ChartingInformation.type() == "FIX_CHRT"
+      assert ChartingInformation.type() == "FIX_CHRT"
     end
   end
 end

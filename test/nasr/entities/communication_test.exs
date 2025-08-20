@@ -1,5 +1,6 @@
 defmodule NASR.Entities.CommunicationTest do
   use ExUnit.Case
+
   alias NASR.Entities.Communication
 
   describe "new/1" do
@@ -72,21 +73,22 @@ defmodule NASR.Entities.CommunicationTest do
     end
 
     test "handles empty and nil values" do
-      raw_data = create_sample_data(%{
-        "NAV_ID" => "",
-        "NAV_TYPE" => "",
-        "LAT_DEG" => "",
-        "LAT_MIN" => "",
-        "LAT_SEC" => "",
-        "LONG_DEG" => "",
-        "LONG_MIN" => "",
-        "LONG_SEC" => "",
-        "ALT_FSS_ID" => "",
-        "ALT_FSS_NAME" => "",
-        "COMM_STATUS_CODE" => "",
-        "COMM_STATUS_DATE" => "",
-        "REMARK" => ""
-      })
+      raw_data =
+        create_sample_data(%{
+          "NAV_ID" => "",
+          "NAV_TYPE" => "",
+          "LAT_DEG" => "",
+          "LAT_MIN" => "",
+          "LAT_SEC" => "",
+          "LONG_DEG" => "",
+          "LONG_MIN" => "",
+          "LONG_SEC" => "",
+          "ALT_FSS_ID" => "",
+          "ALT_FSS_NAME" => "",
+          "COMM_STATUS_CODE" => "",
+          "COMM_STATUS_DATE" => "",
+          "REMARK" => ""
+        })
 
       comm = Communication.new(raw_data)
 
@@ -106,10 +108,11 @@ defmodule NASR.Entities.CommunicationTest do
     end
 
     test "handles data with remarks" do
-      raw_data = create_sample_data(%{
-        "COMM_LOC_ID" => "3AH",
-        "REMARK" => "(COMM_LOC_ID) FREQ 122.5 ALSO AVBL AT CORDOVA MUNI & CORDOVA MUNI SEAPLANE."
-      })
+      raw_data =
+        create_sample_data(%{
+          "COMM_LOC_ID" => "3AH",
+          "REMARK" => "(COMM_LOC_ID) FREQ 122.5 ALSO AVBL AT CORDOVA MUNI & CORDOVA MUNI SEAPLANE."
+        })
 
       comm = Communication.new(raw_data)
 
@@ -118,10 +121,11 @@ defmodule NASR.Entities.CommunicationTest do
     end
 
     test "handles data with alternate FSS information" do
-      raw_data = create_sample_data(%{
-        "ALT_FSS_ID" => "JNU",
-        "ALT_FSS_NAME" => "JUNEAU"
-      })
+      raw_data =
+        create_sample_data(%{
+          "ALT_FSS_ID" => "JNU",
+          "ALT_FSS_NAME" => "JUNEAU"
+        })
 
       comm = Communication.new(raw_data)
 
@@ -130,10 +134,11 @@ defmodule NASR.Entities.CommunicationTest do
     end
 
     test "handles unknown region and status codes" do
-      raw_data = create_sample_data(%{
-        "REGION_CODE" => "XYZ",
-        "COMM_STATUS_CODE" => "X"
-      })
+      raw_data =
+        create_sample_data(%{
+          "REGION_CODE" => "XYZ",
+          "COMM_STATUS_CODE" => "X"
+        })
 
       comm = Communication.new(raw_data)
 
@@ -142,10 +147,11 @@ defmodule NASR.Entities.CommunicationTest do
     end
 
     test "handles fractional seconds in coordinates" do
-      raw_data = create_sample_data(%{
-        "LAT_SEC" => "46.7",
-        "LONG_SEC" => "30.2"
-      })
+      raw_data =
+        create_sample_data(%{
+          "LAT_SEC" => "46.7",
+          "LONG_SEC" => "30.2"
+        })
 
       comm = Communication.new(raw_data)
 
@@ -161,36 +167,38 @@ defmodule NASR.Entities.CommunicationTest do
   end
 
   defp create_sample_data(overrides \\ %{}) do
-    %{
-      "EFF_DATE" => "2025/08/07",
-      "COMM_LOC_ID" => "05U",
-      "COMM_TYPE" => "RCO",
-      "NAV_ID" => "",
-      "NAV_TYPE" => "",
-      "CITY" => "EUREKA",
-      "STATE_CODE" => "NV",
-      "REGION_CODE" => "AWP",
-      "COUNTRY_CODE" => "US",
-      "COMM_OUTLET_NAME" => "EUREKA",
-      "LAT_DEG" => "39",
-      "LAT_MIN" => "28",
-      "LAT_SEC" => "46.7",
-      "LAT_HEMIS" => "N",
-      "LAT_DECIMAL" => "39.47963888",
-      "LONG_DEG" => "115",
-      "LONG_MIN" => "59",
-      "LONG_SEC" => "30.2",
-      "LONG_HEMIS" => "W",
-      "LONG_DECIMAL" => "-115.99172222",
-      "FACILITY_ID" => "RNO",
-      "FACILITY_NAME" => "RENO",
-      "ALT_FSS_ID" => "",
-      "ALT_FSS_NAME" => "",
-      "OPR_HRS" => "24",
-      "COMM_STATUS_CODE" => "A",
-      "COMM_STATUS_DATE" => "2020/04/24",
-      "REMARK" => ""
-    }
-    |> Map.merge(overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "COMM_LOC_ID" => "05U",
+        "COMM_TYPE" => "RCO",
+        "NAV_ID" => "",
+        "NAV_TYPE" => "",
+        "CITY" => "EUREKA",
+        "STATE_CODE" => "NV",
+        "REGION_CODE" => "AWP",
+        "COUNTRY_CODE" => "US",
+        "COMM_OUTLET_NAME" => "EUREKA",
+        "LAT_DEG" => "39",
+        "LAT_MIN" => "28",
+        "LAT_SEC" => "46.7",
+        "LAT_HEMIS" => "N",
+        "LAT_DECIMAL" => "39.47963888",
+        "LONG_DEG" => "115",
+        "LONG_MIN" => "59",
+        "LONG_SEC" => "30.2",
+        "LONG_HEMIS" => "W",
+        "LONG_DECIMAL" => "-115.99172222",
+        "FACILITY_ID" => "RNO",
+        "FACILITY_NAME" => "RENO",
+        "ALT_FSS_ID" => "",
+        "ALT_FSS_NAME" => "",
+        "OPR_HRS" => "24",
+        "COMM_STATUS_CODE" => "A",
+        "COMM_STATUS_DATE" => "2020/04/24",
+        "REMARK" => ""
+      },
+      overrides
+    )
   end
 end

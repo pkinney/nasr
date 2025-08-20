@@ -47,20 +47,20 @@ defmodule NASR.Entities.FlightServiceStation.Remarks do
         }
 
   @spec type() :: String.t()
-  def type(), do: "FSS_RMK"
+  def type, do: "FSS_RMK"
 
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      fss_id: Map.fetch!(entity, "FSS_ID"),
-      name: Map.fetch!(entity, "NAME"),
-      city: Map.fetch!(entity, "CITY"),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      reference_column_name: Map.fetch!(entity, "REF_COL_NAME"),
-      reference_column_sequence: safe_str_to_int(Map.fetch!(entity, "REF_COL_SEQ_NO")),
-      remark_text: Map.fetch!(entity, "REMARK")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      fss_id: Map.get(entity, "FSS_ID"),
+      name: Map.get(entity, "NAME"),
+      city: Map.get(entity, "CITY"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      reference_column_name: Map.get(entity, "REF_COL_NAME"),
+      reference_column_sequence: safe_str_to_int(Map.get(entity, "REF_COL_SEQ_NO")),
+      remark_text: Map.get(entity, "REMARK")
     }
   end
 end

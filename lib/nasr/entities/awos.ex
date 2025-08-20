@@ -65,38 +65,40 @@ defmodule NASR.Entities.AWOS do
           phone_no: String.t(),
           second_phone_no: String.t(),
           site_no: String.t(),
-          site_type_code: :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
+          site_type_code:
+            :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
           remark: String.t()
         }
 
   @spec type() :: String.t()
-  def type(), do: "AWOS"
+  def type, do: "AWOS"
 
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      asos_awos_id: Map.fetch!(entity, "ASOS_AWOS_ID"),
-      asos_awos_type: Map.fetch!(entity, "ASOS_AWOS_TYPE"),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      city: Map.fetch!(entity, "CITY"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      commissioned_date: Map.fetch!(entity, "COMMISSIONED_DATE"),
-      navaid_flag: convert_yn(Map.fetch!(entity, "NAVAID_FLAG")),
-      latitude: safe_str_to_float(Map.fetch!(entity, "LAT_DECIMAL")),
-      longitude: safe_str_to_float(Map.fetch!(entity, "LONG_DECIMAL")),
-      elevation: safe_str_to_float(Map.fetch!(entity, "ELEV")),
-      survey_method_code: parse_survey_method_code(Map.fetch!(entity, "SURVEY_METHOD_CODE")),
-      phone_no: Map.fetch!(entity, "PHONE_NO"),
-      second_phone_no: Map.fetch!(entity, "SECOND_PHONE_NO"),
-      site_no: Map.fetch!(entity, "SITE_NO"),
-      site_type_code: parse_site_type_code(Map.fetch!(entity, "SITE_TYPE_CODE")),
-      remark: Map.fetch!(entity, "REMARK")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      asos_awos_id: Map.get(entity, "ASOS_AWOS_ID"),
+      asos_awos_type: Map.get(entity, "ASOS_AWOS_TYPE"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      city: Map.get(entity, "CITY"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      commissioned_date: Map.get(entity, "COMMISSIONED_DATE"),
+      navaid_flag: convert_yn(Map.get(entity, "NAVAID_FLAG")),
+      latitude: safe_str_to_float(Map.get(entity, "LAT_DECIMAL")),
+      longitude: safe_str_to_float(Map.get(entity, "LONG_DECIMAL")),
+      elevation: safe_str_to_float(Map.get(entity, "ELEV")),
+      survey_method_code: parse_survey_method_code(Map.get(entity, "SURVEY_METHOD_CODE")),
+      phone_no: Map.get(entity, "PHONE_NO"),
+      second_phone_no: Map.get(entity, "SECOND_PHONE_NO"),
+      site_no: Map.get(entity, "SITE_NO"),
+      site_type_code: parse_site_type_code(Map.get(entity, "SITE_TYPE_CODE")),
+      remark: Map.get(entity, "REMARK")
     }
   end
 
   defp parse_survey_method_code(nil), do: nil
   defp parse_survey_method_code(""), do: nil
+
   defp parse_survey_method_code(code) when is_binary(code) do
     case String.trim(code) do
       "E" -> :estimated
@@ -107,6 +109,7 @@ defmodule NASR.Entities.AWOS do
 
   defp parse_site_type_code(nil), do: nil
   defp parse_site_type_code(""), do: nil
+
   defp parse_site_type_code(code) when is_binary(code) do
     case String.trim(code) do
       "A" -> :airport

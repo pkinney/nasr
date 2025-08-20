@@ -58,24 +58,25 @@ defmodule NASR.Entities.Airport.ArrestingSystems do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      site_no: Map.fetch!(entity, "SITE_NO"),
-      site_type_code: Map.fetch!(entity, "SITE_TYPE_CODE"),
-      arpt_id: Map.fetch!(entity, "ARPT_ID"),
-      city: Map.fetch!(entity, "CITY"),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      runway_id: Map.fetch!(entity, "RWY_ID"),
-      runway_end_id: Map.fetch!(entity, "RWY_END_ID"),
-      arresting_device_type: parse_arresting_device_type(Map.fetch!(entity, "ARREST_DEVICE_CODE")),
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
+      site_no: Map.get(entity, "SITE_NO"),
+      site_type_code: Map.get(entity, "SITE_TYPE_CODE"),
+      arpt_id: Map.get(entity, "ARPT_ID"),
+      city: Map.get(entity, "CITY"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      runway_id: Map.get(entity, "RWY_ID"),
+      runway_end_id: Map.get(entity, "RWY_END_ID"),
+      arresting_device_type: parse_arresting_device_type(Map.get(entity, "ARREST_DEVICE_CODE")),
+      effective_date: parse_date(Map.get(entity, "EFF_DATE"))
     }
   end
 
   @spec type() :: String.t()
-  def type(), do: "APT_ARS"
+  def type, do: "APT_ARS"
 
   defp parse_arresting_device_type(nil), do: nil
   defp parse_arresting_device_type(""), do: nil
+
   defp parse_arresting_device_type(device) when is_binary(device) do
     device
     |> String.trim()

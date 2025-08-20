@@ -46,12 +46,12 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.Remarks do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      maa_id: Map.fetch!(entity, "MAA_ID"),
-      table_name: Map.fetch!(entity, "TAB_NAME"),
-      reference_column_name: Map.fetch!(entity, "REF_COL_NAME"),
-      reference_column_sequence_no: safe_str_to_int(Map.fetch!(entity, "REF_COL_SEQ_NO")),
-      remark_text: Map.fetch!(entity, "REMARK")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      maa_id: Map.get(entity, "MAA_ID"),
+      table_name: Map.get(entity, "TAB_NAME"),
+      reference_column_name: Map.get(entity, "REF_COL_NAME"),
+      reference_column_sequence_no: safe_str_to_int(Map.get(entity, "REF_COL_SEQ_NO")),
+      remark_text: Map.get(entity, "REMARK")
     }
   end
 end

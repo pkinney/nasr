@@ -1,5 +1,6 @@
 defmodule NASR.Entities.ATC.ATISTest do
   use ExUnit.Case
+
   alias NASR.Entities.ATC.ATIS
 
   describe "new/1" do
@@ -40,15 +41,17 @@ defmodule NASR.Entities.ATC.ATISTest do
     end
 
     test "handles different facility types" do
-      atct_data = create_sample_data(%{
-        "FACILITY_TYPE" => "ATCT",
-        "FACILITY_ID" => "DHN"
-      })
+      atct_data =
+        create_sample_data(%{
+          "FACILITY_TYPE" => "ATCT",
+          "FACILITY_ID" => "DHN"
+        })
 
-      tracon_data = create_sample_data(%{
-        "FACILITY_TYPE" => "ATCT-TRACON",
-        "FACILITY_ID" => "BHM"
-      })
+      tracon_data =
+        create_sample_data(%{
+          "FACILITY_TYPE" => "ATCT-TRACON",
+          "FACILITY_ID" => "BHM"
+        })
 
       atct_result = ATIS.new(atct_data)
       tracon_result = ATIS.new(tracon_data)
@@ -60,15 +63,17 @@ defmodule NASR.Entities.ATC.ATISTest do
     end
 
     test "handles multiple ATIS frequencies" do
-      atis1 = create_sample_data(%{
-        "ATIS_NO" => "1",
-        "DESCRIPTION" => "Arrival ATIS"
-      })
+      atis1 =
+        create_sample_data(%{
+          "ATIS_NO" => "1",
+          "DESCRIPTION" => "Arrival ATIS"
+        })
 
-      atis2 = create_sample_data(%{
-        "ATIS_NO" => "2", 
-        "DESCRIPTION" => "Departure ATIS"
-      })
+      atis2 =
+        create_sample_data(%{
+          "ATIS_NO" => "2",
+          "DESCRIPTION" => "Departure ATIS"
+        })
 
       result1 = ATIS.new(atis1)
       result2 = ATIS.new(atis2)
@@ -80,10 +85,11 @@ defmodule NASR.Entities.ATC.ATISTest do
     end
 
     test "handles ATIS phone number" do
-      phone_data = create_sample_data(%{
-        "ATIS_PHONE_NO" => "205-555-0123",
-        "DESCRIPTION" => "Birmingham ATIS"
-      })
+      phone_data =
+        create_sample_data(%{
+          "ATIS_PHONE_NO" => "205-555-0123",
+          "DESCRIPTION" => "Birmingham ATIS"
+        })
 
       result = ATIS.new(phone_data)
 
@@ -92,12 +98,13 @@ defmodule NASR.Entities.ATC.ATISTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "EFF_DATE" => "",
-        "ATIS_NO" => "",
-        "DESCRIPTION" => "",
-        "ATIS_PHONE_NO" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "EFF_DATE" => "",
+          "ATIS_NO" => "",
+          "DESCRIPTION" => "",
+          "ATIS_PHONE_NO" => ""
+        })
 
       result = ATIS.new(sample_data)
 
@@ -116,19 +123,22 @@ defmodule NASR.Entities.ATC.ATISTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "SITE_NO" => "00164.",
-      "SITE_TYPE_CODE" => "A",
-      "FACILITY_TYPE" => "ATCT-TRACON",
-      "STATE_CODE" => "AL",
-      "FACILITY_ID" => "BHM",
-      "CITY" => "BIRMINGHAM",
-      "COUNTRY_CODE" => "US",
-      "ATIS_NO" => "1",
-      "DESCRIPTION" => "",
-      "ATIS_HRS" => "24",
-      "ATIS_PHONE_NO" => ""
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "SITE_NO" => "00164.",
+        "SITE_TYPE_CODE" => "A",
+        "FACILITY_TYPE" => "ATCT-TRACON",
+        "STATE_CODE" => "AL",
+        "FACILITY_ID" => "BHM",
+        "CITY" => "BIRMINGHAM",
+        "COUNTRY_CODE" => "US",
+        "ATIS_NO" => "1",
+        "DESCRIPTION" => "",
+        "ATIS_HRS" => "24",
+        "ATIS_PHONE_NO" => ""
+      },
+      overrides
+    )
   end
 end

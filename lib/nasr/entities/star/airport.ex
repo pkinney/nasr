@@ -44,13 +44,13 @@ defmodule NASR.Entities.STAR.Airport do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      star_computer_code: Map.fetch!(entity, "STAR_COMPUTER_CODE"),
-      artcc: Map.fetch!(entity, "ARTCC"),
-      body_name: Map.fetch!(entity, "BODY_NAME"),
-      body_sequence: safe_str_to_int(Map.fetch!(entity, "BODY_SEQ")),
-      airport_id: Map.fetch!(entity, "ARPT_ID"),
-      runway_end_id: Map.fetch!(entity, "RWY_END_ID")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      star_computer_code: Map.get(entity, "STAR_COMPUTER_CODE"),
+      artcc: Map.get(entity, "ARTCC"),
+      body_name: Map.get(entity, "BODY_NAME"),
+      body_sequence: safe_str_to_int(Map.get(entity, "BODY_SEQ")),
+      airport_id: Map.get(entity, "ARPT_ID"),
+      runway_end_id: Map.get(entity, "RWY_END_ID")
     }
   end
 end

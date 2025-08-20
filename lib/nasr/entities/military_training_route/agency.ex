@@ -66,25 +66,26 @@ defmodule NASR.Entities.MilitaryTrainingRoute.Agency do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      route_type_code: parse_route_type_code(Map.fetch!(entity, "ROUTE_TYPE_CODE")),
-      route_id: Map.fetch!(entity, "ROUTE_ID"),
-      artcc: Map.fetch!(entity, "ARTCC"),
-      agency_type: parse_agency_type(Map.fetch!(entity, "AGENCY_TYPE")),
-      agency_name: Map.fetch!(entity, "AGENCY_NAME"),
-      station: Map.fetch!(entity, "STATION"),
-      address: Map.fetch!(entity, "ADDRESS"),
-      city: Map.fetch!(entity, "CITY"),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      zip_code: Map.fetch!(entity, "ZIP_CODE"),
-      commercial_number: Map.fetch!(entity, "COMMERCIAL_NO"),
-      dsn_number: Map.fetch!(entity, "DSN_NO"),
-      hours: Map.fetch!(entity, "HOURS")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      route_type_code: parse_route_type_code(Map.get(entity, "ROUTE_TYPE_CODE")),
+      route_id: Map.get(entity, "ROUTE_ID"),
+      artcc: Map.get(entity, "ARTCC"),
+      agency_type: parse_agency_type(Map.get(entity, "AGENCY_TYPE")),
+      agency_name: Map.get(entity, "AGENCY_NAME"),
+      station: Map.get(entity, "STATION"),
+      address: Map.get(entity, "ADDRESS"),
+      city: Map.get(entity, "CITY"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      zip_code: Map.get(entity, "ZIP_CODE"),
+      commercial_number: Map.get(entity, "COMMERCIAL_NO"),
+      dsn_number: Map.get(entity, "DSN_NO"),
+      hours: Map.get(entity, "HOURS")
     }
   end
 
   defp parse_route_type_code(nil), do: nil
   defp parse_route_type_code(""), do: nil
+
   defp parse_route_type_code(code) when is_binary(code) do
     case String.trim(code) do
       "IR" -> :instrument_route
@@ -95,6 +96,7 @@ defmodule NASR.Entities.MilitaryTrainingRoute.Agency do
 
   defp parse_agency_type(nil), do: nil
   defp parse_agency_type(""), do: nil
+
   defp parse_agency_type(type) when is_binary(type) do
     case String.trim(type) do
       "O" -> :operating

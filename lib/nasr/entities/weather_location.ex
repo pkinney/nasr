@@ -70,33 +70,34 @@ defmodule NASR.Entities.WeatherLocation do
         }
 
   @spec type() :: String.t()
-  def type(), do: "WXL_BASE"
+  def type, do: "WXL_BASE"
 
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      weather_id: Map.fetch!(entity, "WEA_ID"),
-      city: Map.fetch!(entity, "CITY"),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      latitude_degrees: safe_str_to_int(Map.fetch!(entity, "LAT_DEG")),
-      latitude_minutes: safe_str_to_int(Map.fetch!(entity, "LAT_MIN")),
-      latitude_seconds: safe_str_to_float(Map.fetch!(entity, "LAT_SEC")),
-      latitude_hemisphere: Map.fetch!(entity, "LAT_HEMIS"),
-      latitude: safe_str_to_float(Map.fetch!(entity, "LAT_DECIMAL")),
-      longitude_degrees: safe_str_to_int(Map.fetch!(entity, "LONG_DEG")),
-      longitude_minutes: safe_str_to_int(Map.fetch!(entity, "LONG_MIN")),
-      longitude_seconds: safe_str_to_float(Map.fetch!(entity, "LONG_SEC")),
-      longitude_hemisphere: Map.fetch!(entity, "LONG_HEMIS"),
-      longitude: safe_str_to_float(Map.fetch!(entity, "LONG_DECIMAL")),
-      elevation: safe_str_to_int(Map.fetch!(entity, "ELEV")),
-      survey_method_code: parse_survey_method_code(Map.fetch!(entity, "SURVEY_METHOD_CODE"))
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      weather_id: Map.get(entity, "WEA_ID"),
+      city: Map.get(entity, "CITY"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      latitude_degrees: safe_str_to_int(Map.get(entity, "LAT_DEG")),
+      latitude_minutes: safe_str_to_int(Map.get(entity, "LAT_MIN")),
+      latitude_seconds: safe_str_to_float(Map.get(entity, "LAT_SEC")),
+      latitude_hemisphere: Map.get(entity, "LAT_HEMIS"),
+      latitude: safe_str_to_float(Map.get(entity, "LAT_DECIMAL")),
+      longitude_degrees: safe_str_to_int(Map.get(entity, "LONG_DEG")),
+      longitude_minutes: safe_str_to_int(Map.get(entity, "LONG_MIN")),
+      longitude_seconds: safe_str_to_float(Map.get(entity, "LONG_SEC")),
+      longitude_hemisphere: Map.get(entity, "LONG_HEMIS"),
+      longitude: safe_str_to_float(Map.get(entity, "LONG_DECIMAL")),
+      elevation: safe_str_to_int(Map.get(entity, "ELEV")),
+      survey_method_code: parse_survey_method_code(Map.get(entity, "SURVEY_METHOD_CODE"))
     }
   end
 
   defp parse_survey_method_code(nil), do: nil
   defp parse_survey_method_code(""), do: nil
+
   defp parse_survey_method_code(code) when is_binary(code) do
     case String.trim(code) do
       "E" -> :estimated

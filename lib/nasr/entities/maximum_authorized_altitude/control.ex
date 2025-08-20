@@ -56,20 +56,21 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.Control do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      maa_id: Map.fetch!(entity, "MAA_ID"),
-      freq_seq: safe_str_to_int(Map.fetch!(entity, "FREQ_SEQ")),
-      fac_id: Map.fetch!(entity, "FAC_ID"),
-      fac_name: Map.fetch!(entity, "FAC_NAME"),
-      commercial_freq: safe_str_to_float(Map.fetch!(entity, "COMMERCIAL_FREQ")),
-      commercial_chart_flag: parse_chart_flag(Map.fetch!(entity, "COMMERCIAL_CHART_FLAG")),
-      mil_freq: safe_str_to_float(Map.fetch!(entity, "MIL_FREQ")),
-      mil_chart_flag: parse_chart_flag(Map.fetch!(entity, "MIL_CHART_FLAG"))
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      maa_id: Map.get(entity, "MAA_ID"),
+      freq_seq: safe_str_to_int(Map.get(entity, "FREQ_SEQ")),
+      fac_id: Map.get(entity, "FAC_ID"),
+      fac_name: Map.get(entity, "FAC_NAME"),
+      commercial_freq: safe_str_to_float(Map.get(entity, "COMMERCIAL_FREQ")),
+      commercial_chart_flag: parse_chart_flag(Map.get(entity, "COMMERCIAL_CHART_FLAG")),
+      mil_freq: safe_str_to_float(Map.get(entity, "MIL_FREQ")),
+      mil_chart_flag: parse_chart_flag(Map.get(entity, "MIL_CHART_FLAG"))
     }
   end
 
   defp parse_chart_flag(nil), do: nil
   defp parse_chart_flag(""), do: nil
+
   defp parse_chart_flag(flag) when is_binary(flag) do
     case String.trim(flag) do
       "Y" -> :yes

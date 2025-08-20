@@ -1,5 +1,6 @@
 defmodule NASR.Entities.HoldingPattern.SpeedAltitudeTest do
   use ExUnit.Case
+
   alias NASR.Entities.HoldingPattern.SpeedAltitude
 
   describe "new/1" do
@@ -35,7 +36,7 @@ defmodule NASR.Entities.HoldingPattern.SpeedAltitudeTest do
     test "handles different altitude ranges" do
       test_cases = [
         {"30/54", "30/54"},
-        {"180/450", "180/450"}, 
+        {"180/450", "180/450"},
         {"170/240", "170/240"},
         {"160/220", "160/220"},
         {"24/60", "24/60"},
@@ -53,42 +54,45 @@ defmodule NASR.Entities.HoldingPattern.SpeedAltitudeTest do
     end
 
     test "handles high altitude patterns" do
-      high_alt_data = create_sample_data(%{
-        "HP_NAME" => "AADEN WP*GA*K7",
-        "SPEED_RANGE" => "265",
-        "ALTITUDE" => "180/450"
-      })
+      high_alt_data =
+        create_sample_data(%{
+          "HP_NAME" => "AADEN WP*GA*K7",
+          "SPEED_RANGE" => "265",
+          "ALTITUDE" => "180/450"
+        })
 
       result = SpeedAltitude.new(high_alt_data)
-      
+
       assert result.hp_name == "AADEN WP*GA*K7"
       assert result.speed_range == 265
       assert result.altitude == "180/450"
     end
 
     test "handles low altitude patterns" do
-      low_alt_data = create_sample_data(%{
-        "HP_NAME" => "AAMMO WP*NC*K7",
-        "SPEED_RANGE" => "230",
-        "ALTITUDE" => "24/60"
-      })
+      low_alt_data =
+        create_sample_data(%{
+          "HP_NAME" => "AAMMO WP*NC*K7",
+          "SPEED_RANGE" => "230",
+          "ALTITUDE" => "24/60"
+        })
 
       result = SpeedAltitude.new(low_alt_data)
-      
+
       assert result.hp_name == "AAMMO WP*NC*K7"
       assert result.speed_range == 230
       assert result.altitude == "24/60"
     end
 
     test "handles intermediate altitude patterns" do
-      mid_alt_data = create_sample_data(%{
-        "HP_NAME" => "AARCH WP*IL*K5",
-        "SPEED_RANGE" => "280",
-        "ALTITUDE" => "100/175"
-      })
+      mid_alt_data =
+        create_sample_data(%{
+          "HP_NAME" => "AARCH WP*IL*K5",
+          "SPEED_RANGE" => "280",
+          "ALTITUDE" => "100/175"
+        })
 
       result = SpeedAltitude.new(mid_alt_data)
-      
+
       assert result.hp_name == "AARCH WP*IL*K5"
       assert result.speed_range == 280
       assert result.altitude == "100/175"
@@ -96,11 +100,16 @@ defmodule NASR.Entities.HoldingPattern.SpeedAltitudeTest do
 
     test "handles various waypoint naming patterns" do
       waypoint_patterns = [
-        "AABEE INT*GA*K7",  # Intersection
-        "AADEN WP*GA*K7",   # Waypoint
-        "AALAN WP*AZ*K2",   # Different region
-        "AALLE WP*CO*K2",   # Different state
-        "AAMMO WP*NC*K7"    # Different combinations
+        # Intersection
+        "AABEE INT*GA*K7",
+        # Waypoint
+        "AADEN WP*GA*K7",
+        # Different region
+        "AALAN WP*AZ*K2",
+        # Different state
+        "AALLE WP*CO*K2",
+        # Different combinations
+        "AAMMO WP*NC*K7"
       ]
 
       for hp_name <- waypoint_patterns do
@@ -111,11 +120,12 @@ defmodule NASR.Entities.HoldingPattern.SpeedAltitudeTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "HP_NO" => "",
-        "SPEED_RANGE" => "",
-        "ALTITUDE" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "HP_NO" => "",
+          "SPEED_RANGE" => "",
+          "ALTITUDE" => ""
+        })
 
       result = SpeedAltitude.new(sample_data)
 
@@ -125,11 +135,14 @@ defmodule NASR.Entities.HoldingPattern.SpeedAltitudeTest do
     end
 
     test "handles numeric conversion edge cases" do
-      sample_data = create_sample_data(%{
-        "HP_NO" => "2",
-        "SPEED_RANGE" => "0",  # Edge case: zero speed
-        "ALTITUDE" => "0/0"    # Edge case: zero altitude range
-      })
+      sample_data =
+        create_sample_data(%{
+          "HP_NO" => "2",
+          # Edge case: zero speed
+          "SPEED_RANGE" => "0",
+          # Edge case: zero altitude range
+          "ALTITUDE" => "0/0"
+        })
 
       result = SpeedAltitude.new(sample_data)
 
@@ -141,13 +154,15 @@ defmodule NASR.Entities.HoldingPattern.SpeedAltitudeTest do
     test "validates speed ranges are within realistic aviation limits" do
       # Test common holding pattern speeds
       realistic_speeds = [200, 230, 250, 265, 280]
-      
+
       for speed <- realistic_speeds do
         sample_data = create_sample_data(%{"SPEED_RANGE" => Integer.to_string(speed)})
         result = SpeedAltitude.new(sample_data)
         assert result.speed_range == speed
-        assert result.speed_range >= 200  # Minimum typical holding speed
-        assert result.speed_range <= 280  # Maximum typical holding speed
+        # Minimum typical holding speed
+        assert result.speed_range >= 200
+        # Maximum typical holding speed
+        assert result.speed_range <= 280
       end
     end
 
@@ -176,14 +191,17 @@ defmodule NASR.Entities.HoldingPattern.SpeedAltitudeTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "HP_NAME" => "AABEE INT*GA*K7",
-      "HP_NO" => "1",
-      "STATE_CODE" => "GA",
-      "COUNTRY_CODE" => "US",
-      "SPEED_RANGE" => "200",
-      "ALTITUDE" => "30/54"
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "HP_NAME" => "AABEE INT*GA*K7",
+        "HP_NO" => "1",
+        "STATE_CODE" => "GA",
+        "COUNTRY_CODE" => "US",
+        "SPEED_RANGE" => "200",
+        "ALTITUDE" => "30/54"
+      },
+      overrides
+    )
   end
 end

@@ -1,5 +1,6 @@
 defmodule NASR.Entities.CodedDepartureRouteTest do
   use ExUnit.Case
+
   alias NASR.Entities.CodedDepartureRoute
 
   describe "new/1" do
@@ -37,12 +38,13 @@ defmodule NASR.Entities.CodedDepartureRouteTest do
     end
 
     test "handles playbook references" do
-      sample_data = create_sample_data(%{
-        "RCode" => "ABQATLER",
-        "Orig" => "KABQ",
-        "Dest" => "KATL",
-        "Play" => "ATL NO CHPPR GLAVN"
-      })
+      sample_data =
+        create_sample_data(%{
+          "RCode" => "ABQATLER",
+          "Orig" => "KABQ",
+          "Dest" => "KATL",
+          "Play" => "ATL NO CHPPR GLAVN"
+        })
 
       result = CodedDepartureRoute.new(sample_data)
       assert result.route_code == "ABQATLER"
@@ -82,12 +84,13 @@ defmodule NASR.Entities.CodedDepartureRouteTest do
     end
 
     test "handles complex route strings" do
-      complex_route = create_sample_data(%{
-        "RCode" => "ABQBWICE",
-        "Route String" => "KABQ CNX J15 CME FST J86 IAH J2 CEW ALLMA TEEEM Q99 OGRAE GOOOB THHMP RAVNN8 KBWI",
-        "TCNTRs" => "ZAB ZDC ZFW ZHU ZJX",
-        "Play" => "CEW"
-      })
+      complex_route =
+        create_sample_data(%{
+          "RCode" => "ABQBWICE",
+          "Route String" => "KABQ CNX J15 CME FST J86 IAH J2 CEW ALLMA TEEEM Q99 OGRAE GOOOB THHMP RAVNN8 KBWI",
+          "TCNTRs" => "ZAB ZDC ZFW ZHU ZJX",
+          "Play" => "CEW"
+        })
 
       result = CodedDepartureRoute.new(complex_route)
       assert result.route_code == "ABQBWICE"
@@ -97,21 +100,23 @@ defmodule NASR.Entities.CodedDepartureRouteTest do
     end
 
     test "handles multiple transition centers" do
-      sample_data = create_sample_data(%{
-        "TCNTRs" => "ZAB ZAU ZDC ZDV ZID ZMP ZNY ZOB"
-      })
+      sample_data =
+        create_sample_data(%{
+          "TCNTRs" => "ZAB ZAU ZDC ZDV ZID ZMP ZNY ZOB"
+        })
 
       result = CodedDepartureRoute.new(sample_data)
       assert result.transition_centers == "ZAB ZAU ZDC ZDV ZID ZMP ZNY ZOB"
     end
 
     test "handles jet routes with standard naming" do
-      jet_route = create_sample_data(%{
-        "RCode" => "ABQBWIJ1",
-        "DepFix" => "ALS",
-        "Route String" => "KABQ ALS J13 FQF J128 HCT J60 JOT J30 APE AIR KEMAN ANTHM5 KBWI",
-        "Play" => "JOT 1"
-      })
+      jet_route =
+        create_sample_data(%{
+          "RCode" => "ABQBWIJ1",
+          "DepFix" => "ALS",
+          "Route String" => "KABQ ALS J13 FQF J128 HCT J60 JOT J30 APE AIR KEMAN ANTHM5 KBWI",
+          "Play" => "JOT 1"
+        })
 
       result = CodedDepartureRoute.new(jet_route)
       assert result.route_code == "ABQBWIJ1"
@@ -121,12 +126,13 @@ defmodule NASR.Entities.CodedDepartureRouteTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "CoordReq" => "",
-        "Play" => "",
-        "NavEqp" => "",
-        "Length" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "CoordReq" => "",
+          "Play" => "",
+          "NavEqp" => "",
+          "Length" => ""
+        })
 
       result = CodedDepartureRoute.new(sample_data)
 
@@ -138,11 +144,12 @@ defmodule NASR.Entities.CodedDepartureRouteTest do
 
     test "handles different center configurations" do
       # Single center transition
-      single_center = create_sample_data(%{
-        "DCNTR" => "ZAB",
-        "ACNTR" => "ZDV",
-        "TCNTRs" => "ZAB ZDV"
-      })
+      single_center =
+        create_sample_data(%{
+          "DCNTR" => "ZAB",
+          "ACNTR" => "ZDV",
+          "TCNTRs" => "ZAB ZDV"
+        })
 
       result = CodedDepartureRoute.new(single_center)
       assert result.departure_center == "ZAB"
@@ -150,11 +157,12 @@ defmodule NASR.Entities.CodedDepartureRouteTest do
       assert result.transition_centers == "ZAB ZDV"
 
       # Multiple center transition
-      multi_center = create_sample_data(%{
-        "DCNTR" => "ZAB",
-        "ACNTR" => "ZTL",
-        "TCNTRs" => "ZAB ZFW ZHU ZTL"
-      })
+      multi_center =
+        create_sample_data(%{
+          "DCNTR" => "ZAB",
+          "ACNTR" => "ZTL",
+          "TCNTRs" => "ZAB ZFW ZHU ZTL"
+        })
 
       result = CodedDepartureRoute.new(multi_center)
       assert result.departure_center == "ZAB"
@@ -171,19 +179,22 @@ defmodule NASR.Entities.CodedDepartureRouteTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "RCode" => "ABECLTHV",
-      "Orig" => "KABE",
-      "Dest" => "KCLT",
-      "DepFix" => "ETX",
-      "Route String" => "KABE ETX RAV J64 BURNI TYROO QUARM AIR HVQ LNDIZ PARQR4 KCLT",
-      "DCNTR" => "ZNY",
-      "ACNTR" => "ZTL",
-      "TCNTRs" => "ZID ZNY ZOB ZTL",
-      "CoordReq" => "N",
-      "Play" => "",
-      "NavEqp" => "1",
-      "Length" => "573"
-    }, overrides)
+    Map.merge(
+      %{
+        "RCode" => "ABECLTHV",
+        "Orig" => "KABE",
+        "Dest" => "KCLT",
+        "DepFix" => "ETX",
+        "Route String" => "KABE ETX RAV J64 BURNI TYROO QUARM AIR HVQ LNDIZ PARQR4 KCLT",
+        "DCNTR" => "ZNY",
+        "ACNTR" => "ZTL",
+        "TCNTRs" => "ZID ZNY ZOB ZTL",
+        "CoordReq" => "N",
+        "Play" => "",
+        "NavEqp" => "1",
+        "Length" => "573"
+      },
+      overrides
+    )
   end
 end

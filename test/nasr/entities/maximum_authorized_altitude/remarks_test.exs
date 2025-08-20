@@ -1,5 +1,6 @@
 defmodule NASR.Entities.MaximumAuthorizedAltitude.RemarksTest do
   use ExUnit.Case
+
   alias NASR.Entities.MaximumAuthorizedAltitude.Remarks
 
   describe "new/1" do
@@ -18,20 +19,23 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.RemarksTest do
 
     test "handles multi-part remarks" do
       # Test sequential remarks that form complete sentences
-      part1 = create_sample_data(%{
-        "REF_COL_SEQ_NO" => "1",
-        "REMARK" => "THIS APA WOULD BE USED ON AVERAGE OF EIGHT HOURS PER MONTH, DURING DAYLIGHT"
-      })
+      part1 =
+        create_sample_data(%{
+          "REF_COL_SEQ_NO" => "1",
+          "REMARK" => "THIS APA WOULD BE USED ON AVERAGE OF EIGHT HOURS PER MONTH, DURING DAYLIGHT"
+        })
 
-      part2 = create_sample_data(%{
-        "REF_COL_SEQ_NO" => "2", 
-        "REMARK" => "HOURS, MONDAY THROUGH SUNDAY OF EACH MONTH. USE WOULD BE BY LIGHT,"
-      })
+      part2 =
+        create_sample_data(%{
+          "REF_COL_SEQ_NO" => "2",
+          "REMARK" => "HOURS, MONDAY THROUGH SUNDAY OF EACH MONTH. USE WOULD BE BY LIGHT,"
+        })
 
-      part3 = create_sample_data(%{
-        "REF_COL_SEQ_NO" => "3",
-        "REMARK" => "SINGLE-ENGINE, PROPELLER-DRIVEN, AEROBATIC AIRCRAFT."
-      })
+      part3 =
+        create_sample_data(%{
+          "REF_COL_SEQ_NO" => "3",
+          "REMARK" => "SINGLE-ENGINE, PROPELLER-DRIVEN, AEROBATIC AIRCRAFT."
+        })
 
       result1 = Remarks.new(part1)
       result2 = Remarks.new(part2)
@@ -45,13 +49,14 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.RemarksTest do
     end
 
     test "handles long-term aerobatic practice area remarks" do
-      long_term_remark = create_sample_data(%{
-        "MAA_ID" => "AIA002",
-        "REMARK" => "LONG TERM AEROBATIC PRACTICE AREA - FROM AUGUST 14, 2022, THROUGH AUGUST 13, 2025"
-      })
+      long_term_remark =
+        create_sample_data(%{
+          "MAA_ID" => "AIA002",
+          "REMARK" => "LONG TERM AEROBATIC PRACTICE AREA - FROM AUGUST 14, 2022, THROUGH AUGUST 13, 2025"
+        })
 
       result = Remarks.new(long_term_remark)
-      
+
       assert result.maa_id == "AIA002"
       assert result.remark_text == "LONG TERM AEROBATIC PRACTICE AREA - FROM AUGUST 14, 2022, THROUGH AUGUST 13, 2025"
     end
@@ -71,23 +76,26 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.RemarksTest do
     end
 
     test "handles usage hours and aircraft type remarks" do
-      usage_remark = create_sample_data(%{
-        "MAA_ID" => "AIL003",
-        "REF_COL_SEQ_NO" => "1",
-        "REMARK" => "THIS APA WOULD BE USED ON AVERAGE OF EIGHT HOURS PER MONTH"
-      })
+      usage_remark =
+        create_sample_data(%{
+          "MAA_ID" => "AIL003",
+          "REF_COL_SEQ_NO" => "1",
+          "REMARK" => "THIS APA WOULD BE USED ON AVERAGE OF EIGHT HOURS PER MONTH"
+        })
 
-      time_remark = create_sample_data(%{
-        "MAA_ID" => "AIL003",
-        "REF_COL_SEQ_NO" => "2",
-        "REMARK" => "DURING DAYLIGHT HOURS, MONDAY THROUGH SUNDAY OF EACH MONTH."
-      })
+      time_remark =
+        create_sample_data(%{
+          "MAA_ID" => "AIL003",
+          "REF_COL_SEQ_NO" => "2",
+          "REMARK" => "DURING DAYLIGHT HOURS, MONDAY THROUGH SUNDAY OF EACH MONTH."
+        })
 
-      aircraft_remark = create_sample_data(%{
-        "MAA_ID" => "AIL003",
-        "REF_COL_SEQ_NO" => "3",
-        "REMARK" => "USE WOULD BE BY LIGHT, SINGLE-ENGINE, PROPELLER-DRIVEN, AEROBATIC AIRCRAFT."
-      })
+      aircraft_remark =
+        create_sample_data(%{
+          "MAA_ID" => "AIL003",
+          "REF_COL_SEQ_NO" => "3",
+          "REMARK" => "USE WOULD BE BY LIGHT, SINGLE-ENGINE, PROPELLER-DRIVEN, AEROBATIC AIRCRAFT."
+        })
 
       usage_result = Remarks.new(usage_remark)
       time_result = Remarks.new(time_remark)
@@ -104,11 +112,16 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.RemarksTest do
 
     test "handles different MAA ID patterns" do
       maa_patterns = [
-        "AAR002",  # Arkansas aerobatic practice
-        "AIA002",  # Iowa practice area
-        "AIA008",  # Another Iowa area
-        "AIA009",  # Another Iowa area  
-        "AIL003"   # Illinois practice area
+        # Arkansas aerobatic practice
+        "AAR002",
+        # Iowa practice area
+        "AIA002",
+        # Another Iowa area
+        "AIA008",
+        # Another Iowa area  
+        "AIA009",
+        # Illinois practice area
+        "AIL003"
       ]
 
       for maa_id <- maa_patterns do
@@ -135,7 +148,7 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.RemarksTest do
     test "handles different reference column types" do
       reference_columns = [
         "GENERAL_REMARK",
-        "DESCRIPTION", 
+        "DESCRIPTION",
         "TIME_OF_USE",
         "ALTITUDE_RESTRICTION",
         "OPERATING_HOURS"
@@ -165,10 +178,11 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.RemarksTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "REF_COL_SEQ_NO" => "",
-        "REMARK" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "REF_COL_SEQ_NO" => "",
+          "REMARK" => ""
+        })
 
       result = Remarks.new(sample_data)
 
@@ -227,13 +241,16 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.RemarksTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "MAA_ID" => "AAR002",
-      "TAB_NAME" => "MISC_ACTIVITY_AREA",
-      "REF_COL_NAME" => "GENERAL_REMARK",
-      "REF_COL_SEQ_NO" => "1",
-      "REMARK" => "THIS APA WOULD BE USED ON AVERAGE OF EIGHT HOURS PER MONTH, DURING DAYLIGHT"
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "MAA_ID" => "AAR002",
+        "TAB_NAME" => "MISC_ACTIVITY_AREA",
+        "REF_COL_NAME" => "GENERAL_REMARK",
+        "REF_COL_SEQ_NO" => "1",
+        "REMARK" => "THIS APA WOULD BE USED ON AVERAGE OF EIGHT HOURS PER MONTH, DURING DAYLIGHT"
+      },
+      overrides
+    )
   end
 end

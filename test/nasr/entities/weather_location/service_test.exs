@@ -1,5 +1,6 @@
 defmodule NASR.Entities.WeatherLocation.ServiceTest do
   use ExUnit.Case
+
   alias NASR.Entities.WeatherLocation.Service
 
   describe "new/1" do
@@ -86,8 +87,7 @@ defmodule NASR.Entities.WeatherLocation.ServiceTest do
     end
 
     test "handles service area descriptions" do
-      raw_data = create_sample_metar_data()
-        |> Map.put("WEA_AFFECT_AREA", "TERMINAL AREA")
+      raw_data = Map.put(create_sample_metar_data(), "WEA_AFFECT_AREA", "TERMINAL AREA")
 
       service = Service.new(raw_data)
 
@@ -95,8 +95,7 @@ defmodule NASR.Entities.WeatherLocation.ServiceTest do
     end
 
     test "preserves unknown service types" do
-      raw_data = create_sample_metar_data()
-        |> Map.put("WEA_SVC_TYPE_CODE", "UNKNOWN_TYPE")
+      raw_data = Map.put(create_sample_metar_data(), "WEA_SVC_TYPE_CODE", "UNKNOWN_TYPE")
 
       service = Service.new(raw_data)
 
@@ -104,8 +103,7 @@ defmodule NASR.Entities.WeatherLocation.ServiceTest do
     end
 
     test "handles case-insensitive service types" do
-      raw_data = create_sample_metar_data()
-        |> Map.put("WEA_SVC_TYPE_CODE", "metar")
+      raw_data = Map.put(create_sample_metar_data(), "WEA_SVC_TYPE_CODE", "metar")
 
       service = Service.new(raw_data)
 

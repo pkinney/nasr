@@ -1,5 +1,6 @@
 defmodule NASR.Entities.ILS.DMETest do
   use ExUnit.Case
+
   alias NASR.Entities.ILS.DME
 
   describe "new/1" do
@@ -77,10 +78,12 @@ defmodule NASR.Entities.ILS.DMETest do
       ]
 
       for {input, expected} <- test_cases do
-        sample_data = create_sample_data(%{
-          "LAT_HEMIS" => input,
-          "LONG_HEMIS" => input
-        })
+        sample_data =
+          create_sample_data(%{
+            "LAT_HEMIS" => input,
+            "LONG_HEMIS" => input
+          })
+
         result = DME.new(sample_data)
         assert result.latitude_hemisphere == expected
         assert result.longitude_hemisphere == expected
@@ -88,12 +91,13 @@ defmodule NASR.Entities.ILS.DMETest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "EFF_DATE" => "",
-        "LAT_DEG" => "",
-        "SITE_ELEVATION" => "",
-        "CHANNEL" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "EFF_DATE" => "",
+          "LAT_DEG" => "",
+          "SITE_ELEVATION" => "",
+          "CHANNEL" => ""
+        })
 
       result = DME.new(sample_data)
 
@@ -112,32 +116,35 @@ defmodule NASR.Entities.ILS.DMETest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "SITE_NO" => "00146.",
-      "SITE_TYPE_CODE" => "A",
-      "STATE_CODE" => "AL",
-      "ARPT_ID" => "AUO",
-      "CITY" => "AUBURN",
-      "COUNTRY_CODE" => "US",
-      "RWY_END_ID" => "36",
-      "ILS_LOC_ID" => "AUO",
-      "SYSTEM_TYPE_CODE" => "LD",
-      "COMPONENT_STATUS" => "OPERATIONAL IFR",
-      "COMPONENT_STATUS_DATE" => "2022/07/28",
-      "LAT_DEG" => "32",
-      "LAT_MIN" => "37",
-      "LAT_SEC" => "22.81",
-      "LAT_HEMIS" => "N",
-      "LAT_DECIMAL" => "32.62300277",
-      "LONG_DEG" => "85",
-      "LONG_MIN" => "26",
-      "LONG_SEC" => "8.88",
-      "LONG_HEMIS" => "W",
-      "LONG_DECIMAL" => "-85.4358",
-      "LAT_LONG_SOURCE_CODE" => "F",
-      "SITE_ELEVATION" => "779",
-      "CHANNEL" => "38X"
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "SITE_NO" => "00146.",
+        "SITE_TYPE_CODE" => "A",
+        "STATE_CODE" => "AL",
+        "ARPT_ID" => "AUO",
+        "CITY" => "AUBURN",
+        "COUNTRY_CODE" => "US",
+        "RWY_END_ID" => "36",
+        "ILS_LOC_ID" => "AUO",
+        "SYSTEM_TYPE_CODE" => "LD",
+        "COMPONENT_STATUS" => "OPERATIONAL IFR",
+        "COMPONENT_STATUS_DATE" => "2022/07/28",
+        "LAT_DEG" => "32",
+        "LAT_MIN" => "37",
+        "LAT_SEC" => "22.81",
+        "LAT_HEMIS" => "N",
+        "LAT_DECIMAL" => "32.62300277",
+        "LONG_DEG" => "85",
+        "LONG_MIN" => "26",
+        "LONG_SEC" => "8.88",
+        "LONG_HEMIS" => "W",
+        "LONG_DECIMAL" => "-85.4358",
+        "LAT_LONG_SOURCE_CODE" => "F",
+        "SITE_ELEVATION" => "779",
+        "CHANNEL" => "38X"
+      },
+      overrides
+    )
   end
 end

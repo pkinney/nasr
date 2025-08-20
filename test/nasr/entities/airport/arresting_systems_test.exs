@@ -1,6 +1,8 @@
 defmodule NASR.Entities.Airport.ArrestingSystemsTest do
   use ExUnit.Case
 
+  alias NASR.Entities.Airport.ArrestingSystems
+
   describe "new/1" do
     test "creates struct from airport arresting systems data" do
       sample_data = %{
@@ -16,7 +18,7 @@ defmodule NASR.Entities.Airport.ArrestingSystemsTest do
         "EFF_DATE" => "2025/08/07"
       }
 
-      result = NASR.Entities.Airport.ArrestingSystems.new(sample_data)
+      result = ArrestingSystems.new(sample_data)
 
       assert result.site_no == "04513.0*A"
       assert result.arpt_id == "LAX"
@@ -53,18 +55,18 @@ defmodule NASR.Entities.Airport.ArrestingSystemsTest do
 
       for {input, expected} <- test_cases do
         sample_data = create_sample_data(%{"ARREST_DEVICE_CODE" => input})
-        result = NASR.Entities.Airport.ArrestingSystems.new(sample_data)
+        result = ArrestingSystems.new(sample_data)
         assert result.arresting_device_type == expected
       end
     end
 
     test "handles nil and empty arresting device codes" do
       sample_data = create_sample_data(%{"ARREST_DEVICE_CODE" => ""})
-      result = NASR.Entities.Airport.ArrestingSystems.new(sample_data)
+      result = ArrestingSystems.new(sample_data)
       assert result.arresting_device_type == nil
 
       sample_data = create_sample_data(%{"ARREST_DEVICE_CODE" => nil})
-      result = NASR.Entities.Airport.ArrestingSystems.new(sample_data)
+      result = ArrestingSystems.new(sample_data)
       assert result.arresting_device_type == nil
     end
 
@@ -78,39 +80,44 @@ defmodule NASR.Entities.Airport.ArrestingSystemsTest do
       ]
 
       for runway_id <- test_cases do
-        sample_data = create_sample_data(%{
-          "RWY_ID" => runway_id,
-          "RWY_END_ID" => String.split(runway_id, "/") |> List.first()
-        })
-        result = NASR.Entities.Airport.ArrestingSystems.new(sample_data)
+        sample_data =
+          create_sample_data(%{
+            "RWY_ID" => runway_id,
+            "RWY_END_ID" => runway_id |> String.split("/") |> List.first()
+          })
+
+        result = ArrestingSystems.new(sample_data)
         assert result.runway_id == runway_id
       end
     end
 
     test "parses dates correctly" do
       sample_data = create_sample_data(%{"EFF_DATE" => "2023/12/15"})
-      result = NASR.Entities.Airport.ArrestingSystems.new(sample_data)
+      result = ArrestingSystems.new(sample_data)
       assert result.effective_date == ~D[2023-12-15]
     end
   end
 
   test "type/0 returns correct CSV filename" do
-    assert NASR.Entities.Airport.ArrestingSystems.type() == "APT_ARS"
+    assert ArrestingSystems.type() == "APT_ARS"
   end
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "SITE_NO" => "12345.*A",
-      "SITE_TYPE_CODE" => "AIRPORT",
-      "ARPT_ID" => "TEST",
-      "CITY" => "TEST CITY",
-      "STATE_CODE" => "TX",
-      "COUNTRY_CODE" => "US",
-      "RWY_ID" => "01/19",
-      "RWY_END_ID" => "01",
-      "ARREST_DEVICE_CODE" => "BAK-12",
-      "EFF_DATE" => "2025/08/07"
-    }, overrides)
+    Map.merge(
+      %{
+        "SITE_NO" => "12345.*A",
+        "SITE_TYPE_CODE" => "AIRPORT",
+        "ARPT_ID" => "TEST",
+        "CITY" => "TEST CITY",
+        "STATE_CODE" => "TX",
+        "COUNTRY_CODE" => "US",
+        "RWY_ID" => "01/19",
+        "RWY_END_ID" => "01",
+        "ARREST_DEVICE_CODE" => "BAK-12",
+        "EFF_DATE" => "2025/08/07"
+      },
+      overrides
+    )
   end
 end

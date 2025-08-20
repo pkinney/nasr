@@ -1,5 +1,6 @@
 defmodule NASR.Entities.MilitaryTrainingRoute.PointTest do
   use ExUnit.Case
+
   alias NASR.Entities.MilitaryTrainingRoute.Point
 
   describe "new/1" do
@@ -45,14 +46,15 @@ defmodule NASR.Entities.MilitaryTrainingRoute.PointTest do
     end
 
     test "handles altitude restrictions in segment text" do
-      altitude_data = create_sample_data(%{
-        "ROUTE_PT_SEQ" => "20",
-        "ROUTE_PT_ID" => "B",
-        "NEXT_ROUTE_PT_ID" => "C",
-        "SEGMENT_TEXT" => "(1) 05 AGL B 60 MSL TO",
-        "LAT_DECIMAL" => "36.5",
-        "LONG_DECIMAL" => "-84.33333333"
-      })
+      altitude_data =
+        create_sample_data(%{
+          "ROUTE_PT_SEQ" => "20",
+          "ROUTE_PT_ID" => "B",
+          "NEXT_ROUTE_PT_ID" => "C",
+          "SEGMENT_TEXT" => "(1) 05 AGL B 60 MSL TO",
+          "LAT_DECIMAL" => "36.5",
+          "LONG_DECIMAL" => "-84.33333333"
+        })
 
       result = Point.new(altitude_data)
       assert result.route_point_sequence == 20
@@ -64,14 +66,15 @@ defmodule NASR.Entities.MilitaryTrainingRoute.PointTest do
     end
 
     test "handles final point with exit instructions" do
-      final_point_data = create_sample_data(%{
-        "ROUTE_PT_SEQ" => "80",
-        "ROUTE_PT_ID" => "H",
-        "NEXT_ROUTE_PT_ID" => "",
-        "SEGMENT_TEXT" => "(1) 03 AGL B 90 MSL TO (2) EXIT AT 90 MSL",
-        "LAT_DECIMAL" => "35.55",
-        "LONG_DECIMAL" => "-83.16666666"
-      })
+      final_point_data =
+        create_sample_data(%{
+          "ROUTE_PT_SEQ" => "80",
+          "ROUTE_PT_ID" => "H",
+          "NEXT_ROUTE_PT_ID" => "",
+          "SEGMENT_TEXT" => "(1) 03 AGL B 90 MSL TO (2) EXIT AT 90 MSL",
+          "LAT_DECIMAL" => "35.55",
+          "LONG_DECIMAL" => "-83.16666666"
+        })
 
       result = Point.new(final_point_data)
       assert result.route_point_sequence == 80
@@ -83,17 +86,18 @@ defmodule NASR.Entities.MilitaryTrainingRoute.PointTest do
     end
 
     test "handles alternate exit points" do
-      alternate_data = create_sample_data(%{
-        "ROUTE_PT_SEQ" => "80",
-        "ROUTE_PT_ID" => "H",
-        "NEXT_ROUTE_PT_ID" => "E1",
-        "SEGMENT_TEXT" => "(1) 20 MSL TO (2) ALTERNATE EXIT FROM E (3) TO R-5306A",
-        "LAT_DECIMAL" => "35.68333333",
-        "LONG_DECIMAL" => "-76.275",
-        "NAV_ID" => "NKT",
-        "NAVAID_BEARING" => "41",
-        "NAVAID_DIST" => "55"
-      })
+      alternate_data =
+        create_sample_data(%{
+          "ROUTE_PT_SEQ" => "80",
+          "ROUTE_PT_ID" => "H",
+          "NEXT_ROUTE_PT_ID" => "E1",
+          "SEGMENT_TEXT" => "(1) 20 MSL TO (2) ALTERNATE EXIT FROM E (3) TO R-5306A",
+          "LAT_DECIMAL" => "35.68333333",
+          "LONG_DECIMAL" => "-76.275",
+          "NAV_ID" => "NKT",
+          "NAVAID_BEARING" => "41",
+          "NAVAID_DIST" => "55"
+        })
 
       result = Point.new(alternate_data)
       assert result.route_point_sequence == 80
@@ -108,18 +112,19 @@ defmodule NASR.Entities.MilitaryTrainingRoute.PointTest do
     end
 
     test "handles precise latitude/longitude coordinates" do
-      precise_data = create_sample_data(%{
-        "LAT_DEG" => "31",
-        "LAT_MIN" => "37",
-        "LAT_SEC" => "31.2",
-        "LAT_HEMIS" => "N",
-        "LAT_DECIMAL" => "31.62533333",
-        "LONG_DEG" => "83",
-        "LONG_MIN" => "20",
-        "LONG_SEC" => "0",
-        "LONG_HEMIS" => "W",
-        "LONG_DECIMAL" => "-83.33333333"
-      })
+      precise_data =
+        create_sample_data(%{
+          "LAT_DEG" => "31",
+          "LAT_MIN" => "37",
+          "LAT_SEC" => "31.2",
+          "LAT_HEMIS" => "N",
+          "LAT_DECIMAL" => "31.62533333",
+          "LONG_DEG" => "83",
+          "LONG_MIN" => "20",
+          "LONG_SEC" => "0",
+          "LONG_HEMIS" => "W",
+          "LONG_DECIMAL" => "-83.33333333"
+        })
 
       result = Point.new(precise_data)
       assert result.latitude_degrees == 31
@@ -135,14 +140,15 @@ defmodule NASR.Entities.MilitaryTrainingRoute.PointTest do
     end
 
     test "handles crossing altitude restrictions" do
-      crossing_data = create_sample_data(%{
-        "ROUTE_PT_ID" => "A",
-        "NEXT_ROUTE_PT_ID" => "B",
-        "SEGMENT_TEXT" => "(1) CROSS AT 20 MSL TO",
-        "NAV_ID" => "VAD",
-        "NAVAID_BEARING" => "353",
-        "NAVAID_DIST" => "40"
-      })
+      crossing_data =
+        create_sample_data(%{
+          "ROUTE_PT_ID" => "A",
+          "NEXT_ROUTE_PT_ID" => "B",
+          "SEGMENT_TEXT" => "(1) CROSS AT 20 MSL TO",
+          "NAV_ID" => "VAD",
+          "NAVAID_BEARING" => "353",
+          "NAVAID_DIST" => "40"
+        })
 
       result = Point.new(crossing_data)
       assert result.route_point_id == "A"
@@ -154,10 +160,11 @@ defmodule NASR.Entities.MilitaryTrainingRoute.PointTest do
     end
 
     test "handles multiple ARTCC coordination" do
-      multi_artcc_data = create_sample_data(%{
-        "ARTCC" => "ZJX ZTL",
-        "ROUTE_ID" => "017"
-      })
+      multi_artcc_data =
+        create_sample_data(%{
+          "ARTCC" => "ZJX ZTL",
+          "ROUTE_ID" => "017"
+        })
 
       result = Point.new(multi_artcc_data)
       assert result.artcc == "ZJX ZTL"
@@ -165,12 +172,13 @@ defmodule NASR.Entities.MilitaryTrainingRoute.PointTest do
     end
 
     test "handles Visual Route points" do
-      vr_data = create_sample_data(%{
-        "ROUTE_TYPE_CODE" => "VR",
-        "ROUTE_ID" => "1234",
-        "ROUTE_PT_ID" => "START",
-        "SEGMENT_TEXT" => "(1) VFR ENTRY POINT"
-      })
+      vr_data =
+        create_sample_data(%{
+          "ROUTE_TYPE_CODE" => "VR",
+          "ROUTE_ID" => "1234",
+          "ROUTE_PT_ID" => "START",
+          "SEGMENT_TEXT" => "(1) VFR ENTRY POINT"
+        })
 
       result = Point.new(vr_data)
       assert result.route_type_code == :visual_route
@@ -180,11 +188,12 @@ defmodule NASR.Entities.MilitaryTrainingRoute.PointTest do
     end
 
     test "handles points without NAVAID reference" do
-      no_navaid_data = create_sample_data(%{
-        "NAV_ID" => "",
-        "NAVAID_BEARING" => "",
-        "NAVAID_DIST" => ""
-      })
+      no_navaid_data =
+        create_sample_data(%{
+          "NAV_ID" => "",
+          "NAVAID_BEARING" => "",
+          "NAVAID_DIST" => ""
+        })
 
       result = Point.new(no_navaid_data)
       assert result.navaid_id == ""
@@ -193,12 +202,13 @@ defmodule NASR.Entities.MilitaryTrainingRoute.PointTest do
     end
 
     test "handles different NAVAID types" do
-      vor_data = create_sample_data(%{
-        "NAV_ID" => "ILM",
-        "NAVAID_BEARING" => "277",
-        "NAVAID_DIST" => "20",
-        "SEGMENT_TEXT" => "(1) AS ASSIGNED TO"
-      })
+      vor_data =
+        create_sample_data(%{
+          "NAV_ID" => "ILM",
+          "NAVAID_BEARING" => "277",
+          "NAVAID_DIST" => "20",
+          "SEGMENT_TEXT" => "(1) AS ASSIGNED TO"
+        })
 
       result = Point.new(vor_data)
       assert result.navaid_id == "ILM"
@@ -209,12 +219,13 @@ defmodule NASR.Entities.MilitaryTrainingRoute.PointTest do
 
     test "handles Southern hemisphere coordinates" do
       # Note: This is theoretical as MTRs are US-based, but tests the parser
-      south_data = create_sample_data(%{
-        "LAT_HEMIS" => "S",
-        "LAT_DECIMAL" => "-25.5",
-        "LONG_HEMIS" => "E",
-        "LONG_DECIMAL" => "135.75"
-      })
+      south_data =
+        create_sample_data(%{
+          "LAT_HEMIS" => "S",
+          "LAT_DECIMAL" => "-25.5",
+          "LONG_HEMIS" => "E",
+          "LONG_DECIMAL" => "135.75"
+        })
 
       result = Point.new(south_data)
       assert result.latitude_hemisphere == "S"
@@ -224,11 +235,12 @@ defmodule NASR.Entities.MilitaryTrainingRoute.PointTest do
     end
 
     test "handles three-digit sequence numbers" do
-      high_seq_data = create_sample_data(%{
-        "ROUTE_PT_SEQ" => "100",
-        "ROUTE_PT_ID" => "FA",
-        "SEGMENT_TEXT" => "(1) 15 AGL B 30 MSL TO"
-      })
+      high_seq_data =
+        create_sample_data(%{
+          "ROUTE_PT_SEQ" => "100",
+          "ROUTE_PT_ID" => "FA",
+          "SEGMENT_TEXT" => "(1) 15 AGL B 30 MSL TO"
+        })
 
       result = Point.new(high_seq_data)
       assert result.route_point_sequence == 100
@@ -237,22 +249,23 @@ defmodule NASR.Entities.MilitaryTrainingRoute.PointTest do
     end
 
     test "handles empty/nil values correctly" do
-      empty_data = create_sample_data(%{
-        "NEXT_ROUTE_PT_ID" => "",
-        "NAV_ID" => "",
-        "NAVAID_BEARING" => "",
-        "NAVAID_DIST" => "",
-        "LAT_DEG" => "",
-        "LAT_MIN" => "",
-        "LAT_SEC" => "",
-        "LONG_DEG" => "",
-        "LONG_MIN" => "",
-        "LONG_SEC" => "",
-        "LAT_DECIMAL" => "",
-        "LONG_DECIMAL" => "",
-        "ROUTE_PT_SEQ" => "",
-        "ROUTE_TYPE_CODE" => ""
-      })
+      empty_data =
+        create_sample_data(%{
+          "NEXT_ROUTE_PT_ID" => "",
+          "NAV_ID" => "",
+          "NAVAID_BEARING" => "",
+          "NAVAID_DIST" => "",
+          "LAT_DEG" => "",
+          "LAT_MIN" => "",
+          "LAT_SEC" => "",
+          "LONG_DEG" => "",
+          "LONG_MIN" => "",
+          "LONG_SEC" => "",
+          "LAT_DECIMAL" => "",
+          "LONG_DECIMAL" => "",
+          "ROUTE_PT_SEQ" => "",
+          "ROUTE_TYPE_CODE" => ""
+        })
 
       result = Point.new(empty_data)
 
@@ -273,9 +286,10 @@ defmodule NASR.Entities.MilitaryTrainingRoute.PointTest do
     end
 
     test "handles unknown route type codes as strings" do
-      unknown_data = create_sample_data(%{
-        "ROUTE_TYPE_CODE" => "XR"
-      })
+      unknown_data =
+        create_sample_data(%{
+          "ROUTE_TYPE_CODE" => "XR"
+        })
 
       result = Point.new(unknown_data)
       assert result.route_type_code == "XR"
@@ -290,28 +304,31 @@ defmodule NASR.Entities.MilitaryTrainingRoute.PointTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "ROUTE_TYPE_CODE" => "IR",
-      "ROUTE_ID" => "002",
-      "ARTCC" => "ZTL",
-      "ROUTE_PT_SEQ" => "10",
-      "ROUTE_PT_ID" => "A",
-      "NEXT_ROUTE_PT_ID" => "B",
-      "SEGMENT_TEXT" => "(1) CROSS AT 60 MSL TO",
-      "LAT_DEG" => "36",
-      "LAT_MIN" => "4",
-      "LAT_SEC" => "0",
-      "LAT_HEMIS" => "N",
-      "LAT_DECIMAL" => "36.06666666",
-      "LONG_DEG" => "84",
-      "LONG_MIN" => "39",
-      "LONG_SEC" => "0",
-      "LONG_HEMIS" => "W",
-      "LONG_DECIMAL" => "-84.65",
-      "NAV_ID" => "VXV",
-      "NAVAID_BEARING" => "288",
-      "NAVAID_DIST" => "38"
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "ROUTE_TYPE_CODE" => "IR",
+        "ROUTE_ID" => "002",
+        "ARTCC" => "ZTL",
+        "ROUTE_PT_SEQ" => "10",
+        "ROUTE_PT_ID" => "A",
+        "NEXT_ROUTE_PT_ID" => "B",
+        "SEGMENT_TEXT" => "(1) CROSS AT 60 MSL TO",
+        "LAT_DEG" => "36",
+        "LAT_MIN" => "4",
+        "LAT_SEC" => "0",
+        "LAT_HEMIS" => "N",
+        "LAT_DECIMAL" => "36.06666666",
+        "LONG_DEG" => "84",
+        "LONG_MIN" => "39",
+        "LONG_SEC" => "0",
+        "LONG_HEMIS" => "W",
+        "LONG_DECIMAL" => "-84.65",
+        "NAV_ID" => "VXV",
+        "NAVAID_BEARING" => "288",
+        "NAVAID_DIST" => "38"
+      },
+      overrides
+    )
   end
 end

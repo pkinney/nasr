@@ -63,17 +63,17 @@ defmodule NASR.Entities.ParachuteJumpingArea.Contact do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      pja_id: Map.fetch!(entity, "PJA_ID"),
-      facility_id: Map.fetch!(entity, "FAC_ID"),
-      facility_name: Map.fetch!(entity, "FAC_NAME"),
-      location_id: Map.fetch!(entity, "LOC_ID"),
-      commercial_frequency: safe_str_to_float(Map.fetch!(entity, "COMMERCIAL_FREQ")),
-      commercial_chart_flag: convert_yn(Map.fetch!(entity, "COMMERCIAL_CHART_FLAG")),
-      military_frequency: safe_str_to_float(Map.fetch!(entity, "MIL_FREQ")),
-      military_chart_flag: convert_yn(Map.fetch!(entity, "MIL_CHART_FLAG")),
-      sector: Map.fetch!(entity, "SECTOR"),
-      contact_frequency_altitude: Map.fetch!(entity, "CONTACT_FREQ_ALTITUDE")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      pja_id: Map.get(entity, "PJA_ID"),
+      facility_id: Map.get(entity, "FAC_ID"),
+      facility_name: Map.get(entity, "FAC_NAME"),
+      location_id: Map.get(entity, "LOC_ID"),
+      commercial_frequency: safe_str_to_float(Map.get(entity, "COMMERCIAL_FREQ")),
+      commercial_chart_flag: convert_yn(Map.get(entity, "COMMERCIAL_CHART_FLAG")),
+      military_frequency: safe_str_to_float(Map.get(entity, "MIL_FREQ")),
+      military_chart_flag: convert_yn(Map.get(entity, "MIL_CHART_FLAG")),
+      sector: Map.get(entity, "SECTOR"),
+      contact_frequency_altitude: Map.get(entity, "CONTACT_FREQ_ALTITUDE")
     }
   end
 end

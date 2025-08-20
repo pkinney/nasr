@@ -1,5 +1,6 @@
 defmodule NASR.Entities.AirRouteBoundaryTest do
   use ExUnit.Case
+
   alias NASR.Entities.AirRouteBoundary
 
   describe "new/1" do
@@ -32,23 +33,24 @@ defmodule NASR.Entities.AirRouteBoundaryTest do
 
     test "handles different ARTCC locations" do
       # Test Boston ARTCC
-      boston_data = create_sample_data(%{
-        "LOCATION_ID" => "ZBW",
-        "LOCATION_NAME" => "BOSTON",
-        "COMPUTER_ID" => "ZCB",
-        "ICAO_ID" => "KZBW",
-        "CITY" => "NASHUA",
-        "STATE" => "NH",
-        "LAT_DEG" => "42",
-        "LAT_MIN" => "44",
-        "LAT_SEC" => "10.31",
-        "LAT_DECIMAL" => "42.73619722",
-        "LONG_DEG" => "71",
-        "LONG_MIN" => "28",
-        "LONG_SEC" => "50.23",
-        "LONG_DECIMAL" => "-71.48061944",
-        "CROSS_REF" => "FACILITY LOCATED AT NASHUA, NH"
-      })
+      boston_data =
+        create_sample_data(%{
+          "LOCATION_ID" => "ZBW",
+          "LOCATION_NAME" => "BOSTON",
+          "COMPUTER_ID" => "ZCB",
+          "ICAO_ID" => "KZBW",
+          "CITY" => "NASHUA",
+          "STATE" => "NH",
+          "LAT_DEG" => "42",
+          "LAT_MIN" => "44",
+          "LAT_SEC" => "10.31",
+          "LAT_DECIMAL" => "42.73619722",
+          "LONG_DEG" => "71",
+          "LONG_MIN" => "28",
+          "LONG_SEC" => "50.23",
+          "LONG_DECIMAL" => "-71.48061944",
+          "CROSS_REF" => "FACILITY LOCATED AT NASHUA, NH"
+        })
 
       result = AirRouteBoundary.new(boston_data)
       assert result.location_id == "ZBW"
@@ -68,15 +70,16 @@ defmodule NASR.Entities.AirRouteBoundaryTest do
     end
 
     test "handles oceanic ARTCCs" do
-      oceanic_data = create_sample_data(%{
-        "LOCATION_ID" => "ZAK",
-        "LOCATION_NAME" => "OAKLAND OCEANIC ARTCC",
-        "COMPUTER_ID" => "ZAK",
-        "ICAO_ID" => "KZAK",
-        "CITY" => "OAKLAND",
-        "STATE" => "CA",
-        "CROSS_REF" => ""
-      })
+      oceanic_data =
+        create_sample_data(%{
+          "LOCATION_ID" => "ZAK",
+          "LOCATION_NAME" => "OAKLAND OCEANIC ARTCC",
+          "COMPUTER_ID" => "ZAK",
+          "ICAO_ID" => "KZAK",
+          "CITY" => "OAKLAND",
+          "STATE" => "CA",
+          "CROSS_REF" => ""
+        })
 
       result = AirRouteBoundary.new(oceanic_data)
       assert result.location_id == "ZAK"
@@ -87,25 +90,26 @@ defmodule NASR.Entities.AirRouteBoundaryTest do
     end
 
     test "handles international FIRs" do
-      fir_data = create_sample_data(%{
-        "LOCATION_ID" => "FIMM",
-        "LOCATION_NAME" => "MAURITIUS FIR",
-        "COMPUTER_ID" => "PLS",
-        "ICAO_ID" => "FIMM",
-        "CITY" => "MAURITIUS",
-        "STATE" => "",
-        "COUNTRY_CODE" => "MU",
-        "LAT_DEG" => "20",
-        "LAT_MIN" => "26",
-        "LAT_SEC" => "0",
-        "LAT_HEMIS" => "S",
-        "LAT_DECIMAL" => "-20.43333333",
-        "LONG_DEG" => "57",
-        "LONG_MIN" => "41",
-        "LONG_SEC" => "0",
-        "LONG_HEMIS" => "E",
-        "LONG_DECIMAL" => "57.68333333"
-      })
+      fir_data =
+        create_sample_data(%{
+          "LOCATION_ID" => "FIMM",
+          "LOCATION_NAME" => "MAURITIUS FIR",
+          "COMPUTER_ID" => "PLS",
+          "ICAO_ID" => "FIMM",
+          "CITY" => "MAURITIUS",
+          "STATE" => "",
+          "COUNTRY_CODE" => "MU",
+          "LAT_DEG" => "20",
+          "LAT_MIN" => "26",
+          "LAT_SEC" => "0",
+          "LAT_HEMIS" => "S",
+          "LAT_DECIMAL" => "-20.43333333",
+          "LONG_DEG" => "57",
+          "LONG_MIN" => "41",
+          "LONG_SEC" => "0",
+          "LONG_HEMIS" => "E",
+          "LONG_DECIMAL" => "57.68333333"
+        })
 
       result = AirRouteBoundary.new(fir_data)
       assert result.location_id == "FIMM"
@@ -135,14 +139,15 @@ defmodule NASR.Entities.AirRouteBoundaryTest do
 
     test "handles coordinate conversions" do
       # Test integer coordinates
-      int_coords = create_sample_data(%{
-        "LAT_DEG" => "35",
-        "LAT_MIN" => "10",
-        "LAT_SEC" => "24",
-        "LONG_DEG" => "106",
-        "LONG_MIN" => "34",
-        "LONG_SEC" => "3"
-      })
+      int_coords =
+        create_sample_data(%{
+          "LAT_DEG" => "35",
+          "LAT_MIN" => "10",
+          "LAT_SEC" => "24",
+          "LONG_DEG" => "106",
+          "LONG_MIN" => "34",
+          "LONG_SEC" => "3"
+        })
 
       result = AirRouteBoundary.new(int_coords)
       assert result.latitude_degrees == 35
@@ -153,16 +158,17 @@ defmodule NASR.Entities.AirRouteBoundaryTest do
       assert result.longitude_seconds == 3.0
 
       # Test float coordinates
-      float_coords = create_sample_data(%{
-        "LAT_DEG" => "37",
-        "LAT_MIN" => "0",
-        "LAT_SEC" => "29",
-        "LAT_DECIMAL" => "-37.00805555",
-        "LONG_DEG" => "174",
-        "LONG_MIN" => "47",
-        "LONG_SEC" => "30",
-        "LONG_DECIMAL" => "174.79166666"
-      })
+      float_coords =
+        create_sample_data(%{
+          "LAT_DEG" => "37",
+          "LAT_MIN" => "0",
+          "LAT_SEC" => "29",
+          "LAT_DECIMAL" => "-37.00805555",
+          "LONG_DEG" => "174",
+          "LONG_MIN" => "47",
+          "LONG_SEC" => "30",
+          "LONG_DECIMAL" => "174.79166666"
+        })
 
       result = AirRouteBoundary.new(float_coords)
       assert result.latitude_degrees == 37
@@ -176,19 +182,20 @@ defmodule NASR.Entities.AirRouteBoundaryTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "EFF_DATE" => "",
-        "LAT_DEG" => "",
-        "LAT_MIN" => "",
-        "LAT_SEC" => "",
-        "LAT_DECIMAL" => "",
-        "LONG_DEG" => "",
-        "LONG_MIN" => "",
-        "LONG_SEC" => "",
-        "LONG_DECIMAL" => "",
-        "LOCATION_TYPE" => "",
-        "CROSS_REF" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "EFF_DATE" => "",
+          "LAT_DEG" => "",
+          "LAT_MIN" => "",
+          "LAT_SEC" => "",
+          "LAT_DECIMAL" => "",
+          "LONG_DEG" => "",
+          "LONG_MIN" => "",
+          "LONG_SEC" => "",
+          "LONG_DECIMAL" => "",
+          "LOCATION_TYPE" => "",
+          "CROSS_REF" => ""
+        })
 
       result = AirRouteBoundary.new(sample_data)
 
@@ -206,23 +213,24 @@ defmodule NASR.Entities.AirRouteBoundaryTest do
     end
 
     test "handles Anchorage ARTCC with oceanic designation" do
-      anchorage_data = create_sample_data(%{
-        "LOCATION_ID" => "ZAN",
-        "LOCATION_NAME" => "ANCHORAGE",
-        "COMPUTER_ID" => "ZAN",
-        "ICAO_ID" => "PAZA",
-        "CITY" => "ANCHORAGE",
-        "STATE" => "AK",
-        "LAT_DEG" => "61",
-        "LAT_MIN" => "53",
-        "LAT_SEC" => "35.11",
-        "LAT_DECIMAL" => "61.89308611",
-        "LONG_DEG" => "149",
-        "LONG_MIN" => "49",
-        "LONG_SEC" => "53.04",
-        "LONG_DECIMAL" => "-149.8314",
-        "CROSS_REF" => "FACILITY LOCATED AT ANCHORAGE, AK"
-      })
+      anchorage_data =
+        create_sample_data(%{
+          "LOCATION_ID" => "ZAN",
+          "LOCATION_NAME" => "ANCHORAGE",
+          "COMPUTER_ID" => "ZAN",
+          "ICAO_ID" => "PAZA",
+          "CITY" => "ANCHORAGE",
+          "STATE" => "AK",
+          "LAT_DEG" => "61",
+          "LAT_MIN" => "53",
+          "LAT_SEC" => "35.11",
+          "LAT_DECIMAL" => "61.89308611",
+          "LONG_DEG" => "149",
+          "LONG_MIN" => "49",
+          "LONG_SEC" => "53.04",
+          "LONG_DECIMAL" => "-149.8314",
+          "CROSS_REF" => "FACILITY LOCATED AT ANCHORAGE, AK"
+        })
 
       result = AirRouteBoundary.new(anchorage_data)
       assert result.location_id == "ZAN"
@@ -235,25 +243,26 @@ defmodule NASR.Entities.AirRouteBoundaryTest do
     end
 
     test "handles international airspace boundaries" do
-      atlantico_data = create_sample_data(%{
-        "LOCATION_ID" => "SBAO",
-        "LOCATION_NAME" => "ATLANTICO FIR",
-        "COMPUTER_ID" => "ASI",
-        "ICAO_ID" => "SBAO",
-        "CITY" => "ATLANTICO",
-        "STATE" => "",
-        "COUNTRY_CODE" => "BR",
-        "LAT_DEG" => "15",
-        "LAT_MIN" => "52",
-        "LAT_SEC" => "0",
-        "LAT_HEMIS" => "S",
-        "LAT_DECIMAL" => "-15.86666666",
-        "LONG_DEG" => "47",
-        "LONG_MIN" => "55",
-        "LONG_SEC" => "0",
-        "LONG_HEMIS" => "W",
-        "LONG_DECIMAL" => "-47.91666666"
-      })
+      atlantico_data =
+        create_sample_data(%{
+          "LOCATION_ID" => "SBAO",
+          "LOCATION_NAME" => "ATLANTICO FIR",
+          "COMPUTER_ID" => "ASI",
+          "ICAO_ID" => "SBAO",
+          "CITY" => "ATLANTICO",
+          "STATE" => "",
+          "COUNTRY_CODE" => "BR",
+          "LAT_DEG" => "15",
+          "LAT_MIN" => "52",
+          "LAT_SEC" => "0",
+          "LAT_HEMIS" => "S",
+          "LAT_DECIMAL" => "-15.86666666",
+          "LONG_DEG" => "47",
+          "LONG_MIN" => "55",
+          "LONG_SEC" => "0",
+          "LONG_HEMIS" => "W",
+          "LONG_DECIMAL" => "-47.91666666"
+        })
 
       result = AirRouteBoundary.new(atlantico_data)
       assert result.location_id == "SBAO"
@@ -274,27 +283,30 @@ defmodule NASR.Entities.AirRouteBoundaryTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "LOCATION_ID" => "ZAB",
-      "LOCATION_NAME" => "ALBUQUERQUE",
-      "COMPUTER_ID" => "ZCA",
-      "ICAO_ID" => "KZAB",
-      "LOCATION_TYPE" => "ARTCC",
-      "CITY" => "ALBUQUERQUE",
-      "STATE" => "NM",
-      "COUNTRY_CODE" => "US",
-      "LAT_DEG" => "35",
-      "LAT_MIN" => "10",
-      "LAT_SEC" => "24.15",
-      "LAT_HEMIS" => "N",
-      "LAT_DECIMAL" => "35.173375",
-      "LONG_DEG" => "106",
-      "LONG_MIN" => "34",
-      "LONG_SEC" => "3.08",
-      "LONG_HEMIS" => "W",
-      "LONG_DECIMAL" => "-106.56752222",
-      "CROSS_REF" => "FACILITY LOCATED AT ALBUQUERQUE, NM"
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "LOCATION_ID" => "ZAB",
+        "LOCATION_NAME" => "ALBUQUERQUE",
+        "COMPUTER_ID" => "ZCA",
+        "ICAO_ID" => "KZAB",
+        "LOCATION_TYPE" => "ARTCC",
+        "CITY" => "ALBUQUERQUE",
+        "STATE" => "NM",
+        "COUNTRY_CODE" => "US",
+        "LAT_DEG" => "35",
+        "LAT_MIN" => "10",
+        "LAT_SEC" => "24.15",
+        "LAT_HEMIS" => "N",
+        "LAT_DECIMAL" => "35.173375",
+        "LONG_DEG" => "106",
+        "LONG_MIN" => "34",
+        "LONG_SEC" => "3.08",
+        "LONG_HEMIS" => "W",
+        "LONG_DECIMAL" => "-106.56752222",
+        "CROSS_REF" => "FACILITY LOCATED AT ALBUQUERQUE, NM"
+      },
+      overrides
+    )
   end
 end

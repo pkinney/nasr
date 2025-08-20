@@ -29,7 +29,7 @@ defmodule NASR.TPP do
   defp stream_file(filename) do
     stream = File.stream!(filename)
     cycle = xpath(stream, ~x"//digital_tpp/@cycle"s)
-    base_url = ["https://aeronav.faa.gov", "d-tpp", cycle] |> Path.join()
+    base_url = Path.join(["https://aeronav.faa.gov", "d-tpp", cycle])
 
     stream
     |> SweetXml.stream!(fn emit ->

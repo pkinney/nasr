@@ -53,20 +53,20 @@ defmodule NASR.Entities.Airport.AttendanceSchedule do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      site_no: Map.fetch!(entity, "SITE_NO"),
-      site_type_code: Map.fetch!(entity, "SITE_TYPE_CODE"),
-      arpt_id: Map.fetch!(entity, "ARPT_ID"),
-      city: Map.fetch!(entity, "CITY"),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      attendance_schedule_sequence_no: safe_str_to_int(Map.fetch!(entity, "SKED_SEQ_NO")),
-      months_attended: Map.fetch!(entity, "MONTH"),
-      days_attended: Map.fetch!(entity, "DAY"),
-      hours_attended: Map.fetch!(entity, "HOUR"),
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
+      site_no: Map.get(entity, "SITE_NO"),
+      site_type_code: Map.get(entity, "SITE_TYPE_CODE"),
+      arpt_id: Map.get(entity, "ARPT_ID"),
+      city: Map.get(entity, "CITY"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      attendance_schedule_sequence_no: safe_str_to_int(Map.get(entity, "SKED_SEQ_NO")),
+      months_attended: Map.get(entity, "MONTH"),
+      days_attended: Map.get(entity, "DAY"),
+      hours_attended: Map.get(entity, "HOUR"),
+      effective_date: parse_date(Map.get(entity, "EFF_DATE"))
     }
   end
 
   @spec type() :: String.t()
-  def type(), do: "APT_ATT"
+  def type, do: "APT_ATT"
 end

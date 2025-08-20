@@ -1,11 +1,13 @@
 defmodule NASR.Entities.PreferredRoute.RemoteFormatTest do
   use ExUnit.Case
 
+  alias NASR.Entities.PreferredRoute.RemoteFormat
+
   describe "new/1" do
     test "creates struct from preferred route remote format data sample" do
       sample_data = create_sample_data(%{})
 
-      result = NASR.Entities.PreferredRoute.RemoteFormat.new(sample_data)
+      result = RemoteFormat.new(sample_data)
 
       assert result.orig == "ABE"
       assert result.route_string == "ABE FJC ARD CYN ACY"
@@ -35,30 +37,32 @@ defmodule NASR.Entities.PreferredRoute.RemoteFormatTest do
 
       for {input, expected} <- test_cases do
         sample_data = create_sample_data(%{"Type" => input})
-        result = NASR.Entities.PreferredRoute.RemoteFormat.new(sample_data)
+        result = RemoteFormat.new(sample_data)
         assert result.type == expected
       end
     end
 
     test "handles numeric fields correctly" do
-      sample_data = create_sample_data(%{
-        "Seq" => "2"
-      })
+      sample_data =
+        create_sample_data(%{
+          "Seq" => "2"
+        })
 
-      result = NASR.Entities.PreferredRoute.RemoteFormat.new(sample_data)
+      result = RemoteFormat.new(sample_data)
 
       assert result.seq == 2
     end
 
     test "handles empty and nil string values correctly" do
-      sample_data = create_sample_data(%{
-        "Hours1" => "",
-        "Area" => nil,
-        "Aircraft" => "",
-        "Direction" => nil
-      })
+      sample_data =
+        create_sample_data(%{
+          "Hours1" => "",
+          "Area" => nil,
+          "Aircraft" => "",
+          "Direction" => nil
+        })
 
-      result = NASR.Entities.PreferredRoute.RemoteFormat.new(sample_data)
+      result = RemoteFormat.new(sample_data)
 
       assert result.hours1 == nil
       assert result.area == nil
@@ -67,18 +71,19 @@ defmodule NASR.Entities.PreferredRoute.RemoteFormatTest do
     end
 
     test "handles TEC route with special area description" do
-      sample_data = create_sample_data(%{
-        "Orig" => "ABE",
-        "Route String" => "ABE FJC LAAYK ALB",
-        "Dest" => "ALB",
-        "Area" => "TO ALB,SCH",
-        "Altitude" => "7000",
-        "Seq" => "1",
-        "DCNTR" => "ZNY",
-        "ACNTR" => "ZBW"
-      })
+      sample_data =
+        create_sample_data(%{
+          "Orig" => "ABE",
+          "Route String" => "ABE FJC LAAYK ALB",
+          "Dest" => "ALB",
+          "Area" => "TO ALB,SCH",
+          "Altitude" => "7000",
+          "Seq" => "1",
+          "DCNTR" => "ZNY",
+          "ACNTR" => "ZBW"
+        })
 
-      result = NASR.Entities.PreferredRoute.RemoteFormat.new(sample_data)
+      result = RemoteFormat.new(sample_data)
 
       assert result.orig == "ABE"
       assert result.route_string == "ABE FJC LAAYK ALB"
@@ -91,16 +96,17 @@ defmodule NASR.Entities.PreferredRoute.RemoteFormatTest do
     end
 
     test "handles complex route string" do
-      sample_data = create_sample_data(%{
-        "Orig" => "ABE",
-        "Route String" => "ABE FJC T299 HUO IGN PWL BRISS BDL",
-        "Dest" => "BDL",
-        "Altitude" => "5000",
-        "DCNTR" => "ZNY",
-        "ACNTR" => "ZBW"
-      })
+      sample_data =
+        create_sample_data(%{
+          "Orig" => "ABE",
+          "Route String" => "ABE FJC T299 HUO IGN PWL BRISS BDL",
+          "Dest" => "BDL",
+          "Altitude" => "5000",
+          "DCNTR" => "ZNY",
+          "ACNTR" => "ZBW"
+        })
 
-      result = NASR.Entities.PreferredRoute.RemoteFormat.new(sample_data)
+      result = RemoteFormat.new(sample_data)
 
       assert result.orig == "ABE"
       assert result.route_string == "ABE FJC T299 HUO IGN PWL BRISS BDL"
@@ -111,35 +117,38 @@ defmodule NASR.Entities.PreferredRoute.RemoteFormatTest do
     end
 
     test "handles different center combinations" do
-      sample_data = create_sample_data(%{
-        "DCNTR" => "ZDC",
-        "ACNTR" => "ZNY"
-      })
+      sample_data =
+        create_sample_data(%{
+          "DCNTR" => "ZDC",
+          "ACNTR" => "ZNY"
+        })
 
-      result = NASR.Entities.PreferredRoute.RemoteFormat.new(sample_data)
+      result = RemoteFormat.new(sample_data)
 
       assert result.dcntr == "ZDC"
       assert result.acntr == "ZNY"
     end
 
     test "handles same center for departure and arrival" do
-      sample_data = create_sample_data(%{
-        "DCNTR" => "ZNY",
-        "ACNTR" => "ZNY"
-      })
+      sample_data =
+        create_sample_data(%{
+          "DCNTR" => "ZNY",
+          "ACNTR" => "ZNY"
+        })
 
-      result = NASR.Entities.PreferredRoute.RemoteFormat.new(sample_data)
+      result = RemoteFormat.new(sample_data)
 
       assert result.dcntr == "ZNY"
       assert result.acntr == "ZNY"
     end
 
     test "handles high sequence numbers" do
-      sample_data = create_sample_data(%{
-        "Seq" => "5"
-      })
+      sample_data =
+        create_sample_data(%{
+          "Seq" => "5"
+        })
 
-      result = NASR.Entities.PreferredRoute.RemoteFormat.new(sample_data)
+      result = RemoteFormat.new(sample_data)
 
       assert result.seq == 5
     end
@@ -147,25 +156,28 @@ defmodule NASR.Entities.PreferredRoute.RemoteFormatTest do
 
   describe "type/0" do
     test "returns correct CSV filename" do
-      assert NASR.Entities.PreferredRoute.RemoteFormat.type() == "PFR_RMT_FMT"
+      assert RemoteFormat.type() == "PFR_RMT_FMT"
     end
   end
 
   # Helper function to create comprehensive sample data with sensible defaults
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "Orig" => "ABE",
-      "Route String" => "ABE FJC ARD CYN ACY",
-      "Dest" => "ACY",
-      "Hours1" => "",
-      "Type" => "TEC",
-      "Area" => "",
-      "Altitude" => "5000",
-      "Aircraft" => "",
-      "Direction" => "",
-      "Seq" => "1",
-      "DCNTR" => "ZNY",
-      "ACNTR" => "ZDC"
-    }, overrides)
+    Map.merge(
+      %{
+        "Orig" => "ABE",
+        "Route String" => "ABE FJC ARD CYN ACY",
+        "Dest" => "ACY",
+        "Hours1" => "",
+        "Type" => "TEC",
+        "Area" => "",
+        "Altitude" => "5000",
+        "Aircraft" => "",
+        "Direction" => "",
+        "Seq" => "1",
+        "DCNTR" => "ZNY",
+        "ACNTR" => "ZDC"
+      },
+      overrides
+    )
   end
 end

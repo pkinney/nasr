@@ -59,7 +59,17 @@ defmodule NASR.Entities.Fix do
           state_code: String.t(),
           country_code: String.t(),
           icao_region_code: String.t(),
-          fix_use_code: :computer_navigation_fix | :military_reporting_point | :military_waypoint | :nrs_waypoint | :radar | :reporting_point | :vfr_waypoint | :waypoint | String.t() | nil,
+          fix_use_code:
+            :computer_navigation_fix
+            | :military_reporting_point
+            | :military_waypoint
+            | :nrs_waypoint
+            | :radar
+            | :reporting_point
+            | :vfr_waypoint
+            | :waypoint
+            | String.t()
+            | nil,
           artcc_id_high: String.t(),
           artcc_id_low: String.t(),
           charting_remark: String.t(),
@@ -78,24 +88,24 @@ defmodule NASR.Entities.Fix do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      fix_id: Map.fetch!(entity, "FIX_ID"),
-      fix_id_old: Map.fetch!(entity, "FIX_ID_OLD"),
-      latitude: safe_str_to_float(Map.fetch!(entity, "LAT_DECIMAL")),
-      longitude: safe_str_to_float(Map.fetch!(entity, "LONG_DECIMAL")),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      icao_region_code: Map.fetch!(entity, "ICAO_REGION_CODE"),
-      fix_use_code: parse_fix_use_code(Map.fetch!(entity, "FIX_USE_CODE")),
-      artcc_id_high: Map.fetch!(entity, "ARTCC_ID_HIGH"),
-      artcc_id_low: Map.fetch!(entity, "ARTCC_ID_LOW"),
-      charting_remark: Map.fetch!(entity, "CHARTING_REMARK"),
-      pitch_flag: convert_yn(Map.fetch!(entity, "PITCH_FLAG")),
-      catch_flag: convert_yn(Map.fetch!(entity, "CATCH_FLAG")),
-      sua_atcaa_flag: convert_yn(Map.fetch!(entity, "SUA_ATCAA_FLAG")),
-      min_recep_alt: safe_str_to_int(Map.fetch!(entity, "MIN_RECEP_ALT")),
-      compulsory: parse_compulsory(Map.fetch!(entity, "COMPULSORY")),
-      charts: parse_charts(Map.fetch!(entity, "CHARTS")),
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
+      fix_id: Map.get(entity, "FIX_ID"),
+      fix_id_old: Map.get(entity, "FIX_ID_OLD"),
+      latitude: safe_str_to_float(Map.get(entity, "LAT_DECIMAL")),
+      longitude: safe_str_to_float(Map.get(entity, "LONG_DECIMAL")),
+      state_code: Map.get(entity, "STATE_CODE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      icao_region_code: Map.get(entity, "ICAO_REGION_CODE"),
+      fix_use_code: parse_fix_use_code(Map.get(entity, "FIX_USE_CODE")),
+      artcc_id_high: Map.get(entity, "ARTCC_ID_HIGH"),
+      artcc_id_low: Map.get(entity, "ARTCC_ID_LOW"),
+      charting_remark: Map.get(entity, "CHARTING_REMARK"),
+      pitch_flag: convert_yn(Map.get(entity, "PITCH_FLAG")),
+      catch_flag: convert_yn(Map.get(entity, "CATCH_FLAG")),
+      sua_atcaa_flag: convert_yn(Map.get(entity, "SUA_ATCAA_FLAG")),
+      min_recep_alt: safe_str_to_int(Map.get(entity, "MIN_RECEP_ALT")),
+      compulsory: parse_compulsory(Map.get(entity, "COMPULSORY")),
+      charts: parse_charts(Map.get(entity, "CHARTS")),
+      effective_date: parse_date(Map.get(entity, "EFF_DATE"))
     }
   end
 

@@ -51,15 +51,15 @@ defmodule NASR.Entities.DepartureProcedure do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      departure_procedure_name: Map.fetch!(entity, "DP_NAME"),
-      amendment_number: Map.fetch!(entity, "AMENDMENT_NO"),
-      artcc: Map.fetch!(entity, "ARTCC"),
-      departure_procedure_amendment_effective_date: parse_date(Map.fetch!(entity, "DP_AMEND_EFF_DATE")),
-      rnav_flag: convert_yn(Map.fetch!(entity, "RNAV_FLAG")),
-      departure_procedure_computer_code: Map.fetch!(entity, "DP_COMPUTER_CODE"),
-      graphical_departure_procedure_type: Map.fetch!(entity, "GRAPHICAL_DP_TYPE"),
-      served_airports: Map.fetch!(entity, "SERVED_ARPT")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      departure_procedure_name: Map.get(entity, "DP_NAME"),
+      amendment_number: Map.get(entity, "AMENDMENT_NO"),
+      artcc: Map.get(entity, "ARTCC"),
+      departure_procedure_amendment_effective_date: parse_date(Map.get(entity, "DP_AMEND_EFF_DATE")),
+      rnav_flag: convert_yn(Map.get(entity, "RNAV_FLAG")),
+      departure_procedure_computer_code: Map.get(entity, "DP_COMPUTER_CODE"),
+      graphical_departure_procedure_type: Map.get(entity, "GRAPHICAL_DP_TYPE"),
+      served_airports: Map.get(entity, "SERVED_ARPT")
     }
   end
 end

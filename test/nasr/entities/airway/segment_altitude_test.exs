@@ -1,5 +1,6 @@
 defmodule NASR.Entities.Airway.SegmentAltitudeTest do
   use ExUnit.Case
+
   alias NASR.Entities.Airway.SegmentAltitude
 
   describe "new/1" do
@@ -32,7 +33,7 @@ defmodule NASR.Entities.Airway.SegmentAltitudeTest do
       assert result.signal_gap_flag == false
       assert result.dogleg == false
       assert result.next_mea_point == "OATSS"
-      assert result.minimum_enroute_altitude == 18000
+      assert result.minimum_enroute_altitude == 18_000
       assert result.minimum_enroute_altitude_direction == ""
       assert result.minimum_enroute_altitude_opposite == nil
       assert result.minimum_enroute_altitude_opposite_direction == ""
@@ -51,7 +52,7 @@ defmodule NASR.Entities.Airway.SegmentAltitudeTest do
       assert result.minimum_crossing_altitude_opposite == nil
       assert result.minimum_crossing_altitude_opposite_direction == ""
       assert result.minimum_reception_altitude == nil
-      assert result.maximum_authorized_altitude == 60000
+      assert result.maximum_authorized_altitude == 60_000
       assert result.mea_gap == ""
       assert result.required_navigation_performance == ""
       assert result.remark == ""
@@ -73,12 +74,13 @@ defmodule NASR.Entities.Airway.SegmentAltitudeTest do
     end
 
     test "handles boolean flag conversions" do
-      test_data = create_sample_data(%{
-        "REGULATORY" => "Y",
-        "AWY_SEG_GAP_FLAG" => "Y",
-        "SIGNAL_GAP_FLAG" => "Y",
-        "DOGLEG" => "Y"
-      })
+      test_data =
+        create_sample_data(%{
+          "REGULATORY" => "Y",
+          "AWY_SEG_GAP_FLAG" => "Y",
+          "SIGNAL_GAP_FLAG" => "Y",
+          "DOGLEG" => "Y"
+        })
 
       result = SegmentAltitude.new(test_data)
 
@@ -89,15 +91,16 @@ defmodule NASR.Entities.Airway.SegmentAltitudeTest do
     end
 
     test "handles numeric conversions" do
-      test_data = create_sample_data(%{
-        "POINT_SEQ" => "25",
-        "MAG_COURSE" => "180.5",
-        "OPP_MAG_COURSE" => "0.5",
-        "MAG_COURSE_DIST" => "45.75",
-        "MIN_ENROUTE_ALT" => "8000",
-        "GPS_MIN_ENROUTE_ALT" => "9000",
-        "MAX_AUTH_ALT" => "45000"
-      })
+      test_data =
+        create_sample_data(%{
+          "POINT_SEQ" => "25",
+          "MAG_COURSE" => "180.5",
+          "OPP_MAG_COURSE" => "0.5",
+          "MAG_COURSE_DIST" => "45.75",
+          "MIN_ENROUTE_ALT" => "8000",
+          "GPS_MIN_ENROUTE_ALT" => "9000",
+          "MAX_AUTH_ALT" => "45000"
+        })
 
       result = SegmentAltitude.new(test_data)
 
@@ -107,16 +110,17 @@ defmodule NASR.Entities.Airway.SegmentAltitudeTest do
       assert result.magnetic_course_distance == 45.75
       assert result.minimum_enroute_altitude == 8000
       assert result.gps_minimum_enroute_altitude == 9000
-      assert result.maximum_authorized_altitude == 45000
+      assert result.maximum_authorized_altitude == 45_000
     end
 
     test "handles empty/nil numeric values correctly" do
-      sample_data = create_sample_data(%{
-        "POINT_SEQ" => "",
-        "MAG_COURSE" => "",
-        "MIN_ENROUTE_ALT" => "",
-        "MAX_AUTH_ALT" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "POINT_SEQ" => "",
+          "MAG_COURSE" => "",
+          "MIN_ENROUTE_ALT" => "",
+          "MAX_AUTH_ALT" => ""
+        })
 
       result = SegmentAltitude.new(sample_data)
 
@@ -127,11 +131,12 @@ defmodule NASR.Entities.Airway.SegmentAltitudeTest do
     end
 
     test "handles changeover point information" do
-      test_data = create_sample_data(%{
-        "CHGOVR_PT" => "WAYPOINT",
-        "CHGOVR_PT_NAME" => "Changeover Point",
-        "CHGOVR_PT_DIST" => "15.5"
-      })
+      test_data =
+        create_sample_data(%{
+          "CHGOVR_PT" => "WAYPOINT",
+          "CHGOVR_PT_NAME" => "Changeover Point",
+          "CHGOVR_PT_DIST" => "15.5"
+        })
 
       result = SegmentAltitude.new(test_data)
 
@@ -141,19 +146,20 @@ defmodule NASR.Entities.Airway.SegmentAltitudeTest do
     end
 
     test "handles all altitude types" do
-      test_data = create_sample_data(%{
-        "MIN_ENROUTE_ALT" => "8000",
-        "MIN_ENROUTE_ALT_OPPOSITE" => "9000",
-        "GPS_MIN_ENROUTE_ALT" => "8500",
-        "GPS_MIN_ENROUTE_ALT_OPPOSITE" => "9500",
-        "DD_IRU_MEA" => "10000",
-        "DD_I_MEA_OPPOSITE" => "11000",
-        "MIN_OBSTN_CLNC_ALT" => "7000",
-        "MIN_CROSS_ALT" => "12000",
-        "MIN_CROSS_ALT_OPPOSITE" => "13000",
-        "MIN_RECEP_ALT" => "6000",
-        "MAX_AUTH_ALT" => "60000"
-      })
+      test_data =
+        create_sample_data(%{
+          "MIN_ENROUTE_ALT" => "8000",
+          "MIN_ENROUTE_ALT_OPPOSITE" => "9000",
+          "GPS_MIN_ENROUTE_ALT" => "8500",
+          "GPS_MIN_ENROUTE_ALT_OPPOSITE" => "9500",
+          "DD_IRU_MEA" => "10000",
+          "DD_I_MEA_OPPOSITE" => "11000",
+          "MIN_OBSTN_CLNC_ALT" => "7000",
+          "MIN_CROSS_ALT" => "12000",
+          "MIN_CROSS_ALT_OPPOSITE" => "13000",
+          "MIN_RECEP_ALT" => "6000",
+          "MAX_AUTH_ALT" => "60000"
+        })
 
       result = SegmentAltitude.new(test_data)
 
@@ -161,23 +167,24 @@ defmodule NASR.Entities.Airway.SegmentAltitudeTest do
       assert result.minimum_enroute_altitude_opposite == 9000
       assert result.gps_minimum_enroute_altitude == 8500
       assert result.gps_minimum_enroute_altitude_opposite == 9500
-      assert result.dd_iru_mea == 10000
-      assert result.dd_i_mea_opposite == 11000
+      assert result.dd_iru_mea == 10_000
+      assert result.dd_i_mea_opposite == 11_000
       assert result.minimum_obstruction_clearance_altitude == 7000
-      assert result.minimum_crossing_altitude == 12000
-      assert result.minimum_crossing_altitude_opposite == 13000
+      assert result.minimum_crossing_altitude == 12_000
+      assert result.minimum_crossing_altitude_opposite == 13_000
       assert result.minimum_reception_altitude == 6000
-      assert result.maximum_authorized_altitude == 60000
+      assert result.maximum_authorized_altitude == 60_000
     end
 
     test "handles navigation information" do
-      test_data = create_sample_data(%{
-        "FROM_POINT" => "ATL",
-        "FROM_PT_TYPE" => "VOR",
-        "NAV_NAME" => "ATLANTA",
-        "NAV_CITY" => "ATLANTA",
-        "TO_POINT" => "MCN"
-      })
+      test_data =
+        create_sample_data(%{
+          "FROM_POINT" => "ATL",
+          "FROM_PT_TYPE" => "VOR",
+          "NAV_NAME" => "ATLANTA",
+          "NAV_CITY" => "ATLANTA",
+          "TO_POINT" => "MCN"
+        })
 
       result = SegmentAltitude.new(test_data)
 
@@ -197,54 +204,57 @@ defmodule NASR.Entities.Airway.SegmentAltitudeTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "REGULATORY" => "N",
-      "AWY_LOCATION" => "C",
-      "AWY_ID" => "A216",
-      "POINT_SEQ" => "10",
-      "FROM_POINT" => "MONPI",
-      "FROM_PT_TYPE" => "WP   ",
-      "NAV_NAME" => "",
-      "NAV_CITY" => "",
-      "ARTCC" => "ZAK",
-      "ICAO_REGION_CODE" => "P",
-      "STATE_CODE" => "OP",
-      "COUNTRY_CODE" => "US",
-      "TO_POINT" => "OATSS",
-      "MAG_COURSE" => "163.32",
-      "OPP_MAG_COURSE" => "342.18",
-      "MAG_COURSE_DIST" => "269.2",
-      "CHGOVR_PT" => "",
-      "CHGOVR_PT_NAME" => "",
-      "CHGOVR_PT_DIST" => "",
-      "AWY_SEG_GAP_FLAG" => "N",
-      "SIGNAL_GAP_FLAG" => "N",
-      "DOGLEG" => "N",
-      "NEXT_MEA_PT" => "OATSS",
-      "MIN_ENROUTE_ALT" => "18000",
-      "MIN_ENROUTE_ALT_DIR" => "",
-      "MIN_ENROUTE_ALT_OPPOSITE" => "",
-      "MIN_ENROUTE_ALT_OPPOSITE_DIR" => "",
-      "GPS_MIN_ENROUTE_ALT" => "",
-      "GPS_MIN_ENROUTE_ALT_DIR" => "",
-      "GPS_MIN_ENROUTE_ALT_OPPOSITE" => "",
-      "GPS_MEA_OPPOSITE_DIR" => "",
-      "DD_IRU_MEA" => "",
-      "DD_IRU_MEA_DIR" => "",
-      "DD_I_MEA_OPPOSITE" => "",
-      "DD_I_MEA_OPPOSITE_DIR" => "",
-      "MIN_OBSTN_CLNC_ALT" => "",
-      "MIN_CROSS_ALT" => "",
-      "MIN_CROSS_ALT_DIR" => "",
-      "MIN_CROSS_ALT_NAV_PT" => "",
-      "MIN_CROSS_ALT_OPPOSITE" => "",
-      "MIN_CROSS_ALT_OPPOSITE_DIR" => "",
-      "MIN_RECEP_ALT" => "",
-      "MAX_AUTH_ALT" => "60000",
-      "MEA_GAP" => "",
-      "REQD_NAV_PERFORMANCE" => "",
-      "REMARK" => ""
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "REGULATORY" => "N",
+        "AWY_LOCATION" => "C",
+        "AWY_ID" => "A216",
+        "POINT_SEQ" => "10",
+        "FROM_POINT" => "MONPI",
+        "FROM_PT_TYPE" => "WP   ",
+        "NAV_NAME" => "",
+        "NAV_CITY" => "",
+        "ARTCC" => "ZAK",
+        "ICAO_REGION_CODE" => "P",
+        "STATE_CODE" => "OP",
+        "COUNTRY_CODE" => "US",
+        "TO_POINT" => "OATSS",
+        "MAG_COURSE" => "163.32",
+        "OPP_MAG_COURSE" => "342.18",
+        "MAG_COURSE_DIST" => "269.2",
+        "CHGOVR_PT" => "",
+        "CHGOVR_PT_NAME" => "",
+        "CHGOVR_PT_DIST" => "",
+        "AWY_SEG_GAP_FLAG" => "N",
+        "SIGNAL_GAP_FLAG" => "N",
+        "DOGLEG" => "N",
+        "NEXT_MEA_PT" => "OATSS",
+        "MIN_ENROUTE_ALT" => "18000",
+        "MIN_ENROUTE_ALT_DIR" => "",
+        "MIN_ENROUTE_ALT_OPPOSITE" => "",
+        "MIN_ENROUTE_ALT_OPPOSITE_DIR" => "",
+        "GPS_MIN_ENROUTE_ALT" => "",
+        "GPS_MIN_ENROUTE_ALT_DIR" => "",
+        "GPS_MIN_ENROUTE_ALT_OPPOSITE" => "",
+        "GPS_MEA_OPPOSITE_DIR" => "",
+        "DD_IRU_MEA" => "",
+        "DD_IRU_MEA_DIR" => "",
+        "DD_I_MEA_OPPOSITE" => "",
+        "DD_I_MEA_OPPOSITE_DIR" => "",
+        "MIN_OBSTN_CLNC_ALT" => "",
+        "MIN_CROSS_ALT" => "",
+        "MIN_CROSS_ALT_DIR" => "",
+        "MIN_CROSS_ALT_NAV_PT" => "",
+        "MIN_CROSS_ALT_OPPOSITE" => "",
+        "MIN_CROSS_ALT_OPPOSITE_DIR" => "",
+        "MIN_RECEP_ALT" => "",
+        "MAX_AUTH_ALT" => "60000",
+        "MEA_GAP" => "",
+        "REQD_NAV_PERFORMANCE" => "",
+        "REMARK" => ""
+      },
+      overrides
+    )
   end
 end

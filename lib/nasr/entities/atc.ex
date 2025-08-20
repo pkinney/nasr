@@ -77,7 +77,8 @@ defmodule NASR.Entities.ATC do
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
           site_number: String.t(),
-          site_type_code: :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
+          site_type_code:
+            :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
           facility_type: String.t(),
           state_code: String.t(),
           facility_id: String.t(),
@@ -113,41 +114,42 @@ defmodule NASR.Entities.ATC do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      site_number: Map.fetch!(entity, "SITE_NO"),
-      site_type_code: parse_site_type_code(Map.fetch!(entity, "SITE_TYPE_CODE")),
-      facility_type: Map.fetch!(entity, "FACILITY_TYPE"),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      facility_id: Map.fetch!(entity, "FACILITY_ID"),
-      city: Map.fetch!(entity, "CITY"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      icao_id: Map.fetch!(entity, "ICAO_ID"),
-      facility_name: Map.fetch!(entity, "FACILITY_NAME"),
-      region_code: Map.fetch!(entity, "REGION_CODE"),
-      tower_operator_code: Map.fetch!(entity, "TWR_OPERATOR_CODE"),
-      tower_call: Map.fetch!(entity, "TWR_CALL"),
-      tower_hours: Map.fetch!(entity, "TWR_HRS"),
-      primary_approach_radio_call: Map.fetch!(entity, "PRIMARY_APCH_RADIO_CALL"),
-      approach_primary_provider: Map.fetch!(entity, "APCH_P_PROVIDER"),
-      approach_primary_provider_type_code: Map.fetch!(entity, "APCH_P_PROV_TYPE_CD"),
-      secondary_approach_radio_call: Map.fetch!(entity, "SECONDARY_APCH_RADIO_CALL"),
-      approach_secondary_provider: Map.fetch!(entity, "APCH_S_PROVIDER"),
-      approach_secondary_provider_type_code: Map.fetch!(entity, "APCH_S_PROV_TYPE_CD"),
-      primary_departure_radio_call: Map.fetch!(entity, "PRIMARY_DEP_RADIO_CALL"),
-      departure_primary_provider: Map.fetch!(entity, "DEP_P_PROVIDER"),
-      departure_primary_provider_type_code: Map.fetch!(entity, "DEP_P_PROV_TYPE_CD"),
-      secondary_departure_radio_call: Map.fetch!(entity, "SECONDARY_DEP_RADIO_CALL"),
-      departure_secondary_provider: Map.fetch!(entity, "DEP_S_PROVIDER"),
-      departure_secondary_provider_type_code: Map.fetch!(entity, "DEP_S_PROV_TYPE_CD"),
-      control_facility_approach_departure_calls: Map.fetch!(entity, "CTL_FAC_APCH_DEP_CALLS"),
-      approach_departure_operator_code: Map.fetch!(entity, "APCH_DEP_OPER_CODE"),
-      control_providing_hours: Map.fetch!(entity, "CTL_PRVDING_HRS"),
-      secondary_control_providing_hours: Map.fetch!(entity, "SECONDARY_CTL_PRVDING_HRS")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      site_number: Map.get(entity, "SITE_NO"),
+      site_type_code: parse_site_type_code(Map.get(entity, "SITE_TYPE_CODE")),
+      facility_type: Map.get(entity, "FACILITY_TYPE"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      facility_id: Map.get(entity, "FACILITY_ID"),
+      city: Map.get(entity, "CITY"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      icao_id: Map.get(entity, "ICAO_ID"),
+      facility_name: Map.get(entity, "FACILITY_NAME"),
+      region_code: Map.get(entity, "REGION_CODE"),
+      tower_operator_code: Map.get(entity, "TWR_OPERATOR_CODE"),
+      tower_call: Map.get(entity, "TWR_CALL"),
+      tower_hours: Map.get(entity, "TWR_HRS"),
+      primary_approach_radio_call: Map.get(entity, "PRIMARY_APCH_RADIO_CALL"),
+      approach_primary_provider: Map.get(entity, "APCH_P_PROVIDER"),
+      approach_primary_provider_type_code: Map.get(entity, "APCH_P_PROV_TYPE_CD"),
+      secondary_approach_radio_call: Map.get(entity, "SECONDARY_APCH_RADIO_CALL"),
+      approach_secondary_provider: Map.get(entity, "APCH_S_PROVIDER"),
+      approach_secondary_provider_type_code: Map.get(entity, "APCH_S_PROV_TYPE_CD"),
+      primary_departure_radio_call: Map.get(entity, "PRIMARY_DEP_RADIO_CALL"),
+      departure_primary_provider: Map.get(entity, "DEP_P_PROVIDER"),
+      departure_primary_provider_type_code: Map.get(entity, "DEP_P_PROV_TYPE_CD"),
+      secondary_departure_radio_call: Map.get(entity, "SECONDARY_DEP_RADIO_CALL"),
+      departure_secondary_provider: Map.get(entity, "DEP_S_PROVIDER"),
+      departure_secondary_provider_type_code: Map.get(entity, "DEP_S_PROV_TYPE_CD"),
+      control_facility_approach_departure_calls: Map.get(entity, "CTL_FAC_APCH_DEP_CALLS"),
+      approach_departure_operator_code: Map.get(entity, "APCH_DEP_OPER_CODE"),
+      control_providing_hours: Map.get(entity, "CTL_PRVDING_HRS"),
+      secondary_control_providing_hours: Map.get(entity, "SECONDARY_CTL_PRVDING_HRS")
     }
   end
 
   defp parse_site_type_code(nil), do: nil
   defp parse_site_type_code(""), do: nil
+
   defp parse_site_type_code(code) when is_binary(code) do
     case String.trim(code) do
       "A" -> :airport

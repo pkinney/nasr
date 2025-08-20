@@ -1,5 +1,6 @@
 defmodule NASR.Entities.HoldingPattern.RemarksTest do
   use ExUnit.Case
+
   alias NASR.Entities.HoldingPattern.Remarks
 
   describe "new/1" do
@@ -20,12 +21,13 @@ defmodule NASR.Entities.HoldingPattern.RemarksTest do
     end
 
     test "handles different remark types" do
-      specific_remark = create_sample_data(%{
-        "TAB_NAME" => "HOLDING_PATTERN",
-        "REF_COL_NAME" => "SPEED_RANGE",
-        "REF_COL_SEQ_NO" => "2",
-        "REMARK" => "SPEED RESTRICTION APPLIES ABOVE FL180"
-      })
+      specific_remark =
+        create_sample_data(%{
+          "TAB_NAME" => "HOLDING_PATTERN",
+          "REF_COL_NAME" => "SPEED_RANGE",
+          "REF_COL_SEQ_NO" => "2",
+          "REMARK" => "SPEED RESTRICTION APPLIES ABOVE FL180"
+        })
 
       result = Remarks.new(specific_remark)
       assert result.table_name == "HOLDING_PATTERN"
@@ -35,11 +37,12 @@ defmodule NASR.Entities.HoldingPattern.RemarksTest do
     end
 
     test "handles chart icon remarks" do
-      chart_icon_remark = create_sample_data(%{
-        "HP_NAME" => "BILIT WP*MD*K6",
-        "HP_NO" => "2",
-        "REMARK" => "CHART 210K ICON"
-      })
+      chart_icon_remark =
+        create_sample_data(%{
+          "HP_NAME" => "BILIT WP*MD*K6",
+          "HP_NO" => "2",
+          "REMARK" => "CHART 210K ICON"
+        })
 
       result = Remarks.new(chart_icon_remark)
       assert result.hp_name == "BILIT WP*MD*K6"
@@ -48,10 +51,11 @@ defmodule NASR.Entities.HoldingPattern.RemarksTest do
     end
 
     test "handles pattern-specific remarks" do
-      pattern_remark = create_sample_data(%{
-        "HP_NAME" => "BIG DELTA VORTAC*AK",
-        "REMARK" => "CHART PAT 1 WITH 210K ICON"
-      })
+      pattern_remark =
+        create_sample_data(%{
+          "HP_NAME" => "BIG DELTA VORTAC*AK",
+          "REMARK" => "CHART PAT 1 WITH 210K ICON"
+        })
 
       result = Remarks.new(pattern_remark)
       assert result.hp_name == "BIG DELTA VORTAC*AK"
@@ -73,11 +77,12 @@ defmodule NASR.Entities.HoldingPattern.RemarksTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "HP_NO" => "",
-        "REF_COL_SEQ_NO" => "",
-        "REMARK" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "HP_NO" => "",
+          "REF_COL_SEQ_NO" => "",
+          "REMARK" => ""
+        })
 
       result = Remarks.new(sample_data)
 
@@ -87,26 +92,29 @@ defmodule NASR.Entities.HoldingPattern.RemarksTest do
     end
 
     test "handles multiple remarks for same holding pattern" do
-      remark1 = create_sample_data(%{
-        "HP_NAME" => "BILIT WP*MD*K6",
-        "HP_NO" => "1",
-        "REF_COL_SEQ_NO" => "1",
-        "REMARK" => "CHART 210K ICON"
-      })
+      remark1 =
+        create_sample_data(%{
+          "HP_NAME" => "BILIT WP*MD*K6",
+          "HP_NO" => "1",
+          "REF_COL_SEQ_NO" => "1",
+          "REMARK" => "CHART 210K ICON"
+        })
 
-      remark2 = create_sample_data(%{
-        "HP_NAME" => "BILIT WP*MD*K6",
-        "HP_NO" => "2",
-        "REF_COL_SEQ_NO" => "1",
-        "REMARK" => "CHART 210K ICON"
-      })
+      remark2 =
+        create_sample_data(%{
+          "HP_NAME" => "BILIT WP*MD*K6",
+          "HP_NO" => "2",
+          "REF_COL_SEQ_NO" => "1",
+          "REMARK" => "CHART 210K ICON"
+        })
 
-      remark3 = create_sample_data(%{
-        "HP_NAME" => "BILIT WP*MD*K6",
-        "HP_NO" => "3",
-        "REF_COL_SEQ_NO" => "1",
-        "REMARK" => "CHART 210K ICON"
-      })
+      remark3 =
+        create_sample_data(%{
+          "HP_NAME" => "BILIT WP*MD*K6",
+          "HP_NO" => "3",
+          "REF_COL_SEQ_NO" => "1",
+          "REMARK" => "CHART 210K ICON"
+        })
 
       result1 = Remarks.new(remark1)
       result2 = Remarks.new(remark2)
@@ -123,18 +131,20 @@ defmodule NASR.Entities.HoldingPattern.RemarksTest do
 
     test "handles mixed holding pattern and waypoint names" do
       # Test NDB-based holding pattern
-      ndb_pattern = create_sample_data(%{
-        "HP_NAME" => "BELLGROVE NDB*PA",
-        "HP_NO" => "1",
-        "REMARK" => "CHART 100K ICON"
-      })
+      ndb_pattern =
+        create_sample_data(%{
+          "HP_NAME" => "BELLGROVE NDB*PA",
+          "HP_NO" => "1",
+          "REMARK" => "CHART 100K ICON"
+        })
 
       # Test VORTAC-based holding pattern
-      vortac_pattern = create_sample_data(%{
-        "HP_NAME" => "BIG DELTA VORTAC*AK",
-        "HP_NO" => "1",
-        "REMARK" => "CHART PAT 1 WITH 210K ICON"
-      })
+      vortac_pattern =
+        create_sample_data(%{
+          "HP_NAME" => "BIG DELTA VORTAC*AK",
+          "HP_NO" => "1",
+          "REMARK" => "CHART PAT 1 WITH 210K ICON"
+        })
 
       ndb_result = Remarks.new(ndb_pattern)
       vortac_result = Remarks.new(vortac_pattern)
@@ -154,16 +164,19 @@ defmodule NASR.Entities.HoldingPattern.RemarksTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "HP_NAME" => "ALWYZ INT*VA*K6",
-      "HP_NO" => "1",
-      "STATE_CODE" => "VA",
-      "COUNTRY_CODE" => "US",
-      "TAB_NAME" => "HOLDING_PATTERN",
-      "REF_COL_NAME" => "GENERAL_REMARK",
-      "REF_COL_SEQ_NO" => "1",
-      "REMARK" => "CHART 210K ICON"
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "HP_NAME" => "ALWYZ INT*VA*K6",
+        "HP_NO" => "1",
+        "STATE_CODE" => "VA",
+        "COUNTRY_CODE" => "US",
+        "TAB_NAME" => "HOLDING_PATTERN",
+        "REF_COL_NAME" => "GENERAL_REMARK",
+        "REF_COL_SEQ_NO" => "1",
+        "REMARK" => "CHART 210K ICON"
+      },
+      overrides
+    )
   end
 end

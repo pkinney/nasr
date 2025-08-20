@@ -130,7 +130,22 @@ defmodule NASR.Entities.Nav do
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
           nav_id: String.t(),
-          nav_type: :consolan | :dme | :fan_marker | :marine_ndb | :marine_ndb_dme | :ndb | :ndb_dme | :tacan | :uhf_ndb | :vor | :vortac | :vor_dme | :vot | String.t() | nil,
+          nav_type:
+            :consolan
+            | :dme
+            | :fan_marker
+            | :marine_ndb
+            | :marine_ndb_dme
+            | :ndb
+            | :ndb_dme
+            | :tacan
+            | :uhf_ndb
+            | :vor
+            | :vortac
+            | :vor_dme
+            | :vot
+            | String.t()
+            | nil,
           state_code: String.t(),
           city: String.t(),
           country_code: String.t(),
@@ -152,7 +167,17 @@ defmodule NASR.Entities.Nav do
           low_artcc_name: String.t(),
           latitude: float() | nil,
           longitude: float() | nil,
-          survey_accuracy_code: :unknown | :degree | :ten_minutes | :one_minute | :ten_seconds | :one_second_or_better | :nos | :third_order_triangulation | String.t() | nil,
+          survey_accuracy_code:
+            :unknown
+            | :degree
+            | :ten_minutes
+            | :one_minute
+            | :ten_seconds
+            | :one_second_or_better
+            | :nos
+            | :third_order_triangulation
+            | String.t()
+            | nil,
           tacan_dme_status: String.t(),
           tacan_dme_latitude: float() | nil,
           tacan_dme_longitude: float() | nil,
@@ -192,67 +217,68 @@ defmodule NASR.Entities.Nav do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      nav_id: Map.fetch!(entity, "NAV_ID"),
-      nav_type: parse_nav_type(Map.fetch!(entity, "NAV_TYPE")),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      city: Map.fetch!(entity, "CITY"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      nav_status: Map.fetch!(entity, "NAV_STATUS"),
-      name: Map.fetch!(entity, "NAME"),
-      state_name: Map.fetch!(entity, "STATE_NAME"),
-      region_code: parse_region_code(Map.fetch!(entity, "REGION_CODE")),
-      country_name: Map.fetch!(entity, "COUNTRY_NAME"),
-      fan_marker: Map.fetch!(entity, "FAN_MARKER"),
-      owner: Map.fetch!(entity, "OWNER"),
-      operator: Map.fetch!(entity, "OPERATOR"),
-      nas_use_flag: convert_yn(Map.fetch!(entity, "NAS_USE_FLAG")),
-      public_use_flag: convert_yn(Map.fetch!(entity, "PUBLIC_USE_FLAG")),
-      ndb_class_code: Map.fetch!(entity, "NDB_CLASS_CODE"),
-      oper_hours: Map.fetch!(entity, "OPER_HOURS"),
-      high_alt_artcc_id: Map.fetch!(entity, "HIGH_ALT_ARTCC_ID"),
-      high_artcc_name: Map.fetch!(entity, "HIGH_ARTCC_NAME"),
-      low_alt_artcc_id: Map.fetch!(entity, "LOW_ALT_ARTCC_ID"),
-      low_artcc_name: Map.fetch!(entity, "LOW_ARTCC_NAME"),
-      latitude: safe_str_to_float(Map.fetch!(entity, "LAT_DECIMAL")),
-      longitude: safe_str_to_float(Map.fetch!(entity, "LONG_DECIMAL")),
-      survey_accuracy_code: parse_survey_accuracy_code(Map.fetch!(entity, "SURVEY_ACCURACY_CODE")),
-      tacan_dme_status: Map.fetch!(entity, "TACAN_DME_STATUS"),
-      tacan_dme_latitude: safe_str_to_float(Map.fetch!(entity, "TACAN_DME_LAT_DECIMAL")),
-      tacan_dme_longitude: safe_str_to_float(Map.fetch!(entity, "TACAN_DME_LONG_DECIMAL")),
-      elevation: safe_str_to_float(Map.fetch!(entity, "ELEV")),
-      magnetic_variation: safe_str_to_float(Map.fetch!(entity, "MAG_VARN")),
-      magnetic_hemisphere: Map.fetch!(entity, "MAG_VARN_HEMIS"),
-      magnetic_variation_year: safe_str_to_int(Map.fetch!(entity, "MAG_VARN_YEAR")),
-      simul_voice_flag: convert_yn(Map.fetch!(entity, "SIMUL_VOICE_FLAG")),
-      power_output: safe_str_to_int(Map.fetch!(entity, "PWR_OUTPUT")),
-      auto_voice_id_flag: convert_yn(Map.fetch!(entity, "AUTO_VOICE_ID_FLAG")),
-      mnt_cat_code: Map.fetch!(entity, "MNT_CAT_CODE"),
-      voice_call: Map.fetch!(entity, "VOICE_CALL"),
-      channel: safe_str_to_int(Map.fetch!(entity, "CHAN")),
-      frequency: safe_str_to_float(Map.fetch!(entity, "FREQ")),
-      marker_ident: Map.fetch!(entity, "MKR_IDENT"),
-      marker_shape: Map.fetch!(entity, "MKR_SHAPE"),
-      marker_bearing: Map.fetch!(entity, "MKR_BRG"),
-      alt_code: parse_alt_code(Map.fetch!(entity, "ALT_CODE")),
-      dme_ssv: parse_dme_ssv(Map.fetch!(entity, "DME_SSV")),
-      low_nav_on_high_chart_flag: convert_yn(Map.fetch!(entity, "LOW_NAV_ON_HIGH_CHART_FLAG")),
-      z_marker_flag: convert_yn(Map.fetch!(entity, "Z_MKR_FLAG")),
-      fss_id: Map.fetch!(entity, "FSS_ID"),
-      fss_name: Map.fetch!(entity, "FSS_NAME"),
-      fss_hours: Map.fetch!(entity, "FSS_HOURS"),
-      notam_id: Map.fetch!(entity, "NOTAM_ID"),
-      quad_ident: Map.fetch!(entity, "QUAD_IDENT"),
-      pitch_flag: convert_yn(Map.fetch!(entity, "PITCH_FLAG")),
-      catch_flag: convert_yn(Map.fetch!(entity, "CATCH_FLAG")),
-      sua_atcaa_flag: convert_yn(Map.fetch!(entity, "SUA_ATCAA_FLAG")),
-      restriction_flag: Map.fetch!(entity, "RESTRICTION_FLAG"),
-      hiwas_flag: Map.fetch!(entity, "HIWAS_FLAG")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      nav_id: Map.get(entity, "NAV_ID"),
+      nav_type: parse_nav_type(Map.get(entity, "NAV_TYPE")),
+      state_code: Map.get(entity, "STATE_CODE"),
+      city: Map.get(entity, "CITY"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      nav_status: Map.get(entity, "NAV_STATUS"),
+      name: Map.get(entity, "NAME"),
+      state_name: Map.get(entity, "STATE_NAME"),
+      region_code: parse_region_code(Map.get(entity, "REGION_CODE")),
+      country_name: Map.get(entity, "COUNTRY_NAME"),
+      fan_marker: Map.get(entity, "FAN_MARKER"),
+      owner: Map.get(entity, "OWNER"),
+      operator: Map.get(entity, "OPERATOR"),
+      nas_use_flag: convert_yn(Map.get(entity, "NAS_USE_FLAG")),
+      public_use_flag: convert_yn(Map.get(entity, "PUBLIC_USE_FLAG")),
+      ndb_class_code: Map.get(entity, "NDB_CLASS_CODE"),
+      oper_hours: Map.get(entity, "OPER_HOURS"),
+      high_alt_artcc_id: Map.get(entity, "HIGH_ALT_ARTCC_ID"),
+      high_artcc_name: Map.get(entity, "HIGH_ARTCC_NAME"),
+      low_alt_artcc_id: Map.get(entity, "LOW_ALT_ARTCC_ID"),
+      low_artcc_name: Map.get(entity, "LOW_ARTCC_NAME"),
+      latitude: safe_str_to_float(Map.get(entity, "LAT_DECIMAL")),
+      longitude: safe_str_to_float(Map.get(entity, "LONG_DECIMAL")),
+      survey_accuracy_code: parse_survey_accuracy_code(Map.get(entity, "SURVEY_ACCURACY_CODE")),
+      tacan_dme_status: Map.get(entity, "TACAN_DME_STATUS"),
+      tacan_dme_latitude: safe_str_to_float(Map.get(entity, "TACAN_DME_LAT_DECIMAL")),
+      tacan_dme_longitude: safe_str_to_float(Map.get(entity, "TACAN_DME_LONG_DECIMAL")),
+      elevation: safe_str_to_float(Map.get(entity, "ELEV")),
+      magnetic_variation: safe_str_to_float(Map.get(entity, "MAG_VARN")),
+      magnetic_hemisphere: Map.get(entity, "MAG_VARN_HEMIS"),
+      magnetic_variation_year: safe_str_to_int(Map.get(entity, "MAG_VARN_YEAR")),
+      simul_voice_flag: convert_yn(Map.get(entity, "SIMUL_VOICE_FLAG")),
+      power_output: safe_str_to_int(Map.get(entity, "PWR_OUTPUT")),
+      auto_voice_id_flag: convert_yn(Map.get(entity, "AUTO_VOICE_ID_FLAG")),
+      mnt_cat_code: Map.get(entity, "MNT_CAT_CODE"),
+      voice_call: Map.get(entity, "VOICE_CALL"),
+      channel: safe_str_to_int(Map.get(entity, "CHAN")),
+      frequency: safe_str_to_float(Map.get(entity, "FREQ")),
+      marker_ident: Map.get(entity, "MKR_IDENT"),
+      marker_shape: Map.get(entity, "MKR_SHAPE"),
+      marker_bearing: Map.get(entity, "MKR_BRG"),
+      alt_code: parse_alt_code(Map.get(entity, "ALT_CODE")),
+      dme_ssv: parse_dme_ssv(Map.get(entity, "DME_SSV")),
+      low_nav_on_high_chart_flag: convert_yn(Map.get(entity, "LOW_NAV_ON_HIGH_CHART_FLAG")),
+      z_marker_flag: convert_yn(Map.get(entity, "Z_MKR_FLAG")),
+      fss_id: Map.get(entity, "FSS_ID"),
+      fss_name: Map.get(entity, "FSS_NAME"),
+      fss_hours: Map.get(entity, "FSS_HOURS"),
+      notam_id: Map.get(entity, "NOTAM_ID"),
+      quad_ident: Map.get(entity, "QUAD_IDENT"),
+      pitch_flag: convert_yn(Map.get(entity, "PITCH_FLAG")),
+      catch_flag: convert_yn(Map.get(entity, "CATCH_FLAG")),
+      sua_atcaa_flag: convert_yn(Map.get(entity, "SUA_ATCAA_FLAG")),
+      restriction_flag: Map.get(entity, "RESTRICTION_FLAG"),
+      hiwas_flag: Map.get(entity, "HIWAS_FLAG")
     }
   end
 
   defp parse_nav_type(nil), do: nil
   defp parse_nav_type(""), do: nil
+
   defp parse_nav_type(type) when is_binary(type) do
     case String.trim(type) do
       "CONSOLAN" -> :consolan
@@ -274,6 +300,7 @@ defmodule NASR.Entities.Nav do
 
   defp parse_region_code(nil), do: nil
   defp parse_region_code(""), do: nil
+
   defp parse_region_code(code) when is_binary(code) do
     case String.trim(code) do
       "AAL" -> :aal
@@ -291,6 +318,7 @@ defmodule NASR.Entities.Nav do
 
   defp parse_survey_accuracy_code(nil), do: nil
   defp parse_survey_accuracy_code(""), do: nil
+
   defp parse_survey_accuracy_code(code) when is_binary(code) do
     case String.trim(code) do
       "0" -> :unknown
@@ -307,6 +335,7 @@ defmodule NASR.Entities.Nav do
 
   defp parse_alt_code(nil), do: nil
   defp parse_alt_code(""), do: nil
+
   defp parse_alt_code(code) when is_binary(code) do
     case String.trim(code) do
       "H" -> :high
@@ -320,6 +349,7 @@ defmodule NASR.Entities.Nav do
 
   defp parse_dme_ssv(nil), do: nil
   defp parse_dme_ssv(""), do: nil
+
   defp parse_dme_ssv(code) when is_binary(code) do
     case String.trim(code) do
       "H" -> :high

@@ -72,22 +72,22 @@ defmodule NASR.Entities.Airport.Remarks do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      site_no: Map.fetch!(entity, "SITE_NO"),
-      site_type_code: Map.fetch!(entity, "SITE_TYPE_CODE"),
-      arpt_id: Map.fetch!(entity, "ARPT_ID"),
-      city: Map.fetch!(entity, "CITY"),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      legacy_element_number: Map.fetch!(entity, "LEGACY_ELEMENT_NUMBER"),
-      table_name: Map.fetch!(entity, "TAB_NAME"),
-      reference_column_name: Map.fetch!(entity, "REF_COL_NAME"),
-      element: Map.fetch!(entity, "ELEMENT"),
-      reference_column_sequence_no: safe_str_to_int(Map.fetch!(entity, "REF_COL_SEQ_NO")),
-      remark_text: Map.fetch!(entity, "REMARK"),
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
+      site_no: Map.get(entity, "SITE_NO"),
+      site_type_code: Map.get(entity, "SITE_TYPE_CODE"),
+      arpt_id: Map.get(entity, "ARPT_ID"),
+      city: Map.get(entity, "CITY"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      legacy_element_number: Map.get(entity, "LEGACY_ELEMENT_NUMBER"),
+      table_name: Map.get(entity, "TAB_NAME"),
+      reference_column_name: Map.get(entity, "REF_COL_NAME"),
+      element: Map.get(entity, "ELEMENT"),
+      reference_column_sequence_no: safe_str_to_int(Map.get(entity, "REF_COL_SEQ_NO")),
+      remark_text: Map.get(entity, "REMARK"),
+      effective_date: parse_date(Map.get(entity, "EFF_DATE"))
     }
   end
 
   @spec type() :: String.t()
-  def type(), do: "APT_RMK"
+  def type, do: "APT_RMK"
 end

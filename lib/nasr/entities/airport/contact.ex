@@ -68,25 +68,25 @@ defmodule NASR.Entities.Airport.Contact do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      site_no: Map.fetch!(entity, "SITE_NO"),
-      site_type_code: Map.fetch!(entity, "SITE_TYPE_CODE"),
-      arpt_id: Map.fetch!(entity, "ARPT_ID"),
-      city: Map.fetch!(entity, "CITY"),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      title: Map.fetch!(entity, "TITLE"),
-      name: Map.fetch!(entity, "NAME"),
-      address_line_1: Map.fetch!(entity, "ADDRESS1"),
-      address_line_2: Map.fetch!(entity, "ADDRESS2"),
-      contact_city: Map.fetch!(entity, "TITLE_CITY"),
-      contact_state: Map.fetch!(entity, "STATE"),
-      zip_code: Map.fetch!(entity, "ZIP_CODE"),
-      zip_plus_four: Map.fetch!(entity, "ZIP_PLUS_FOUR"),
-      phone_number: Map.fetch!(entity, "PHONE_NO"),
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
+      site_no: Map.get(entity, "SITE_NO"),
+      site_type_code: Map.get(entity, "SITE_TYPE_CODE"),
+      arpt_id: Map.get(entity, "ARPT_ID"),
+      city: Map.get(entity, "CITY"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      title: Map.get(entity, "TITLE"),
+      name: Map.get(entity, "NAME"),
+      address_line_1: Map.get(entity, "ADDRESS1"),
+      address_line_2: Map.get(entity, "ADDRESS2"),
+      contact_city: Map.get(entity, "TITLE_CITY"),
+      contact_state: Map.get(entity, "STATE"),
+      zip_code: Map.get(entity, "ZIP_CODE"),
+      zip_plus_four: Map.get(entity, "ZIP_PLUS_FOUR"),
+      phone_number: Map.get(entity, "PHONE_NO"),
+      effective_date: parse_date(Map.get(entity, "EFF_DATE"))
     }
   end
 
   @spec type() :: String.t()
-  def type(), do: "APT_CON"
+  def type, do: "APT_CON"
 end

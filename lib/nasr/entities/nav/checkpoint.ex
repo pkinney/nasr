@@ -59,23 +59,24 @@ defmodule NASR.Entities.Nav.Checkpoint do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      nav_id: Map.fetch!(entity, "NAV_ID"),
-      nav_type: Map.fetch!(entity, "NAV_TYPE"),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      city: Map.fetch!(entity, "CITY"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      altitude: safe_str_to_int(Map.fetch!(entity, "ALTITUDE")),
-      bearing: safe_str_to_int(Map.fetch!(entity, "BRG")),
-      air_ground_code: parse_air_ground_code(Map.fetch!(entity, "AIR_GND_CODE")),
-      checkpoint_description: Map.fetch!(entity, "CHK_DESC"),
-      airport_id: Map.fetch!(entity, "ARPT_ID"),
-      state_checkpoint_code: Map.fetch!(entity, "STATE_CHK_CODE")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      nav_id: Map.get(entity, "NAV_ID"),
+      nav_type: Map.get(entity, "NAV_TYPE"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      city: Map.get(entity, "CITY"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      altitude: safe_str_to_int(Map.get(entity, "ALTITUDE")),
+      bearing: safe_str_to_int(Map.get(entity, "BRG")),
+      air_ground_code: parse_air_ground_code(Map.get(entity, "AIR_GND_CODE")),
+      checkpoint_description: Map.get(entity, "CHK_DESC"),
+      airport_id: Map.get(entity, "ARPT_ID"),
+      state_checkpoint_code: Map.get(entity, "STATE_CHK_CODE")
     }
   end
 
   defp parse_air_ground_code(nil), do: nil
   defp parse_air_ground_code(""), do: nil
+
   defp parse_air_ground_code(code) when is_binary(code) do
     case String.trim(code) do
       "A" -> :air

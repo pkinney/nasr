@@ -1,5 +1,6 @@
 defmodule NASR.Entities.STARTest do
   use ExUnit.Case
+
   alias NASR.Entities.STAR
 
   describe "new/1" do
@@ -50,15 +51,16 @@ defmodule NASR.Entities.STARTest do
     end
 
     test "handles RNAV STAR procedures" do
-      rnav_star = create_sample_data(%{
-        "ARRIVAL_NAME" => "AALLE",
-        "AMENDMENT_NO" => "FOUR",
-        "ARTCC" => "ZDV",
-        "STAR_AMEND_EFF_DATE" => "2025/06/12",
-        "RNAV_FLAG" => "Y",
-        "STAR_COMPUTER_CODE" => "AALLE.AALLE4",
-        "SERVED_ARPT" => "DEN"
-      })
+      rnav_star =
+        create_sample_data(%{
+          "ARRIVAL_NAME" => "AALLE",
+          "AMENDMENT_NO" => "FOUR",
+          "ARTCC" => "ZDV",
+          "STAR_AMEND_EFF_DATE" => "2025/06/12",
+          "RNAV_FLAG" => "Y",
+          "STAR_COMPUTER_CODE" => "AALLE.AALLE4",
+          "SERVED_ARPT" => "DEN"
+        })
 
       result = STAR.new(rnav_star)
 
@@ -72,11 +74,12 @@ defmodule NASR.Entities.STARTest do
     end
 
     test "handles multiple served airports" do
-      multi_airport = create_sample_data(%{
-        "SERVED_ARPT" => "ATL PDK FTY",
-        "ARRIVAL_NAME" => "ATLANTA",
-        "STAR_COMPUTER_CODE" => "ATLANTA.ATLANTA3"
-      })
+      multi_airport =
+        create_sample_data(%{
+          "SERVED_ARPT" => "ATL PDK FTY",
+          "ARRIVAL_NAME" => "ATLANTA",
+          "STAR_COMPUTER_CODE" => "ATLANTA.ATLANTA3"
+        })
 
       result = STAR.new(multi_airport)
 
@@ -86,11 +89,12 @@ defmodule NASR.Entities.STARTest do
     end
 
     test "handles conventional (non-RNAV) STAR procedures" do
-      conventional_star = create_sample_data(%{
-        "ARRIVAL_NAME" => "BLAID",
-        "RNAV_FLAG" => "N",
-        "STAR_COMPUTER_CODE" => "AALAN.BLAID2"
-      })
+      conventional_star =
+        create_sample_data(%{
+          "ARRIVAL_NAME" => "BLAID",
+          "RNAV_FLAG" => "N",
+          "STAR_COMPUTER_CODE" => "AALAN.BLAID2"
+        })
 
       result = STAR.new(conventional_star)
 
@@ -100,11 +104,12 @@ defmodule NASR.Entities.STARTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "EFF_DATE" => "",
-        "STAR_AMEND_EFF_DATE" => "",
-        "RNAV_FLAG" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "EFF_DATE" => "",
+          "STAR_AMEND_EFF_DATE" => "",
+          "RNAV_FLAG" => ""
+        })
 
       result = STAR.new(sample_data)
 
@@ -122,15 +127,18 @@ defmodule NASR.Entities.STARTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "ARRIVAL_NAME" => "BLAID",
-      "AMENDMENT_NO" => "TWO",
-      "ARTCC" => "ZLA",
-      "STAR_AMEND_EFF_DATE" => "2024/01/25",
-      "RNAV_FLAG" => "N",
-      "STAR_COMPUTER_CODE" => "AALAN.BLAID2",
-      "SERVED_ARPT" => "LAS"
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "ARRIVAL_NAME" => "BLAID",
+        "AMENDMENT_NO" => "TWO",
+        "ARTCC" => "ZLA",
+        "STAR_AMEND_EFF_DATE" => "2024/01/25",
+        "RNAV_FLAG" => "N",
+        "STAR_COMPUTER_CODE" => "AALAN.BLAID2",
+        "SERVED_ARPT" => "LAS"
+      },
+      overrides
+    )
   end
 end

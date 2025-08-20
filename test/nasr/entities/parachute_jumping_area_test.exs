@@ -1,5 +1,6 @@
 defmodule NASR.Entities.ParachuteJumpingAreaTest do
   use ExUnit.Case
+
   alias NASR.Entities.ParachuteJumpingArea
 
   describe "new/1" do
@@ -86,22 +87,23 @@ defmodule NASR.Entities.ParachuteJumpingAreaTest do
     end
 
     test "handles civilian parachute jumping areas" do
-      civilian_pja = create_sample_data(%{
-        "PJA_ID" => "PAK004",
-        "NAV_ID" => "FAI",
-        "NAV_TYPE" => "VORTAC",
-        "RADIAL" => "42",
-        "DISTANCE" => "10",
-        "DROP_ZONE_NAME" => "BIRCH HILL",
-        "MAX_ALTITUDE" => "6000",
-        "MAX_ALTITUDE_TYPE_CODE" => "MSL",
-        "PJA_RADIUS" => "3",
-        "CHART_REQUEST_FLAG" => "N",
-        "PUBLISH_CRITERIA" => "Y",
-        "TIME_OF_USE" => "SR-SS 1 APRIL 31 OCT",
-        "PJA_USE" => "",
-        "PJA_USER" => ""
-      })
+      civilian_pja =
+        create_sample_data(%{
+          "PJA_ID" => "PAK004",
+          "NAV_ID" => "FAI",
+          "NAV_TYPE" => "VORTAC",
+          "RADIAL" => "42",
+          "DISTANCE" => "10",
+          "DROP_ZONE_NAME" => "BIRCH HILL",
+          "MAX_ALTITUDE" => "6000",
+          "MAX_ALTITUDE_TYPE_CODE" => "MSL",
+          "PJA_RADIUS" => "3",
+          "CHART_REQUEST_FLAG" => "N",
+          "PUBLISH_CRITERIA" => "Y",
+          "TIME_OF_USE" => "SR-SS 1 APRIL 31 OCT",
+          "PJA_USE" => "",
+          "PJA_USER" => ""
+        })
 
       result = ParachuteJumpingArea.new(civilian_pja)
       assert result.pja_id == "PAK004"
@@ -116,15 +118,16 @@ defmodule NASR.Entities.ParachuteJumpingAreaTest do
     end
 
     test "handles PJAs with airport associations" do
-      airport_pja = create_sample_data(%{
-        "PJA_ID" => "PAK006",
-        "ARPT_ID" => "CSR",
-        "SITE_NO" => "50033.",
-        "SITE_TYPE_CODE" => "A",
-        "DROP_ZONE_NAME" => "CAMPBELL",
-        "MAX_ALTITUDE" => "2000",
-        "TIME_OF_USE" => "SUNRISE-SUNSET; UNSCHULED"
-      })
+      airport_pja =
+        create_sample_data(%{
+          "PJA_ID" => "PAK006",
+          "ARPT_ID" => "CSR",
+          "SITE_NO" => "50033.",
+          "SITE_TYPE_CODE" => "A",
+          "DROP_ZONE_NAME" => "CAMPBELL",
+          "MAX_ALTITUDE" => "2000",
+          "TIME_OF_USE" => "SUNRISE-SUNSET; UNSCHULED"
+        })
 
       result = ParachuteJumpingArea.new(airport_pja)
       assert result.pja_id == "PAK006"
@@ -137,27 +140,29 @@ defmodule NASR.Entities.ParachuteJumpingAreaTest do
     end
 
     test "handles high altitude PJAs" do
-      high_altitude_pja = create_sample_data(%{
-        "PJA_ID" => "PAK005",
-        "DROP_ZONE_NAME" => "",
-        "MAX_ALTITUDE" => "12500",
-        "TIME_OF_USE" => "SUNRISE-SUNSET; WEEKENDS",
-        "REMARK" => "JUMPS OVER PIPPEL FIELD"
-      })
+      high_altitude_pja =
+        create_sample_data(%{
+          "PJA_ID" => "PAK005",
+          "DROP_ZONE_NAME" => "",
+          "MAX_ALTITUDE" => "12500",
+          "TIME_OF_USE" => "SUNRISE-SUNSET; WEEKENDS",
+          "REMARK" => "JUMPS OVER PIPPEL FIELD"
+        })
 
       result = ParachuteJumpingArea.new(high_altitude_pja)
       assert result.pja_id == "PAK005"
       assert result.drop_zone_name == ""
-      assert result.max_altitude == 12500
+      assert result.max_altitude == 12_500
       assert result.time_of_use == "SUNRISE-SUNSET; WEEKENDS"
       assert result.remark == "JUMPS OVER PIPPEL FIELD"
     end
 
     test "handles radial and distance calculations" do
-      precise_location = create_sample_data(%{
-        "RADIAL" => "34.44",
-        "DISTANCE" => "14.4"
-      })
+      precise_location =
+        create_sample_data(%{
+          "RADIAL" => "34.44",
+          "DISTANCE" => "14.4"
+        })
 
       result = ParachuteJumpingArea.new(precise_location)
       assert result.radial == 34.44
@@ -172,10 +177,12 @@ defmodule NASR.Entities.ParachuteJumpingAreaTest do
       ]
 
       for {input, expected} <- test_cases do
-        sample_data = create_sample_data(%{
-          "CHART_REQUEST_FLAG" => input,
-          "PUBLISH_CRITERIA" => input
-        })
+        sample_data =
+          create_sample_data(%{
+            "CHART_REQUEST_FLAG" => input,
+            "PUBLISH_CRITERIA" => input
+          })
+
         result = ParachuteJumpingArea.new(sample_data)
         assert result.chart_request_flag == expected
         assert result.publish_criteria == expected
@@ -183,20 +190,21 @@ defmodule NASR.Entities.ParachuteJumpingAreaTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "EFF_DATE" => "",
-        "NAV_TYPE" => "",
-        "RADIAL" => "",
-        "DISTANCE" => "",
-        "LAT_DECIMAL" => "",
-        "LONG_DECIMAL" => "",
-        "MAX_ALTITUDE" => "",
-        "MAX_ALTITUDE_TYPE_CODE" => "",
-        "PJA_RADIUS" => "",
-        "CHART_REQUEST_FLAG" => "",
-        "PUBLISH_CRITERIA" => "",
-        "PJA_USE" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "EFF_DATE" => "",
+          "NAV_TYPE" => "",
+          "RADIAL" => "",
+          "DISTANCE" => "",
+          "LAT_DECIMAL" => "",
+          "LONG_DECIMAL" => "",
+          "MAX_ALTITUDE" => "",
+          "MAX_ALTITUDE_TYPE_CODE" => "",
+          "PJA_RADIUS" => "",
+          "CHART_REQUEST_FLAG" => "",
+          "PUBLISH_CRITERIA" => "",
+          "PJA_USE" => ""
+        })
 
       result = ParachuteJumpingArea.new(sample_data)
 
@@ -215,13 +223,14 @@ defmodule NASR.Entities.ParachuteJumpingAreaTest do
     end
 
     test "handles special event PJAs" do
-      special_event_pja = create_sample_data(%{
-        "PJA_ID" => "PAK008",
-        "NAV_ID" => "BIG",
-        "DROP_ZONE_NAME" => "FAIRGROUNDS",
-        "TIME_OF_USE" => "SUNRISE-SUNSET; DURING STATE FAIR",
-        "DESCRIPTION" => ""
-      })
+      special_event_pja =
+        create_sample_data(%{
+          "PJA_ID" => "PAK008",
+          "NAV_ID" => "BIG",
+          "DROP_ZONE_NAME" => "FAIRGROUNDS",
+          "TIME_OF_USE" => "SUNRISE-SUNSET; DURING STATE FAIR",
+          "DESCRIPTION" => ""
+        })
 
       result = ParachuteJumpingArea.new(special_event_pja)
       assert result.pja_id == "PAK008"
@@ -232,12 +241,13 @@ defmodule NASR.Entities.ParachuteJumpingAreaTest do
     end
 
     test "handles coordinate formats" do
-      coordinate_pja = create_sample_data(%{
-        "LATITUDE" => "60-57-44.3891N",
-        "LAT_DECIMAL" => "60.9623303",
-        "LONGITUDE" => "149-06-26.3520W",
-        "LONG_DECIMAL" => "-149.10732"
-      })
+      coordinate_pja =
+        create_sample_data(%{
+          "LATITUDE" => "60-57-44.3891N",
+          "LAT_DECIMAL" => "60.9623303",
+          "LONGITUDE" => "149-06-26.3520W",
+          "LONG_DECIMAL" => "-149.10732"
+        })
 
       result = ParachuteJumpingArea.new(coordinate_pja)
       assert result.latitude == "60-57-44.3891N"
@@ -255,37 +265,40 @@ defmodule NASR.Entities.ParachuteJumpingAreaTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "PJA_ID" => "PAK002",
-      "NAV_ID" => "FAI",
-      "NAV_TYPE" => "VORTAC",
-      "RADIAL" => "67",
-      "DISTANCE" => "27",
-      "NAVAID_NAME" => "FAIRBANKS",
-      "STATE_CODE" => "AK",
-      "CITY" => "FAIRBANKS",
-      "LATITUDE" => "64-45-26.2123N",
-      "LAT_DECIMAL" => "64.75728119",
-      "LONGITUDE" => "146-57-55.7727W",
-      "LONG_DECIMAL" => "-146.96549241",
-      "ARPT_ID" => "",
-      "SITE_NO" => "",
-      "SITE_TYPE_CODE" => "",
-      "DROP_ZONE_NAME" => "HUSKY DROP ZONE",
-      "MAX_ALTITUDE" => "3500",
-      "MAX_ALTITUDE_TYPE_CODE" => "MSL",
-      "PJA_RADIUS" => "",
-      "CHART_REQUEST_FLAG" => "Y",
-      "PUBLISH_CRITERIA" => "Y",
-      "DESCRIPTION" => "",
-      "TIME_OF_USE" => "CONTINUOUS",
-      "FSS_ID" => "FAI",
-      "FSS_NAME" => "FAIRBANKS",
-      "PJA_USE" => "MILITARY",
-      "VOLUME" => "",
-      "PJA_USER" => "ACTIVE ARMY AND USAF",
-      "REMARK" => ""
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "PJA_ID" => "PAK002",
+        "NAV_ID" => "FAI",
+        "NAV_TYPE" => "VORTAC",
+        "RADIAL" => "67",
+        "DISTANCE" => "27",
+        "NAVAID_NAME" => "FAIRBANKS",
+        "STATE_CODE" => "AK",
+        "CITY" => "FAIRBANKS",
+        "LATITUDE" => "64-45-26.2123N",
+        "LAT_DECIMAL" => "64.75728119",
+        "LONGITUDE" => "146-57-55.7727W",
+        "LONG_DECIMAL" => "-146.96549241",
+        "ARPT_ID" => "",
+        "SITE_NO" => "",
+        "SITE_TYPE_CODE" => "",
+        "DROP_ZONE_NAME" => "HUSKY DROP ZONE",
+        "MAX_ALTITUDE" => "3500",
+        "MAX_ALTITUDE_TYPE_CODE" => "MSL",
+        "PJA_RADIUS" => "",
+        "CHART_REQUEST_FLAG" => "Y",
+        "PUBLISH_CRITERIA" => "Y",
+        "DESCRIPTION" => "",
+        "TIME_OF_USE" => "CONTINUOUS",
+        "FSS_ID" => "FAI",
+        "FSS_NAME" => "FAIRBANKS",
+        "PJA_USE" => "MILITARY",
+        "VOLUME" => "",
+        "PJA_USER" => "ACTIVE ARMY AND USAF",
+        "REMARK" => ""
+      },
+      overrides
+    )
   end
 end

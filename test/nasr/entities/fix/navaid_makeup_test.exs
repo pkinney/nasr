@@ -1,6 +1,8 @@
 defmodule NASR.Entities.Fix.NavaidMakeupTest do
   use ExUnit.Case
 
+  alias NASR.Entities.Fix.NavaidMakeup
+
   describe "new/1" do
     test "creates struct from real-world FIX_NAV sample data" do
       sample_data = %{
@@ -15,7 +17,7 @@ defmodule NASR.Entities.Fix.NavaidMakeupTest do
         "DISTANCE" => "20.3"
       }
 
-      result = NASR.Entities.Fix.NavaidMakeup.new(sample_data)
+      result = NavaidMakeup.new(sample_data)
 
       assert result.fix_id == "SASIE"
       assert result.icao_region_code == "K4"
@@ -51,7 +53,7 @@ defmodule NASR.Entities.Fix.NavaidMakeupTest do
           "DISTANCE" => "10.5"
         }
 
-        result = NASR.Entities.Fix.NavaidMakeup.new(sample_data)
+        result = NavaidMakeup.new(sample_data)
         assert result.nav_type == nav_type
       end
     end
@@ -69,7 +71,7 @@ defmodule NASR.Entities.Fix.NavaidMakeupTest do
         "DISTANCE" => ""
       }
 
-      result = NASR.Entities.Fix.NavaidMakeup.new(sample_data)
+      result = NavaidMakeup.new(sample_data)
       assert result.bearing == nil
       assert result.distance == nil
     end
@@ -87,13 +89,13 @@ defmodule NASR.Entities.Fix.NavaidMakeupTest do
         "DISTANCE" => "100.25"
       }
 
-      result = NASR.Entities.Fix.NavaidMakeup.new(sample_data)
+      result = NavaidMakeup.new(sample_data)
       assert result.bearing == 359.5
       assert result.distance == 100.25
     end
 
     test "type/0 returns correct type string" do
-      assert NASR.Entities.Fix.NavaidMakeup.type() == "FIX_NAV"
+      assert NavaidMakeup.type() == "FIX_NAV"
     end
   end
 end

@@ -60,7 +60,8 @@ defmodule NASR.Entities.HoldingPattern do
           icao_region_code: String.t(),
           nav_id: String.t(),
           nav_type: :localizer | :localizer_dme | :ndb | :tacan | :vor | :vortac | :vor_dme | String.t() | nil,
-          hold_direction: :north | :northeast | :east | :southeast | :south | :southwest | :west | :northwest | String.t() | nil,
+          hold_direction:
+            :north | :northeast | :east | :southeast | :south | :southwest | :west | :northwest | String.t() | nil,
           hold_deg_or_crs: integer() | nil,
           azimuth: :bearing | :course | :radial | :rnav | String.t() | nil,
           course_inbound_deg: integer() | nil,
@@ -74,26 +75,27 @@ defmodule NASR.Entities.HoldingPattern do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      hp_name: Map.fetch!(entity, "HP_NAME"),
-      hp_no: safe_str_to_int(Map.fetch!(entity, "HP_NO")),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      fix_id: Map.fetch!(entity, "FIX_ID"),
-      icao_region_code: Map.fetch!(entity, "ICAO_REGION_CODE"),
-      nav_id: Map.fetch!(entity, "NAV_ID"),
-      nav_type: parse_nav_type(Map.fetch!(entity, "NAV_TYPE")),
-      hold_direction: parse_hold_direction(Map.fetch!(entity, "HOLD_DIRECTION")),
-      hold_deg_or_crs: safe_str_to_int(Map.fetch!(entity, "HOLD_DEG_OR_CRS")),
-      azimuth: parse_azimuth(Map.fetch!(entity, "AZIMUTH")),
-      course_inbound_deg: safe_str_to_int(Map.fetch!(entity, "COURSE_INBOUND_DEG")),
-      turn_direction: parse_turn_direction(Map.fetch!(entity, "TURN_DIRECTION")),
-      leg_length_dist: safe_str_to_int(Map.fetch!(entity, "LEG_LENGTH_DIST"))
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      hp_name: Map.get(entity, "HP_NAME"),
+      hp_no: safe_str_to_int(Map.get(entity, "HP_NO")),
+      state_code: Map.get(entity, "STATE_CODE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      fix_id: Map.get(entity, "FIX_ID"),
+      icao_region_code: Map.get(entity, "ICAO_REGION_CODE"),
+      nav_id: Map.get(entity, "NAV_ID"),
+      nav_type: parse_nav_type(Map.get(entity, "NAV_TYPE")),
+      hold_direction: parse_hold_direction(Map.get(entity, "HOLD_DIRECTION")),
+      hold_deg_or_crs: safe_str_to_int(Map.get(entity, "HOLD_DEG_OR_CRS")),
+      azimuth: parse_azimuth(Map.get(entity, "AZIMUTH")),
+      course_inbound_deg: safe_str_to_int(Map.get(entity, "COURSE_INBOUND_DEG")),
+      turn_direction: parse_turn_direction(Map.get(entity, "TURN_DIRECTION")),
+      leg_length_dist: safe_str_to_int(Map.get(entity, "LEG_LENGTH_DIST"))
     }
   end
 
   defp parse_nav_type(nil), do: nil
   defp parse_nav_type(""), do: nil
+
   defp parse_nav_type(type) when is_binary(type) do
     case String.trim(type) do
       "LD" -> :localizer_dme
@@ -109,6 +111,7 @@ defmodule NASR.Entities.HoldingPattern do
 
   defp parse_hold_direction(nil), do: nil
   defp parse_hold_direction(""), do: nil
+
   defp parse_hold_direction(direction) when is_binary(direction) do
     case String.trim(direction) do
       "N" -> :north
@@ -125,6 +128,7 @@ defmodule NASR.Entities.HoldingPattern do
 
   defp parse_azimuth(nil), do: nil
   defp parse_azimuth(""), do: nil
+
   defp parse_azimuth(azimuth) when is_binary(azimuth) do
     case String.trim(azimuth) do
       "BRG" -> :bearing
@@ -137,6 +141,7 @@ defmodule NASR.Entities.HoldingPattern do
 
   defp parse_turn_direction(nil), do: nil
   defp parse_turn_direction(""), do: nil
+
   defp parse_turn_direction(direction) when is_binary(direction) do
     case String.trim(direction) do
       "L" -> :left

@@ -54,11 +54,12 @@ defmodule NASR.Entities.RadarTest do
     end
 
     test "handles TRACON facility" do
-      sample_data = create_sample_data(%{
-        "FACILITY_ID" => "SCT",
-        "FACILITY_TYPE" => "TRACON",
-        "RADAR_TYPE" => "ASR"
-      })
+      sample_data =
+        create_sample_data(%{
+          "FACILITY_ID" => "SCT",
+          "FACILITY_TYPE" => "TRACON",
+          "RADAR_TYPE" => "ASR"
+        })
 
       result = Radar.new(sample_data)
 
@@ -109,12 +110,18 @@ defmodule NASR.Entities.RadarTest do
 
     test "handles various operating hours formats" do
       hours_formats = [
-        "24",                              # 24-hour operation
-        "0600-2300",                       # Simple time range
-        "0600-0000",                       # Overnight operation
-        "0800-1600 WKDAYS; EXCP HOLS",     # Weekdays except holidays
-        "1800-2200Z++TUE-THUR.",           # Specific days with Z time
-        "0700-2000"                        # Standard day hours
+        # 24-hour operation
+        "24",
+        # Simple time range
+        "0600-2300",
+        # Overnight operation
+        "0600-0000",
+        # Weekdays except holidays
+        "0800-1600 WKDAYS; EXCP HOLS",
+        # Specific days with Z time
+        "1800-2200Z++TUE-THUR.",
+        # Standard day hours
+        "0700-2000"
       ]
 
       for hours <- hours_formats do
@@ -126,11 +133,12 @@ defmodule NASR.Entities.RadarTest do
 
     test "handles multiple radars at same facility" do
       # First radar
-      sample_data1 = create_sample_data(%{
-        "FACILITY_ID" => "LAX",
-        "RADAR_NO" => "1",
-        "RADAR_TYPE" => "ASR"
-      })
+      sample_data1 =
+        create_sample_data(%{
+          "FACILITY_ID" => "LAX",
+          "RADAR_NO" => "1",
+          "RADAR_TYPE" => "ASR"
+        })
 
       result1 = Radar.new(sample_data1)
       assert result1.facility_id == "LAX"
@@ -138,11 +146,12 @@ defmodule NASR.Entities.RadarTest do
       assert result1.radar_type == :asr
 
       # Second radar at same facility
-      sample_data2 = create_sample_data(%{
-        "FACILITY_ID" => "LAX",
-        "RADAR_NO" => "2",
-        "RADAR_TYPE" => "PAR"
-      })
+      sample_data2 =
+        create_sample_data(%{
+          "FACILITY_ID" => "LAX",
+          "RADAR_NO" => "2",
+          "RADAR_TYPE" => "PAR"
+        })
 
       result2 = Radar.new(sample_data2)
       assert result2.facility_id == "LAX"
@@ -151,13 +160,14 @@ defmodule NASR.Entities.RadarTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "RADAR_TYPE" => "",
-        "FACILITY_TYPE" => "",
-        "RADAR_NO" => "",
-        "REMARK" => "",
-        "EFF_DATE" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "RADAR_TYPE" => "",
+          "FACILITY_TYPE" => "",
+          "RADAR_NO" => "",
+          "REMARK" => "",
+          "EFF_DATE" => ""
+        })
 
       result = Radar.new(sample_data)
 
@@ -189,11 +199,12 @@ defmodule NASR.Entities.RadarTest do
     end
 
     test "handles beacon radar type" do
-      sample_data = create_sample_data(%{
-        "FACILITY_ID" => "ASE",
-        "RADAR_TYPE" => "BCN",
-        "RADAR_HRS" => "0700-2000"
-      })
+      sample_data =
+        create_sample_data(%{
+          "FACILITY_ID" => "ASE",
+          "RADAR_TYPE" => "BCN",
+          "RADAR_HRS" => "0700-2000"
+        })
 
       result = Radar.new(sample_data)
 

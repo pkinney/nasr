@@ -91,30 +91,31 @@ defmodule NASR.Entities.AirRouteBoundary.Segment do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      record_id: Map.fetch!(entity, "REC_ID"),
-      location_id: Map.fetch!(entity, "LOCATION_ID"),
-      location_name: Map.fetch!(entity, "LOCATION_NAME"),
-      altitude: parse_altitude(Map.fetch!(entity, "ALTITUDE")),
-      boundary_type: parse_boundary_type(Map.fetch!(entity, "TYPE")),
-      point_sequence: safe_str_to_int(Map.fetch!(entity, "POINT_SEQ")),
-      latitude_degrees: safe_str_to_int(Map.fetch!(entity, "LAT_DEG")),
-      latitude_minutes: safe_str_to_int(Map.fetch!(entity, "LAT_MIN")),
-      latitude_seconds: safe_str_to_float(Map.fetch!(entity, "LAT_SEC")),
-      latitude_hemisphere: Map.fetch!(entity, "LAT_HEMIS"),
-      latitude_decimal: safe_str_to_float(Map.fetch!(entity, "LAT_DECIMAL")),
-      longitude_degrees: safe_str_to_int(Map.fetch!(entity, "LONG_DEG")),
-      longitude_minutes: safe_str_to_int(Map.fetch!(entity, "LONG_MIN")),
-      longitude_seconds: safe_str_to_float(Map.fetch!(entity, "LONG_SEC")),
-      longitude_hemisphere: Map.fetch!(entity, "LONG_HEMIS"),
-      longitude_decimal: safe_str_to_float(Map.fetch!(entity, "LONG_DECIMAL")),
-      boundary_point_description: Map.fetch!(entity, "BNDRY_PT_DESCRIP"),
-      nas_description_flag: Map.fetch!(entity, "NAS_DESCRIP_FLAG")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      record_id: Map.get(entity, "REC_ID"),
+      location_id: Map.get(entity, "LOCATION_ID"),
+      location_name: Map.get(entity, "LOCATION_NAME"),
+      altitude: parse_altitude(Map.get(entity, "ALTITUDE")),
+      boundary_type: parse_boundary_type(Map.get(entity, "TYPE")),
+      point_sequence: safe_str_to_int(Map.get(entity, "POINT_SEQ")),
+      latitude_degrees: safe_str_to_int(Map.get(entity, "LAT_DEG")),
+      latitude_minutes: safe_str_to_int(Map.get(entity, "LAT_MIN")),
+      latitude_seconds: safe_str_to_float(Map.get(entity, "LAT_SEC")),
+      latitude_hemisphere: Map.get(entity, "LAT_HEMIS"),
+      latitude_decimal: safe_str_to_float(Map.get(entity, "LAT_DECIMAL")),
+      longitude_degrees: safe_str_to_int(Map.get(entity, "LONG_DEG")),
+      longitude_minutes: safe_str_to_int(Map.get(entity, "LONG_MIN")),
+      longitude_seconds: safe_str_to_float(Map.get(entity, "LONG_SEC")),
+      longitude_hemisphere: Map.get(entity, "LONG_HEMIS"),
+      longitude_decimal: safe_str_to_float(Map.get(entity, "LONG_DECIMAL")),
+      boundary_point_description: Map.get(entity, "BNDRY_PT_DESCRIP"),
+      nas_description_flag: Map.get(entity, "NAS_DESCRIP_FLAG")
     }
   end
 
   defp parse_altitude(nil), do: nil
   defp parse_altitude(""), do: nil
+
   defp parse_altitude(altitude) when is_binary(altitude) do
     case String.trim(altitude) do
       "HIGH" -> :high
@@ -125,6 +126,7 @@ defmodule NASR.Entities.AirRouteBoundary.Segment do
 
   defp parse_boundary_type(nil), do: nil
   defp parse_boundary_type(""), do: nil
+
   defp parse_boundary_type(type) when is_binary(type) do
     case String.trim(type) do
       "ARTCC" -> :artcc

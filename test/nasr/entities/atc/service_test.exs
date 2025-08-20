@@ -1,5 +1,6 @@
 defmodule NASR.Entities.ATC.ServiceTest do
   use ExUnit.Case
+
   alias NASR.Entities.ATC.Service
 
   describe "new/1" do
@@ -38,17 +39,20 @@ defmodule NASR.Entities.ATC.ServiceTest do
     end
 
     test "handles different control services" do
-      arts_service = create_sample_data(%{
-        "CTL_SVC" => "ARTS-IIIE"
-      })
+      arts_service =
+        create_sample_data(%{
+          "CTL_SVC" => "ARTS-IIIE"
+        })
 
-      class_b_service = create_sample_data(%{
-        "CTL_SVC" => "CLASS B"
-      })
+      class_b_service =
+        create_sample_data(%{
+          "CTL_SVC" => "CLASS B"
+        })
 
-      approach_service = create_sample_data(%{
-        "CTL_SVC" => "APPROACH"
-      })
+      approach_service =
+        create_sample_data(%{
+          "CTL_SVC" => "APPROACH"
+        })
 
       arts_result = Service.new(arts_service)
       class_b_result = Service.new(class_b_service)
@@ -60,17 +64,19 @@ defmodule NASR.Entities.ATC.ServiceTest do
     end
 
     test "handles different facility types" do
-      tracon_data = create_sample_data(%{
-        "FACILITY_TYPE" => "TRACON",
-        "FACILITY_ID" => "A80",
-        "CTL_SVC" => "ARTS-IIIE"
-      })
+      tracon_data =
+        create_sample_data(%{
+          "FACILITY_TYPE" => "TRACON",
+          "FACILITY_ID" => "A80",
+          "CTL_SVC" => "ARTS-IIIE"
+        })
 
-      atct_data = create_sample_data(%{
-        "FACILITY_TYPE" => "ATCT",
-        "FACILITY_ID" => "ATL",
-        "CTL_SVC" => "CLASS B"
-      })
+      atct_data =
+        create_sample_data(%{
+          "FACILITY_TYPE" => "ATCT",
+          "FACILITY_ID" => "ATL",
+          "CTL_SVC" => "CLASS B"
+        })
 
       tracon_result = Service.new(tracon_data)
       atct_result = Service.new(atct_data)
@@ -115,12 +121,13 @@ defmodule NASR.Entities.ATC.ServiceTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "EFF_DATE" => "",
-        "SITE_NO" => "",
-        "SITE_TYPE_CODE" => "",
-        "CTL_SVC" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "EFF_DATE" => "",
+          "SITE_NO" => "",
+          "SITE_TYPE_CODE" => "",
+          "CTL_SVC" => ""
+        })
 
       result = Service.new(sample_data)
 
@@ -139,16 +146,19 @@ defmodule NASR.Entities.ATC.ServiceTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "SITE_NO" => "",
-      "SITE_TYPE_CODE" => "",
-      "FACILITY_TYPE" => "TRACON",
-      "STATE_CODE" => "GA",
-      "FACILITY_ID" => "A80",
-      "CITY" => "PEACHTREE CITY",
-      "COUNTRY_CODE" => "US",
-      "CTL_SVC" => "ARTS-IIIE"
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "SITE_NO" => "",
+        "SITE_TYPE_CODE" => "",
+        "FACILITY_TYPE" => "TRACON",
+        "STATE_CODE" => "GA",
+        "FACILITY_ID" => "A80",
+        "CITY" => "PEACHTREE CITY",
+        "COUNTRY_CODE" => "US",
+        "CTL_SVC" => "ARTS-IIIE"
+      },
+      overrides
+    )
   end
 end

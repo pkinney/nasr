@@ -44,49 +44,48 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.Shape do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      maa_id: Map.fetch!(entity, "MAA_ID"),
-      point_seq: safe_str_to_int(Map.fetch!(entity, "POINT_SEQ")),
-      latitude: parse_coordinate(Map.fetch!(entity, "LATITUDE")),
-      longitude: parse_coordinate(Map.fetch!(entity, "LONGITUDE"))
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      maa_id: Map.get(entity, "MAA_ID"),
+      point_seq: safe_str_to_int(Map.get(entity, "POINT_SEQ")),
+      latitude: parse_coordinate(Map.get(entity, "LATITUDE")),
+      longitude: parse_coordinate(Map.get(entity, "LONGITUDE"))
     }
   end
 
   defp parse_coordinate(nil), do: nil
   defp parse_coordinate(""), do: nil
+
   defp parse_coordinate(coord) when is_binary(coord) do
     # Parse coordinates in format like "33-54-12.8500N" or "087-19-53.7600W"
     coord = String.trim(coord)
-    
-    cond do
-      String.ends_with?(coord, "N") or String.ends_with?(coord, "S") or 
-      String.ends_with?(coord, "E") or String.ends_with?(coord, "W") ->
-        parse_dms_coordinate(coord)
-      
-      true ->
-        safe_str_to_float(coord)
+
+    if String.ends_with?(coord, "N") or String.ends_with?(coord, "S") or
+         String.ends_with?(coord, "E") or String.ends_with?(coord, "W") do
+      parse_dms_coordinate(coord)
+    else
+      safe_str_to_float(coord)
     end
   end
 
   defp parse_dms_coordinate(coord) do
     direction = String.last(coord)
     coord_without_dir = String.slice(coord, 0, String.length(coord) - 1)
-    
+
     case String.split(coord_without_dir, "-") do
       [degrees, minutes, seconds] ->
         deg = safe_str_to_float(degrees) || 0
         min = safe_str_to_float(minutes) || 0
         sec = safe_str_to_float(seconds) || 0
-        
-        decimal = deg + (min / 60.0) + (sec / 3600.0)
-        
+
+        decimal = deg + min / 60.0 + sec / 3600.0
+
         # Apply negative for South/West coordinates
         case direction do
           "S" -> -decimal
           "W" -> -decimal
           _ -> decimal
         end
-      
+
       _ ->
         safe_str_to_float(coord_without_dir)
     end

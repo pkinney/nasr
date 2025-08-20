@@ -1,5 +1,6 @@
 defmodule NASR.Entities.DepartureProcedureTest do
   use ExUnit.Case
+
   alias NASR.Entities.DepartureProcedure
 
   describe "new/1" do
@@ -51,11 +52,12 @@ defmodule NASR.Entities.DepartureProcedureTest do
     end
 
     test "handles multiple served airports" do
-      multi_airport = create_sample_data(%{
-        "SERVED_ARPT" => "ATL PDK FTY RYY",
-        "DP_NAME" => "ATLANTA",
-        "DP_COMPUTER_CODE" => "ATLANTA3.ATLANTA"
-      })
+      multi_airport =
+        create_sample_data(%{
+          "SERVED_ARPT" => "ATL PDK FTY RYY",
+          "DP_NAME" => "ATLANTA",
+          "DP_COMPUTER_CODE" => "ATLANTA3.ATLANTA"
+        })
 
       result = DepartureProcedure.new(multi_airport)
 
@@ -65,11 +67,12 @@ defmodule NASR.Entities.DepartureProcedureTest do
     end
 
     test "handles single served airport" do
-      single_airport = create_sample_data(%{
-        "SERVED_ARPT" => "SJU",
-        "DP_NAME" => "ACONY",
-        "AMENDMENT_NO" => "THREE"
-      })
+      single_airport =
+        create_sample_data(%{
+          "SERVED_ARPT" => "SJU",
+          "DP_NAME" => "ACONY",
+          "AMENDMENT_NO" => "THREE"
+        })
 
       result = DepartureProcedure.new(single_airport)
 
@@ -79,11 +82,12 @@ defmodule NASR.Entities.DepartureProcedureTest do
     end
 
     test "handles empty/nil values correctly" do
-      sample_data = create_sample_data(%{
-        "EFF_DATE" => "",
-        "DP_AMEND_EFF_DATE" => "",
-        "RNAV_FLAG" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "EFF_DATE" => "",
+          "DP_AMEND_EFF_DATE" => "",
+          "RNAV_FLAG" => ""
+        })
 
       result = DepartureProcedure.new(sample_data)
 
@@ -101,16 +105,19 @@ defmodule NASR.Entities.DepartureProcedureTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "DP_NAME" => "ACCRA",
-      "AMENDMENT_NO" => "FIVE",
-      "ARTCC" => "ZAU",
-      "DP_AMEND_EFF_DATE" => "2020/03/26",
-      "RNAV_FLAG" => "Y",
-      "DP_COMPUTER_CODE" => "ACCRA5.ACCRA",
-      "GRAPHICAL_DP_TYPE" => "SID",
-      "SERVED_ARPT" => "57C BUU ENW ETB HXF MKE MWC RAC UES"
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "DP_NAME" => "ACCRA",
+        "AMENDMENT_NO" => "FIVE",
+        "ARTCC" => "ZAU",
+        "DP_AMEND_EFF_DATE" => "2020/03/26",
+        "RNAV_FLAG" => "Y",
+        "DP_COMPUTER_CODE" => "ACCRA5.ACCRA",
+        "GRAPHICAL_DP_TYPE" => "SID",
+        "SERVED_ARPT" => "57C BUU ENW ETB HXF MKE MWC RAC UES"
+      },
+      overrides
+    )
   end
 end

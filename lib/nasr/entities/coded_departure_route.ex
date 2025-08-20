@@ -68,18 +68,18 @@ defmodule NASR.Entities.CodedDepartureRoute do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      route_code: Map.fetch!(entity, "RCode"),
-      origin_airport: Map.fetch!(entity, "Orig"),
-      destination_airport: Map.fetch!(entity, "Dest"),
-      departure_fix: Map.fetch!(entity, "DepFix"),
-      route_string: Map.fetch!(entity, "Route String"),
-      departure_center: Map.fetch!(entity, "DCNTR"),
-      arrival_center: Map.fetch!(entity, "ACNTR"),
-      transition_centers: Map.fetch!(entity, "TCNTRs"),
-      coordination_required: parse_coordination_required(Map.fetch!(entity, "CoordReq")),
-      playbook: Map.fetch!(entity, "Play"),
-      navigation_equipment: safe_str_to_int(Map.fetch!(entity, "NavEqp")),
-      length: safe_str_to_int(Map.fetch!(entity, "Length"))
+      route_code: Map.get(entity, "RCode"),
+      origin_airport: Map.get(entity, "Orig"),
+      destination_airport: Map.get(entity, "Dest"),
+      departure_fix: Map.get(entity, "DepFix"),
+      route_string: Map.get(entity, "Route String"),
+      departure_center: Map.get(entity, "DCNTR"),
+      arrival_center: Map.get(entity, "ACNTR"),
+      transition_centers: Map.get(entity, "TCNTRs"),
+      coordination_required: parse_coordination_required(Map.get(entity, "CoordReq")),
+      playbook: Map.get(entity, "Play"),
+      navigation_equipment: safe_str_to_int(Map.get(entity, "NavEqp")),
+      length: safe_str_to_int(Map.get(entity, "Length"))
     }
   end
 

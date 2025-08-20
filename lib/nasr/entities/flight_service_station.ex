@@ -94,41 +94,42 @@ defmodule NASR.Entities.FlightServiceStation do
         }
 
   @spec type() :: String.t()
-  def type(), do: "FSS_BASE"
+  def type, do: "FSS_BASE"
 
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      fss_id: Map.fetch!(entity, "FSS_ID"),
-      name: Map.fetch!(entity, "NAME"),
-      update_date: parse_date(Map.fetch!(entity, "UPDATE_DATE")),
-      facility_type: parse_facility_type(Map.fetch!(entity, "FSS_FAC_TYPE")),
-      voice_call: Map.fetch!(entity, "VOICE_CALL"),
-      city: Map.fetch!(entity, "CITY"),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      latitude_degrees: safe_str_to_int(Map.fetch!(entity, "LAT_DEG")),
-      latitude_minutes: safe_str_to_int(Map.fetch!(entity, "LAT_MIN")),
-      latitude_seconds: safe_str_to_float(Map.fetch!(entity, "LAT_SEC")),
-      latitude_hemisphere: Map.fetch!(entity, "LAT_HEMIS"),
-      latitude: safe_str_to_float(Map.fetch!(entity, "LAT_DECIMAL")),
-      longitude_degrees: safe_str_to_int(Map.fetch!(entity, "LONG_DEG")),
-      longitude_minutes: safe_str_to_int(Map.fetch!(entity, "LONG_MIN")),
-      longitude_seconds: safe_str_to_float(Map.fetch!(entity, "LONG_SEC")),
-      longitude_hemisphere: Map.fetch!(entity, "LONG_HEMIS"),
-      longitude: safe_str_to_float(Map.fetch!(entity, "LONG_DECIMAL")),
-      operating_hours: Map.fetch!(entity, "OPR_HOURS"),
-      facility_status: parse_facility_status(Map.fetch!(entity, "FAC_STATUS")),
-      alternate_fss: Map.fetch!(entity, "ALTERNATE_FSS"),
-      weather_radar_flag: convert_yn(Map.fetch!(entity, "WEA_RADAR_FLAG")),
-      phone_number: Map.fetch!(entity, "PHONE_NO"),
-      toll_free_number: Map.fetch!(entity, "TOLL_FREE_NO")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      fss_id: Map.get(entity, "FSS_ID"),
+      name: Map.get(entity, "NAME"),
+      update_date: parse_date(Map.get(entity, "UPDATE_DATE")),
+      facility_type: parse_facility_type(Map.get(entity, "FSS_FAC_TYPE")),
+      voice_call: Map.get(entity, "VOICE_CALL"),
+      city: Map.get(entity, "CITY"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      latitude_degrees: safe_str_to_int(Map.get(entity, "LAT_DEG")),
+      latitude_minutes: safe_str_to_int(Map.get(entity, "LAT_MIN")),
+      latitude_seconds: safe_str_to_float(Map.get(entity, "LAT_SEC")),
+      latitude_hemisphere: Map.get(entity, "LAT_HEMIS"),
+      latitude: safe_str_to_float(Map.get(entity, "LAT_DECIMAL")),
+      longitude_degrees: safe_str_to_int(Map.get(entity, "LONG_DEG")),
+      longitude_minutes: safe_str_to_int(Map.get(entity, "LONG_MIN")),
+      longitude_seconds: safe_str_to_float(Map.get(entity, "LONG_SEC")),
+      longitude_hemisphere: Map.get(entity, "LONG_HEMIS"),
+      longitude: safe_str_to_float(Map.get(entity, "LONG_DECIMAL")),
+      operating_hours: Map.get(entity, "OPR_HOURS"),
+      facility_status: parse_facility_status(Map.get(entity, "FAC_STATUS")),
+      alternate_fss: Map.get(entity, "ALTERNATE_FSS"),
+      weather_radar_flag: convert_yn(Map.get(entity, "WEA_RADAR_FLAG")),
+      phone_number: Map.get(entity, "PHONE_NO"),
+      toll_free_number: Map.get(entity, "TOLL_FREE_NO")
     }
   end
 
   defp parse_facility_type(nil), do: nil
   defp parse_facility_type(""), do: nil
+
   defp parse_facility_type(type) when is_binary(type) do
     case String.trim(String.upcase(type)) do
       "RADIO" -> :radio
@@ -140,6 +141,7 @@ defmodule NASR.Entities.FlightServiceStation do
 
   defp parse_facility_status(nil), do: nil
   defp parse_facility_status(""), do: nil
+
   defp parse_facility_status(status) when is_binary(status) do
     case String.trim(String.upcase(status)) do
       "A" -> :active

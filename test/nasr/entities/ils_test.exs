@@ -1,5 +1,6 @@
 defmodule NASR.Entities.ILSTest do
   use ExUnit.Case
+
   alias NASR.Entities.ILS
 
   describe "new/1" do
@@ -91,11 +92,13 @@ defmodule NASR.Entities.ILSTest do
       ]
 
       for {input, expected} <- test_cases do
-        sample_data = create_sample_data(%{
-          "MAG_VAR_HEMIS" => input,
-          "LAT_HEMIS" => input,
-          "LONG_HEMIS" => input
-        })
+        sample_data =
+          create_sample_data(%{
+            "MAG_VAR_HEMIS" => input,
+            "LAT_HEMIS" => input,
+            "LONG_HEMIS" => input
+          })
+
         result = ILS.new(sample_data)
         assert result.magnetic_variation_hemisphere == expected
         assert result.latitude_hemisphere == expected
@@ -104,22 +107,23 @@ defmodule NASR.Entities.ILSTest do
     end
 
     test "handles numeric conversions" do
-      test_data = create_sample_data(%{
-        "RWY_LEN" => "8000",
-        "RWY_WIDTH" => "200",
-        "APCH_BEAR" => "270.5",
-        "MAG_VAR" => "12",
-        "LAT_DEG" => "40",
-        "LAT_MIN" => "30",
-        "LAT_SEC" => "15.5",
-        "LAT_DECIMAL" => "40.504305",
-        "LONG_DEG" => "74",
-        "LONG_MIN" => "45",
-        "LONG_SEC" => "30.25",
-        "LONG_DECIMAL" => "-74.758402",
-        "SITE_ELEVATION" => "1250.5",
-        "LOC_FREQ" => "109.9"
-      })
+      test_data =
+        create_sample_data(%{
+          "RWY_LEN" => "8000",
+          "RWY_WIDTH" => "200",
+          "APCH_BEAR" => "270.5",
+          "MAG_VAR" => "12",
+          "LAT_DEG" => "40",
+          "LAT_MIN" => "30",
+          "LAT_SEC" => "15.5",
+          "LAT_DECIMAL" => "40.504305",
+          "LONG_DEG" => "74",
+          "LONG_MIN" => "45",
+          "LONG_SEC" => "30.25",
+          "LONG_DECIMAL" => "-74.758402",
+          "SITE_ELEVATION" => "1250.5",
+          "LOC_FREQ" => "109.9"
+        })
 
       result = ILS.new(test_data)
 
@@ -140,15 +144,16 @@ defmodule NASR.Entities.ILSTest do
     end
 
     test "handles empty/nil numeric values correctly" do
-      sample_data = create_sample_data(%{
-        "RWY_LEN" => "",
-        "RWY_WIDTH" => "",
-        "APCH_BEAR" => "",
-        "MAG_VAR" => "",
-        "LAT_DEG" => "",
-        "SITE_ELEVATION" => "",
-        "LOC_FREQ" => ""
-      })
+      sample_data =
+        create_sample_data(%{
+          "RWY_LEN" => "",
+          "RWY_WIDTH" => "",
+          "APCH_BEAR" => "",
+          "MAG_VAR" => "",
+          "LAT_DEG" => "",
+          "SITE_ELEVATION" => "",
+          "LOC_FREQ" => ""
+        })
 
       result = ILS.new(sample_data)
 
@@ -162,10 +167,11 @@ defmodule NASR.Entities.ILSTest do
     end
 
     test "handles date parsing" do
-      sample_data = create_sample_data(%{
-        "EFF_DATE" => "2025/12/31",
-        "COMPONENT_STATUS_DATE" => "2020/05/15"
-      })
+      sample_data =
+        create_sample_data(%{
+          "EFF_DATE" => "2025/12/31",
+          "COMPONENT_STATUS_DATE" => "2020/05/15"
+        })
 
       result = ILS.new(sample_data)
 
@@ -174,11 +180,12 @@ defmodule NASR.Entities.ILSTest do
     end
 
     test "handles localizer only system" do
-      localizer_data = create_sample_data(%{
-        "SYSTEM_TYPE_CODE" => "LO",
-        "ILS_LOC_ID" => "LGA",
-        "CATEGORY" => "LOC"
-      })
+      localizer_data =
+        create_sample_data(%{
+          "SYSTEM_TYPE_CODE" => "LO",
+          "ILS_LOC_ID" => "LGA",
+          "CATEGORY" => "LOC"
+        })
 
       result = ILS.new(localizer_data)
 
@@ -196,43 +203,46 @@ defmodule NASR.Entities.ILSTest do
 
   # Helper function to create sample data with default values
   defp create_sample_data(overrides) do
-    Map.merge(%{
-      "EFF_DATE" => "2025/08/07",
-      "SITE_NO" => "00128.",
-      "SITE_TYPE_CODE" => "A",
-      "STATE_CODE" => "AL",
-      "ARPT_ID" => "ANB",
-      "CITY" => "ANNISTON",
-      "COUNTRY_CODE" => "US",
-      "RWY_END_ID" => "05",
-      "ILS_LOC_ID" => "ANB",
-      "SYSTEM_TYPE_CODE" => "LS",
-      "STATE_NAME" => "ALABAMA",
-      "REGION_CODE" => "ASO",
-      "RWY_LEN" => "7000",
-      "RWY_WIDTH" => "150",
-      "CATEGORY" => "I",
-      "OWNER" => "F-FEDERAL AVIATION ADMIN.",
-      "OPERATOR" => "F-FEDERAL AVIATION ADMIN.",
-      "APCH_BEAR" => "52.45",
-      "MAG_VAR" => "4",
-      "MAG_VAR_HEMIS" => "W",
-      "COMPONENT_STATUS" => "OPERATIONAL RESTRICTED",
-      "COMPONENT_STATUS_DATE" => "2017/07/18",
-      "LAT_DEG" => "33",
-      "LAT_MIN" => "35",
-      "LAT_SEC" => "47.26",
-      "LAT_HEMIS" => "N",
-      "LAT_DECIMAL" => "33.59646111",
-      "LONG_DEG" => "85",
-      "LONG_MIN" => "50",
-      "LONG_SEC" => "48.96",
-      "LONG_HEMIS" => "W",
-      "LONG_DECIMAL" => "-85.84693333",
-      "LAT_LONG_SOURCE_CODE" => "K",
-      "SITE_ELEVATION" => "612.1",
-      "LOC_FREQ" => "111.5",
-      "BK_COURSE_STATUS_CODE" => ""
-    }, overrides)
+    Map.merge(
+      %{
+        "EFF_DATE" => "2025/08/07",
+        "SITE_NO" => "00128.",
+        "SITE_TYPE_CODE" => "A",
+        "STATE_CODE" => "AL",
+        "ARPT_ID" => "ANB",
+        "CITY" => "ANNISTON",
+        "COUNTRY_CODE" => "US",
+        "RWY_END_ID" => "05",
+        "ILS_LOC_ID" => "ANB",
+        "SYSTEM_TYPE_CODE" => "LS",
+        "STATE_NAME" => "ALABAMA",
+        "REGION_CODE" => "ASO",
+        "RWY_LEN" => "7000",
+        "RWY_WIDTH" => "150",
+        "CATEGORY" => "I",
+        "OWNER" => "F-FEDERAL AVIATION ADMIN.",
+        "OPERATOR" => "F-FEDERAL AVIATION ADMIN.",
+        "APCH_BEAR" => "52.45",
+        "MAG_VAR" => "4",
+        "MAG_VAR_HEMIS" => "W",
+        "COMPONENT_STATUS" => "OPERATIONAL RESTRICTED",
+        "COMPONENT_STATUS_DATE" => "2017/07/18",
+        "LAT_DEG" => "33",
+        "LAT_MIN" => "35",
+        "LAT_SEC" => "47.26",
+        "LAT_HEMIS" => "N",
+        "LAT_DECIMAL" => "33.59646111",
+        "LONG_DEG" => "85",
+        "LONG_MIN" => "50",
+        "LONG_SEC" => "48.96",
+        "LONG_HEMIS" => "W",
+        "LONG_DECIMAL" => "-85.84693333",
+        "LAT_LONG_SOURCE_CODE" => "K",
+        "SITE_ELEVATION" => "612.1",
+        "LOC_FREQ" => "111.5",
+        "BK_COURSE_STATUS_CODE" => ""
+      },
+      overrides
+    )
   end
 end

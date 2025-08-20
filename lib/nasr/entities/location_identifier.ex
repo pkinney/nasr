@@ -73,7 +73,19 @@ defmodule NASR.Entities.LocationIdentifier do
           region_code: String.t(),
           state: String.t(),
           city: String.t(),
-          lid_group: :landing_facility | :navigation_aid | :control_facility | :weather_reporting_station | :weather_sensor | :instrument_landing_system | :remote_communication_outlet | :special_use_resource | :flight_service_station | :dod_oversea_facility | String.t() | nil,
+          lid_group:
+            :landing_facility
+            | :navigation_aid
+            | :control_facility
+            | :weather_reporting_station
+            | :weather_sensor
+            | :instrument_landing_system
+            | :remote_communication_outlet
+            | :special_use_resource
+            | :flight_service_station
+            | :dod_oversea_facility
+            | String.t()
+            | nil,
           facility_type: String.t(),
           facility_name: String.t(),
           responsible_artcc_id: String.t(),
@@ -88,18 +100,18 @@ defmodule NASR.Entities.LocationIdentifier do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      location_id: Map.fetch!(entity, "LOC_ID"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      region_code: Map.fetch!(entity, "REGION_CODE"),
-      state: Map.fetch!(entity, "STATE"),
-      city: Map.fetch!(entity, "CITY"),
-      lid_group: parse_lid_group(Map.fetch!(entity, "LID_GROUP")),
-      facility_type: Map.fetch!(entity, "FAC_TYPE"),
-      facility_name: Map.fetch!(entity, "FAC_NAME"),
-      responsible_artcc_id: Map.fetch!(entity, "RESP_ARTCC_ID"),
-      artcc_computer_id: Map.fetch!(entity, "ARTCC_COMPUTER_ID"),
-      fss_id: Map.fetch!(entity, "FSS_ID"),
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE"))
+      location_id: Map.get(entity, "LOC_ID"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      region_code: Map.get(entity, "REGION_CODE"),
+      state: Map.get(entity, "STATE"),
+      city: Map.get(entity, "CITY"),
+      lid_group: parse_lid_group(Map.get(entity, "LID_GROUP")),
+      facility_type: Map.get(entity, "FAC_TYPE"),
+      facility_name: Map.get(entity, "FAC_NAME"),
+      responsible_artcc_id: Map.get(entity, "RESP_ARTCC_ID"),
+      artcc_computer_id: Map.get(entity, "ARTCC_COMPUTER_ID"),
+      fss_id: Map.get(entity, "FSS_ID"),
+      effective_date: parse_date(Map.get(entity, "EFF_DATE"))
     }
   end
 

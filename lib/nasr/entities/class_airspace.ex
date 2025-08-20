@@ -70,19 +70,19 @@ defmodule NASR.Entities.ClassAirspace do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
-      effective_date: parse_date(Map.fetch!(entity, "EFF_DATE")),
-      site_no: Map.fetch!(entity, "SITE_NO"),
-      site_type_code: Map.fetch!(entity, "SITE_TYPE_CODE"),
-      state_code: Map.fetch!(entity, "STATE_CODE"),
-      arpt_id: Map.fetch!(entity, "ARPT_ID"),
-      city: Map.fetch!(entity, "CITY"),
-      country_code: Map.fetch!(entity, "COUNTRY_CODE"),
-      class_b_airspace: convert_yn(Map.fetch!(entity, "CLASS_B_AIRSPACE")),
-      class_c_airspace: convert_yn(Map.fetch!(entity, "CLASS_C_AIRSPACE")),
-      class_d_airspace: convert_yn(Map.fetch!(entity, "CLASS_D_AIRSPACE")),
-      class_e_airspace: convert_yn(Map.fetch!(entity, "CLASS_E_AIRSPACE")),
-      airspace_hrs: Map.fetch!(entity, "AIRSPACE_HRS"),
-      remark: Map.fetch!(entity, "REMARK")
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      site_no: Map.get(entity, "SITE_NO"),
+      site_type_code: Map.get(entity, "SITE_TYPE_CODE"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      arpt_id: Map.get(entity, "ARPT_ID"),
+      city: Map.get(entity, "CITY"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      class_b_airspace: convert_yn(Map.get(entity, "CLASS_B_AIRSPACE")),
+      class_c_airspace: convert_yn(Map.get(entity, "CLASS_C_AIRSPACE")),
+      class_d_airspace: convert_yn(Map.get(entity, "CLASS_D_AIRSPACE")),
+      class_e_airspace: convert_yn(Map.get(entity, "CLASS_E_AIRSPACE")),
+      airspace_hrs: Map.get(entity, "AIRSPACE_HRS"),
+      remark: Map.get(entity, "REMARK")
     }
   end
 end

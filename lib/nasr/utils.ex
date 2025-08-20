@@ -4,6 +4,7 @@ defmodule NASR.Utils do
 
   require Logger
 
+  @spec list_files(String.t()) :: [String.t()]
   def list_files(dir) do
     dir
     |> File.ls!()
@@ -11,6 +12,7 @@ defmodule NASR.Utils do
     |> Enum.map(fn file -> Path.join(dir, file) end)
   end
 
+  @spec download(String.t()) :: String.t()
   def download(url) do
     Logger.info("[#{__MODULE__}] Downloading #{url}")
 
@@ -20,6 +22,7 @@ defmodule NASR.Utils do
     file
   end
 
+  @spec safe_str_to_int(String.t() | nil) :: integer() | nil
   def safe_str_to_int(""), do: nil
   def safe_str_to_int(nil), do: nil
 
@@ -31,6 +34,7 @@ defmodule NASR.Utils do
     end
   end
 
+  @spec safe_str_to_float(String.t() | nil) :: float() | nil
   def safe_str_to_float(""), do: nil
   def safe_str_to_float(nil), do: nil
 
@@ -42,6 +46,7 @@ defmodule NASR.Utils do
     end
   end
 
+  @spec convert_seconds_to_decimal(String.t()) :: float()
   def convert_seconds_to_decimal(seconds) do
     {seconds, dir} = Float.parse(seconds)
     deg = seconds / 3600.0
@@ -54,6 +59,7 @@ defmodule NASR.Utils do
     end
   end
 
+  @spec convert_dms_to_decimal(String.t() | nil) :: float() | nil
   def convert_dms_to_decimal(""), do: nil
   def convert_dms_to_decimal(nil), do: nil
 
@@ -74,10 +80,12 @@ defmodule NASR.Utils do
     end
   end
 
+  @spec convert_yn(String.t() | nil) :: boolean() | nil
   def convert_yn("Y"), do: true
   def convert_yn("N"), do: false
   def convert_yn(_), do: nil
 
+  @spec get_current_nasr_url() :: String.t()
   def get_current_nasr_url do
     url = "https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription/"
 
@@ -182,6 +190,7 @@ defmodule NASR.Utils do
   end
 
   # Helper function to find the cycle number when date is in previous year
+  @spec find_previous_year_cycle(Date.t(), Date.t(), integer()) :: {integer(), Date.t()}
   defp find_previous_year_cycle(date, current_airac, cycle_num) when cycle_num > 0 do
     prev_airac = Date.add(current_airac, -28)
 
@@ -200,6 +209,7 @@ defmodule NASR.Utils do
   Parses dates in MM/DD/YYYY format or other common formats.
   Returns nil for empty strings or invalid dates.
   """
+  @spec parse_date(String.t() | nil) :: Date.t() | nil
   def parse_date(""), do: nil
   def parse_date(nil), do: nil
 

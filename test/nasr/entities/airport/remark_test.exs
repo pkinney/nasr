@@ -1,7 +1,7 @@
-defmodule NASR.Entities.Airport.RemarksTest do
+defmodule NASR.Entities.Airport.RemarkTest do
   use ExUnit.Case
 
-  alias NASR.Entities.Airport.Remarks
+  alias NASR.Entities.Airport.Remark
 
   describe "new/1" do
     test "creates struct from airport remarks data" do
@@ -21,7 +21,7 @@ defmodule NASR.Entities.Airport.RemarksTest do
         "EFF_DATE" => "2025/08/07"
       }
 
-      result = Remarks.new(sample_data)
+      result = Remark.new(sample_data)
 
       assert result.site_no == "04513.0*A"
       assert result.arpt_id == "LAX"
@@ -58,7 +58,7 @@ defmodule NASR.Entities.Airport.RemarksTest do
             "ELEMENT" => element
           })
 
-        result = Remarks.new(sample_data)
+        result = Remark.new(sample_data)
 
         assert result.table_name == table
         assert result.reference_column_name == column
@@ -75,7 +75,7 @@ defmodule NASR.Entities.Airport.RemarksTest do
           "REMARK" => "AIRPORT IS LOCATED IN CLASS B AIRSPACE."
         })
 
-      result = Remarks.new(sample_data)
+      result = Remark.new(sample_data)
 
       assert result.table_name == "AIRPORT"
       assert result.reference_column_name == "GENERAL_REMARK"
@@ -94,7 +94,7 @@ defmodule NASR.Entities.Airport.RemarksTest do
 
       for {input, expected} <- test_cases do
         sample_data = create_sample_data(%{"REF_COL_SEQ_NO" => input})
-        result = Remarks.new(sample_data)
+        result = Remark.new(sample_data)
         assert result.reference_column_sequence_no == expected
       end
     end
@@ -110,7 +110,7 @@ defmodule NASR.Entities.Airport.RemarksTest do
 
       for element_number <- test_cases do
         sample_data = create_sample_data(%{"LEGACY_ELEMENT_NUMBER" => element_number})
-        result = Remarks.new(sample_data)
+        result = Remark.new(sample_data)
         assert result.legacy_element_number == element_number
       end
     end
@@ -123,7 +123,7 @@ defmodule NASR.Entities.Airport.RemarksTest do
           "AIRPORT OPERATIONS PERSONNEL."
 
       sample_data = create_sample_data(%{"REMARK" => long_remark})
-      result = Remarks.new(sample_data)
+      result = Remark.new(sample_data)
 
       assert result.remark_text == long_remark
     end
@@ -138,7 +138,7 @@ defmodule NASR.Entities.Airport.RemarksTest do
           "REF_COL_SEQ_NO" => "1"
         })
 
-      result = Remarks.new(sample_data)
+      result = Remark.new(sample_data)
 
       assert result.table_name == "RUNWAY"
       assert result.reference_column_name == "RWY_ID"
@@ -149,13 +149,13 @@ defmodule NASR.Entities.Airport.RemarksTest do
 
     test "parses dates correctly" do
       sample_data = create_sample_data(%{"EFF_DATE" => "2023/12/15"})
-      result = Remarks.new(sample_data)
+      result = Remark.new(sample_data)
       assert result.effective_date == ~D[2023-12-15]
     end
   end
 
   test "type/0 returns correct CSV filename" do
-    assert Remarks.type() == "APT_RMK"
+    assert Remark.type() == "APT_RMK"
   end
 
   # Helper function to create sample data with default values

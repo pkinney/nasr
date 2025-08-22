@@ -10,7 +10,7 @@ defmodule NASR.Entities.AirportTest do
       result = Airport.new(sample_data)
 
       assert result.site_no == "04513.0*A"
-      assert result.site_type_code == :airport
+      assert result.site_type == :airport
       assert result.arpt_id == "LAX"
       assert result.arpt_name == "LOS ANGELES INTERNATIONAL"
       assert result.city == "LOS ANGELES"
@@ -21,13 +21,13 @@ defmodule NASR.Entities.AirportTest do
       assert result.ado_code == "01"
       assert result.county_name == "LOS ANGELES"
       assert result.county_assoc_state == "CA"
-      assert result.ownership_type_code == :public
-      assert result.facility_use_code == :public
+      assert result.ownership_type == :public
+      assert result.facility_use == :public
       assert result.latitude == 33.94253611
       assert result.longitude == -118.40808333
-      assert result.survey_method_code == :surveyed
+      assert result.survey_method == :surveyed
       assert result.elevation == 125.0
-      assert result.elevation_method_code == :surveyed
+      assert result.elevation_method == :surveyed
       assert result.magnetic_variation == 11.0
       assert result.magnetic_hemisphere == "E"
       assert result.magnetic_variation_year == 2020
@@ -39,11 +39,11 @@ defmodule NASR.Entities.AirportTest do
       assert result.boundary_artcc_id == "ZLA"
       assert result.boundary_artcc_computer_id == "LAX"
       assert result.boundary_artcc_name == "LOS ANGELES ARTCC"
-      assert result.fss_on_facility_flag == false
+      assert result.fss_on_facility == false
       assert result.notam_facility_id == "LAX"
-      assert result.notam_service_flag == true
-      assert result.airport_status_code == :operational
-      assert result.customs_entry_airport_flag == true
+      assert result.notam_service == true
+      assert result.airport_status == :operational
+      assert result.customs_entry_airport == true
       assert result.effective_date == ~D[2025-08-07]
     end
 
@@ -61,7 +61,7 @@ defmodule NASR.Entities.AirportTest do
       for {input, expected} <- test_cases do
         sample_data = create_sample_data(%{"SITE_TYPE_CODE" => input})
         result = Airport.new(sample_data)
-        assert result.site_type_code == expected
+        assert result.site_type == expected
       end
     end
 
@@ -79,7 +79,7 @@ defmodule NASR.Entities.AirportTest do
       for {input, expected} <- test_cases do
         sample_data = create_sample_data(%{"OWNERSHIP_TYPE_CODE" => input})
         result = Airport.new(sample_data)
-        assert result.ownership_type_code == expected
+        assert result.ownership_type == expected
       end
     end
 
@@ -95,7 +95,7 @@ defmodule NASR.Entities.AirportTest do
       for {input, expected} <- test_cases do
         sample_data = create_sample_data(%{"FACILITY_USE_CODE" => input})
         result = Airport.new(sample_data)
-        assert result.facility_use_code == expected
+        assert result.facility_use == expected
       end
     end
 
@@ -109,7 +109,7 @@ defmodule NASR.Entities.AirportTest do
       for {input, expected} <- test_cases do
         sample_data = create_sample_data(%{"SURVEY_METHOD_CODE" => input})
         result = Airport.new(sample_data)
-        assert result.survey_method_code == expected
+        assert result.survey_method == expected
       end
     end
 
@@ -123,7 +123,7 @@ defmodule NASR.Entities.AirportTest do
       for {input, expected} <- test_cases do
         sample_data = create_sample_data(%{"ELEV_METHOD_CODE" => input})
         result = Airport.new(sample_data)
-        assert result.elevation_method_code == expected
+        assert result.elevation_method == expected
       end
     end
 
@@ -138,7 +138,7 @@ defmodule NASR.Entities.AirportTest do
       for {input, expected} <- test_cases do
         sample_data = create_sample_data(%{"ARPT_STATUS" => input})
         result = Airport.new(sample_data)
-        assert result.airport_status_code == expected
+        assert result.airport_status == expected
       end
     end
 
@@ -155,12 +155,12 @@ defmodule NASR.Entities.AirportTest do
 
       result = Airport.new(sample_data)
 
-      assert result.fss_on_facility_flag == true
-      assert result.notam_service_flag == true
-      assert result.customs_entry_airport_flag == true
-      assert result.customs_landing_rights_flag == true
-      assert result.joint_use_agreement_flag == false
-      assert result.military_landing_rights_flag == true
+      assert result.fss_on_facility == true
+      assert result.notam_service == true
+      assert result.customs_entry_airport == true
+      assert result.customs_landing_rights == true
+      assert result.joint_use_agreement == false
+      assert result.military_landing_rights == true
     end
 
     test "converts numeric fields correctly" do
@@ -233,9 +233,9 @@ defmodule NASR.Entities.AirportTest do
 
       assert result.arpt_id == "ATL"
       assert result.arpt_name == "HARTSFIELD-JACKSON ATLANTA INTL"
-      assert result.ownership_type_code == :public
-      assert result.facility_use_code == :public
-      assert result.airport_status_code == :operational
+      assert result.ownership_type == :public
+      assert result.facility_use == :public
+      assert result.airport_status == :operational
 
       # Private airstrip
       private_strip =
@@ -251,9 +251,9 @@ defmodule NASR.Entities.AirportTest do
 
       assert result.arpt_id == "TX01"
       assert result.arpt_name == "PRIVATE AIRSTRIP"
-      assert result.ownership_type_code == :private
-      assert result.facility_use_code == :private
-      assert result.site_type_code == :airport
+      assert result.ownership_type == :private
+      assert result.facility_use == :private
+      assert result.site_type == :airport
 
       # Heliport
       heliport =
@@ -269,9 +269,9 @@ defmodule NASR.Entities.AirportTest do
 
       assert result.arpt_id == "CA01"
       assert result.arpt_name == "HOSPITAL HELIPORT"
-      assert result.site_type_code == :heliport
-      assert result.ownership_type_code == :private
-      assert result.facility_use_code == :private
+      assert result.site_type == :heliport
+      assert result.ownership_type == :private
+      assert result.facility_use == :private
     end
 
     test "handles coordinate edge cases" do

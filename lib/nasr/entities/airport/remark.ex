@@ -1,4 +1,4 @@
-defmodule NASR.Entities.Airport.Remarks do
+defmodule NASR.Entities.Airport.Remark do
   @moduledoc """
   Represents Airport Remarks from the NASR APT_RMK data.
 

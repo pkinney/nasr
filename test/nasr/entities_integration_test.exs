@@ -18,7 +18,7 @@ defmodule NASR.EntitiesIntegrationTest do
     {:ok, entity_samples: entity_samples}
   end
 
-  describe "NASR.stream_structs/1" do
+  describe "NASR.stream_entities/1" do
     @tag :integration
     test "handles all entity types from stream_raw without returning nil", %{entity_samples: entity_samples} do
       Enum.map(entity_samples, fn entity ->

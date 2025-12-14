@@ -10,7 +10,7 @@ defmodule NASR.Entities.ATC.Remarks do
 
   * `:effective_date` - The 28 Day NASR Subscription Effective Date in format 'YYYY/MM/DD'
   * `:site_number` - Site Number assigned to the Landing Site Location
-  * `:site_type_code` - Site Type Code identifying type of landing site. Values: `:airport`, `:balloonport`, `:seaplane_base`, `:gliderport`, `:heliport`, `:ultralight`
+  * `:site_type` - Site Type identifying type of landing site. Values: `:airport`, `:balloonport`, `:seaplane_base`, `:gliderport`, `:heliport`, `:ultralight`
   * `:facility_type` - Type of ATC facility (ATCT=Airport Traffic Control Tower, NON-ATCT=Non-Tower, etc.)
   * `:state_code` - Associated State Post Office Code standard two letter abbreviation for US States and Territories
   * `:facility_id` - ATC Facility Identifier
@@ -27,7 +27,7 @@ defmodule NASR.Entities.ATC.Remarks do
   defstruct ~w(
     effective_date
     site_number
-    site_type_code
+    site_type
     facility_type
     state_code
     facility_id
@@ -43,7 +43,7 @@ defmodule NASR.Entities.ATC.Remarks do
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
           site_number: String.t(),
-          site_type_code:
+          site_type:
             :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
           facility_type: String.t(),
           state_code: String.t(),
@@ -65,7 +65,7 @@ defmodule NASR.Entities.ATC.Remarks do
     %__MODULE__{
       effective_date: parse_date(Map.get(entity, "EFF_DATE")),
       site_number: Map.get(entity, "SITE_NO"),
-      site_type_code: parse_site_type_code(Map.get(entity, "SITE_TYPE_CODE")),
+      site_type: parse_site_type_code(Map.get(entity, "SITE_TYPE_CODE")),
       facility_type: Map.get(entity, "FACILITY_TYPE"),
       state_code: Map.get(entity, "STATE_CODE"),
       facility_id: Map.get(entity, "FACILITY_ID"),
@@ -77,20 +77,5 @@ defmodule NASR.Entities.ATC.Remarks do
       remark_number: safe_str_to_int(Map.get(entity, "REMARK_NO")),
       remark_text: Map.get(entity, "REMARK")
     }
-  end
-
-  defp parse_site_type_code(nil), do: nil
-  defp parse_site_type_code(""), do: nil
-
-  defp parse_site_type_code(code) when is_binary(code) do
-    case String.trim(code) do
-      "A" -> :airport
-      "B" -> :balloonport
-      "S" -> :seaplane_base
-      "G" -> :gliderport
-      "H" -> :heliport
-      "U" -> :ultralight
-      other -> other
-    end
   end
 end

@@ -178,6 +178,14 @@ defmodule NASR.Entities.Airport do
     user_fee
     cold_temperature_altitude_correction
     effective_date
+    attendance_schedules
+    arresting_systems
+    contacts
+    remarks
+    runways
+    frequencies
+    awos
+    class_airspaces
   )a
 
   @type t() :: %__MODULE__{
@@ -261,7 +269,16 @@ defmodule NASR.Entities.Airport do
           minimum_operational_network: String.t(),
           user_fee: boolean() | nil,
           cold_temperature_altitude_correction: float() | nil,
-          effective_date: Date.t() | nil
+          effective_date: Date.t() | nil,
+          # Filled in by other entities when using NASR.load_airports/1
+          attendance_schedules: [NASR.Entities.Airport.AttendanceSchedule.t()],
+          arresting_systems: [NASR.Entities.Airport.ArrestingSystem.t()],
+          contacts: [NASR.Entities.Airport.Contact.t()],
+          remarks: [NASR.Entities.Airport.Remark.t()],
+          runways: [NASR.Entities.Airport.Runway.t()],
+          frequencies: [NASR.Entities.Frequency.t()],
+          awos: [NASR.Entities.AWOS.t()],
+          class_airspaces: [NASR.Entities.ClassAirspace.t()]
         }
 
   @spec new(map()) :: t()
@@ -347,27 +364,20 @@ defmodule NASR.Entities.Airport do
       minimum_operational_network: Map.get(entity, "MIN_OP_NETWORK"),
       user_fee: convert_yn(Map.get(entity, "USER_FEE_FLAG")),
       cold_temperature_altitude_correction: safe_str_to_float(Map.get(entity, "CTA")),
-      effective_date: parse_date(Map.get(entity, "EFF_DATE"))
+      effective_date: parse_date(Map.get(entity, "EFF_DATE")),
+      attendance_schedules: [],
+      arresting_systems: [],
+      contacts: [],
+      remarks: [],
+      runways: [],
+      frequencies: [],
+      awos: [],
+      class_airspaces: []
     }
   end
 
   @spec type() :: String.t()
   def type, do: "APT_BASE"
-
-  defp parse_site_type_code(nil), do: nil
-  defp parse_site_type_code(""), do: nil
-
-  defp parse_site_type_code(code) when is_binary(code) do
-    case String.trim(code) do
-      "A" -> :airport
-      "B" -> :balloonport
-      "C" -> :seaplane_base
-      "G" -> :gliderport
-      "H" -> :heliport
-      "U" -> :ultralight
-      other -> other
-    end
-  end
 
   defp parse_ownership_type_code(nil), do: nil
   defp parse_ownership_type_code(""), do: nil

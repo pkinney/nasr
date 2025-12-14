@@ -24,7 +24,7 @@ defmodule NASR.Entities.AWOS do
   * `:phone_no` - Weather System Telephone Number
   * `:second_phone_no` - Weather System Second Telephone Number
   * `:site_no` - Landing Facility Site Number when Weather System Located at Airport
-  * `:site_type_code` - Landing Facility Type Code when Weather System Located at Airport. Values: `:airport`, `:balloonport`, `:seaplane_base`, `:gliderport`, `:heliport`, `:ultralight`
+  * `:site_type` - Landing Facility Type when Weather System Located at Airport. Values: `:airport`, `:balloonport`, `:seaplane_base`, `:gliderport`, `:heliport`, `:ultralight`
   * `:remark` - Remark associated with Weather System
   """
   import NASR.Utils
@@ -45,7 +45,7 @@ defmodule NASR.Entities.AWOS do
     phone_no
     second_phone_no
     site_no
-    site_type_code
+    site_type
     remark
   )a
 
@@ -65,7 +65,7 @@ defmodule NASR.Entities.AWOS do
           phone_no: String.t(),
           second_phone_no: String.t(),
           site_no: String.t(),
-          site_type_code:
+          site_type:
             :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
           remark: String.t()
         }
@@ -91,7 +91,7 @@ defmodule NASR.Entities.AWOS do
       phone_no: Map.get(entity, "PHONE_NO"),
       second_phone_no: Map.get(entity, "SECOND_PHONE_NO"),
       site_no: Map.get(entity, "SITE_NO"),
-      site_type_code: parse_site_type_code(Map.get(entity, "SITE_TYPE_CODE")),
+      site_type: parse_site_type_code(Map.get(entity, "SITE_TYPE_CODE")),
       remark: Map.get(entity, "REMARK")
     }
   end
@@ -103,21 +103,6 @@ defmodule NASR.Entities.AWOS do
     case String.trim(code) do
       "E" -> :estimated
       "S" -> :surveyed
-      other -> other
-    end
-  end
-
-  defp parse_site_type_code(nil), do: nil
-  defp parse_site_type_code(""), do: nil
-
-  defp parse_site_type_code(code) when is_binary(code) do
-    case String.trim(code) do
-      "A" -> :airport
-      "B" -> :balloonport
-      "C" -> :seaplane_base
-      "G" -> :gliderport
-      "H" -> :heliport
-      "U" -> :ultralight
       other -> other
     end
   end

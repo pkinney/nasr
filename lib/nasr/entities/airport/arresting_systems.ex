@@ -7,8 +7,9 @@ defmodule NASR.Entities.Airport.ArrestingSystems do
 
   ## Fields
 
+  * `:site_id` - Landing Facility Site Number combined with the Site Type. A unique identifying number.
   * `:site_no` - Landing Facility Site Number (unique identifying number)
-  * `:site_type_code` - Landing Facility Type Code
+  * `:site_type` - Landing Facility Type. Values: `:airport`, `:balloonport`, `:seaplane_base`, `:gliderport`, `:heliport`, `:ultralight`
   * `:arpt_id` - Location Identifier (unique 3-4 character alphanumeric identifier)
   * `:city` - Airport Associated City Name
   * `:state_code` - Associated State Post Office Code
@@ -30,8 +31,9 @@ defmodule NASR.Entities.Airport.ArrestingSystems do
   import NASR.Utils
 
   defstruct ~w(
+    site_id
     site_no
-    site_type_code
+    site_type
     arpt_id
     city
     state_code
@@ -43,8 +45,10 @@ defmodule NASR.Entities.Airport.ArrestingSystems do
   )a
 
   @type t() :: %__MODULE__{
+          site_id: String.t(),
           site_no: String.t(),
-          site_type_code: String.t(),
+          site_type:
+            :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
           arpt_id: String.t(),
           city: String.t(),
           state_code: String.t(),
@@ -58,8 +62,9 @@ defmodule NASR.Entities.Airport.ArrestingSystems do
   @spec new(map()) :: t()
   def new(entity) do
     %__MODULE__{
+      site_id: Map.get(entity, "SITE_NO") <> "*" <> Map.get(entity, "SITE_TYPE_CODE"),
       site_no: Map.get(entity, "SITE_NO"),
-      site_type_code: Map.get(entity, "SITE_TYPE_CODE"),
+      site_type: parse_site_type_code(Map.get(entity, "SITE_TYPE_CODE")),
       arpt_id: Map.get(entity, "ARPT_ID"),
       city: Map.get(entity, "CITY"),
       state_code: Map.get(entity, "STATE_CODE"),

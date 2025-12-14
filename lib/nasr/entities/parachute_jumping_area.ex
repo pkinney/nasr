@@ -35,7 +35,7 @@ defmodule NASR.Entities.ParachuteJumpingArea do
   * `:longitude_decimal` - Longitude in decimal degrees
   * `:arpt_id` - Associated airport identifier (if applicable)
   * `:site_no` - Airport site number (if applicable)
-  * `:site_type_code` - Airport site type code (if applicable)
+  * `:site_type` - Airport site type (if applicable). Values: `:airport`, `:balloonport`, `:seaplane_base`, `:gliderport`, `:heliport`, `:ultralight`
   * `:drop_zone_name` - Name of the drop zone
   * `:max_altitude` - Maximum altitude for parachute operations
   * `:max_altitude_type` - Altitude reference type (:msl, :agl)
@@ -69,7 +69,7 @@ defmodule NASR.Entities.ParachuteJumpingArea do
     longitude_decimal
     arpt_id
     site_no
-    site_type_code
+    site_type
     drop_zone_name
     max_altitude
     max_altitude_type
@@ -102,7 +102,8 @@ defmodule NASR.Entities.ParachuteJumpingArea do
           longitude_decimal: float() | nil,
           arpt_id: String.t(),
           site_no: String.t(),
-          site_type_code: String.t(),
+          site_type:
+            :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
           drop_zone_name: String.t(),
           max_altitude: integer() | nil,
           max_altitude_type: :msl | :agl | String.t() | nil,
@@ -140,7 +141,7 @@ defmodule NASR.Entities.ParachuteJumpingArea do
       longitude_decimal: safe_str_to_float(Map.get(entity, "LONG_DECIMAL")),
       arpt_id: Map.get(entity, "ARPT_ID"),
       site_no: Map.get(entity, "SITE_NO"),
-      site_type_code: Map.get(entity, "SITE_TYPE_CODE"),
+      site_type: parse_site_type_code(Map.get(entity, "SITE_TYPE_CODE")),
       drop_zone_name: Map.get(entity, "DROP_ZONE_NAME"),
       max_altitude: safe_str_to_int(Map.get(entity, "MAX_ALTITUDE")),
       max_altitude_type: parse_altitude_type(Map.get(entity, "MAX_ALTITUDE_TYPE_CODE")),

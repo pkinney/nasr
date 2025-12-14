@@ -24,7 +24,7 @@ defmodule NasrTest do
     end
   end
 
-  describe "stream_structs" do
+  describe "stream_entities" do
     test "decodes a specific type", %{nasr_file_path: path} do
       raw =
         [file: path, include: ["FIX_BASE"]]
@@ -37,7 +37,37 @@ defmodule NasrTest do
     end
 
     test "streams structs of specific types", %{nasr_file_path: path} do
-      [file: path, include: ["FIX_BASE", "FIX_CHRT"]] |> NASR.stream_structs() |> Enum.to_list()
+      [file: path, include: ["FIX_BASE", "FIX_CHRT"]] |> NASR.stream_entities() |> Enum.to_list()
+    end
+  end
+
+  describe "list_airports" do
+    test "loads runways for DTO airport", %{nasr_file_path: path} do
+      entities = [file: path] |> NASR.list_airports() |> Enum.to_list()
+
+      # Find DTO
+      dto =
+        entities
+        |> Enum.filter(fn
+          %NASR.Entities.Airport{arpt_id: "DTO"} -> true
+          _ -> false
+        end)
+        |> IO.inspect()
+
+      # Should have exactly 2 runways
+      assert length(dto.runways) == 2
+
+      # Find the specific runways by runway_id
+      runway_18l_36r = Enum.find(dto.runways, fn r -> r.runway_id == "18L/36R" end)
+      runway_18r_36l = Enum.find(dto.runways, fn r -> r.runway_id == "18R/36L" end)
+
+      # Assert both runways exist
+      assert runway_18l_36r
+      assert runway_18r_36l
+
+      # Verify some basic runway properties
+      assert runway_18l_36r.site_id == "23750.*A"
+      assert runway_18r_36l.site_id == "23750.*A"
     end
   end
 end

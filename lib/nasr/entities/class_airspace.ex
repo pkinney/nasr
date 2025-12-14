@@ -18,7 +18,7 @@ defmodule NASR.Entities.ClassAirspace do
 
   * `:effective_date` - The 28 Day NASR Subscription Effective Date in format 'YYYY/MM/DD'
   * `:site_no` - Landing Facility Site Number (unique identifying number)
-  * `:site_type_code` - Landing Facility Type Code ('A' for Airport)
+  * `:site_type` - Landing Facility Type. Values: `:airport`, `:balloonport`, `:seaplane_base`, `:gliderport`, `:heliport`, `:ultralight`
   * `:state_code` - Associated State Post Office Code
   * `:arpt_id` - Location Identifier (unique 3-4 character alphanumeric identifier)
   * `:city` - Airport Associated City Name
@@ -35,7 +35,7 @@ defmodule NASR.Entities.ClassAirspace do
   defstruct ~w(
     effective_date
     site_no
-    site_type_code
+    site_type
     state_code
     arpt_id
     city
@@ -51,7 +51,8 @@ defmodule NASR.Entities.ClassAirspace do
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
           site_no: String.t(),
-          site_type_code: String.t(),
+          site_type:
+            :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
           state_code: String.t(),
           arpt_id: String.t(),
           city: String.t(),
@@ -72,7 +73,7 @@ defmodule NASR.Entities.ClassAirspace do
     %__MODULE__{
       effective_date: parse_date(Map.get(entity, "EFF_DATE")),
       site_no: Map.get(entity, "SITE_NO"),
-      site_type_code: Map.get(entity, "SITE_TYPE_CODE"),
+      site_type: parse_site_type_code(Map.get(entity, "SITE_TYPE_CODE")),
       state_code: Map.get(entity, "STATE_CODE"),
       arpt_id: Map.get(entity, "ARPT_ID"),
       city: Map.get(entity, "CITY"),

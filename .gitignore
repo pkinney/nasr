@@ -29,3 +29,5 @@ nasr-*.tar
 /priv/data
 /data
 /output
+
+/.elixir_ls

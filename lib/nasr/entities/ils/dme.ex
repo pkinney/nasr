@@ -10,7 +10,7 @@ defmodule NASR.Entities.ILS.DME do
 
   * `:effective_date` - The 28 Day NASR Subscription Effective Date in format 'YYYY/MM/DD'
   * `:site_number` - Site Number assigned to the Landing Site Location
-  * `:site_type_code` - Site Type Code identifying type of landing site. Values: `:airport`, `:balloonport`, `:seaplane_base`, `:gliderport`, `:heliport`, `:ultralight`
+  * `:site_type` - Site Type Code identifying type of landing site. Values: `:airport`, `:balloonport`, `:seaplane_base`, `:gliderport`, `:heliport`, `:ultralight`
   * `:state_code` - Associated State Post Office Code standard two letter abbreviation for US States and Territories
   * `:airport_id` - Airport Identifier associated with the Landing Site
   * `:city` - Associated City Name of ILS DME facility
@@ -39,7 +39,7 @@ defmodule NASR.Entities.ILS.DME do
   defstruct ~w(
     effective_date
     site_number
-    site_type_code
+    site_type
     state_code
     airport_id
     city
@@ -67,8 +67,7 @@ defmodule NASR.Entities.ILS.DME do
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
           site_number: String.t(),
-          site_type_code:
-            :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
+          site_type: :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
           state_code: String.t(),
           airport_id: String.t(),
           city: String.t(),
@@ -108,7 +107,7 @@ defmodule NASR.Entities.ILS.DME do
     %__MODULE__{
       effective_date: parse_date(Map.get(entity, "EFF_DATE")),
       site_number: Map.get(entity, "SITE_NO"),
-      site_type_code: parse_site_type_code(Map.get(entity, "SITE_TYPE_CODE")),
+      site_type: parse_site_type_code(Map.get(entity, "SITE_TYPE_CODE")),
       state_code: Map.get(entity, "STATE_CODE"),
       airport_id: Map.get(entity, "ARPT_ID"),
       city: Map.get(entity, "CITY"),
@@ -132,21 +131,6 @@ defmodule NASR.Entities.ILS.DME do
       site_elevation: safe_str_to_float(Map.get(entity, "SITE_ELEVATION")),
       channel: Map.get(entity, "CHANNEL")
     }
-  end
-
-  defp parse_site_type_code(nil), do: nil
-  defp parse_site_type_code(""), do: nil
-
-  defp parse_site_type_code(code) when is_binary(code) do
-    case String.trim(code) do
-      "A" -> :airport
-      "B" -> :balloonport
-      "S" -> :seaplane_base
-      "G" -> :gliderport
-      "H" -> :heliport
-      "U" -> :ultralight
-      other -> other
-    end
   end
 
   defp parse_system_type_code(nil), do: nil

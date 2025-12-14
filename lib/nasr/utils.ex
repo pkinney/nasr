@@ -110,6 +110,21 @@ defmodule NASR.Utils do
     |> to_string()
   end
 
+  def parse_site_type_code(nil), do: nil
+  def parse_site_type_code(""), do: nil
+
+  def parse_site_type_code(code) when is_binary(code) do
+    case String.trim(code) do
+      "A" -> :airport
+      "B" -> :balloonport
+      "C" -> :seaplane_base
+      "G" -> :gliderport
+      "H" -> :heliport
+      "U" -> :ultralight
+      other -> other
+    end
+  end
+
   @doc """
   Converts a Date to a 4-digit AIRAC code.
 

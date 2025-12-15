@@ -21,17 +21,18 @@ defmodule NASR.Entities.DepartureProcedure do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    departure_procedure_name
-    amendment_number
-    artcc
-    departure_procedure_amendment_effective_date
-    rnav_flag
-    departure_procedure_computer_code
-    graphical_departure_procedure_type
-    served_airports
-  )a
+  defstruct [
+    :effective_date,
+    :departure_procedure_name,
+    :amendment_number,
+    :artcc,
+    :departure_procedure_amendment_effective_date,
+    :rnav_flag,
+    :departure_procedure_computer_code,
+    :graphical_departure_procedure_type,
+    :served_airports,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -42,7 +43,8 @@ defmodule NASR.Entities.DepartureProcedure do
           rnav_flag: boolean() | nil,
           departure_procedure_computer_code: String.t(),
           graphical_departure_procedure_type: String.t(),
-          served_airports: String.t()
+          served_airports: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

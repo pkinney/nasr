@@ -33,29 +33,30 @@ defmodule NASR.Entities.MilitaryTrainingRoute.Point do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    route_type_code
-    route_id
-    artcc
-    route_point_sequence
-    route_point_id
-    next_route_point_id
-    segment_text
-    latitude_degrees
-    latitude_minutes
-    latitude_seconds
-    latitude_hemisphere
-    latitude
-    longitude_degrees
-    longitude_minutes
-    longitude_seconds
-    longitude_hemisphere
-    longitude
-    navaid_id
-    navaid_bearing
-    navaid_distance
-  )a
+  defstruct [
+    :effective_date,
+    :route_type_code,
+    :route_id,
+    :artcc,
+    :route_point_sequence,
+    :route_point_id,
+    :next_route_point_id,
+    :segment_text,
+    :latitude_degrees,
+    :latitude_minutes,
+    :latitude_seconds,
+    :latitude_hemisphere,
+    :latitude,
+    :longitude_degrees,
+    :longitude_minutes,
+    :longitude_seconds,
+    :longitude_hemisphere,
+    :longitude,
+    :navaid_id,
+    :navaid_bearing,
+    :navaid_distance,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -78,7 +79,8 @@ defmodule NASR.Entities.MilitaryTrainingRoute.Point do
           longitude: float() | nil,
           navaid_id: String.t(),
           navaid_bearing: integer() | nil,
-          navaid_distance: integer() | nil
+          navaid_distance: integer() | nil,
+          meta: map()
         }
 
   @spec type() :: String.t()

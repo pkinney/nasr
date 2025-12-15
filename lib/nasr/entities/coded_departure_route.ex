@@ -32,20 +32,21 @@ defmodule NASR.Entities.CodedDepartureRoute do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    route_code
-    origin_airport
-    destination_airport
-    departure_fix
-    route_string
-    departure_center
-    arrival_center
-    transition_centers
-    coordination_required
-    playbook
-    navigation_equipment
-    length
-  )a
+  defstruct [
+    :route_code,
+    :origin_airport,
+    :destination_airport,
+    :departure_fix,
+    :route_string,
+    :departure_center,
+    :arrival_center,
+    :transition_centers,
+    :coordination_required,
+    :playbook,
+    :navigation_equipment,
+    :length,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           route_code: String.t(),
@@ -59,7 +60,8 @@ defmodule NASR.Entities.CodedDepartureRoute do
           coordination_required: boolean() | nil,
           playbook: String.t(),
           navigation_equipment: integer() | nil,
-          length: integer() | nil
+          length: integer() | nil,
+          meta: map()
         }
 
   @spec type() :: String.t()

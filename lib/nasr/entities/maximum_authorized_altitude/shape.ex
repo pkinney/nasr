@@ -22,20 +22,22 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.Shape do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    maa_id
-    point_seq
-    latitude
-    longitude
-  )a
+  defstruct [
+    :effective_date,
+    :maa_id,
+    :point_seq,
+    :latitude,
+    :longitude,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
           maa_id: String.t(),
           point_seq: integer() | nil,
           latitude: float() | nil,
-          longitude: float() | nil
+          longitude: float() | nil,
+          meta: map()
         }
 
   @spec type() :: String.t()

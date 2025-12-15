@@ -29,19 +29,20 @@ defmodule NASR.Entities.ParachuteJumpingArea.Contact do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    pja_id
-    facility_id
-    facility_name
-    location_id
-    commercial_frequency
-    commercial_chart_flag
-    military_frequency
-    military_chart_flag
-    sector
-    contact_frequency_altitude
-  )a
+  defstruct [
+    :effective_date,
+    :pja_id,
+    :facility_id,
+    :facility_name,
+    :location_id,
+    :commercial_frequency,
+    :commercial_chart_flag,
+    :military_frequency,
+    :military_chart_flag,
+    :sector,
+    :contact_frequency_altitude,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -54,7 +55,8 @@ defmodule NASR.Entities.ParachuteJumpingArea.Contact do
           military_frequency: float() | nil,
           military_chart_flag: boolean() | nil,
           sector: String.t(),
-          contact_frequency_altitude: String.t()
+          contact_frequency_altitude: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

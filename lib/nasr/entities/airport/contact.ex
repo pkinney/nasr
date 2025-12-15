@@ -28,25 +28,26 @@ defmodule NASR.Entities.Airport.Contact do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    site_id
-    site_no
-    site_type
-    arpt_id
-    city
-    state_code
-    country_code
-    title
-    name
-    address_line_1
-    address_line_2
-    contact_city
-    contact_state
-    zip_code
-    zip_plus_four
-    phone_number
-    effective_date
-  )a
+  defstruct [
+    :site_id,
+    :site_no,
+    :site_type,
+    :arpt_id,
+    :city,
+    :state_code,
+    :country_code,
+    :title,
+    :name,
+    :address_line_1,
+    :address_line_2,
+    :contact_city,
+    :contact_state,
+    :zip_code,
+    :zip_plus_four,
+    :phone_number,
+    :effective_date,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           site_id: String.t(),
@@ -65,7 +66,8 @@ defmodule NASR.Entities.Airport.Contact do
           zip_code: String.t(),
           zip_plus_four: String.t(),
           phone_number: String.t(),
-          effective_date: Date.t() | nil
+          effective_date: Date.t() | nil,
+          meta: map()
         }
 
   @spec new(map()) :: t()

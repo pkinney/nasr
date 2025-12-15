@@ -65,7 +65,8 @@ defmodule NASR.Entities.MilitaryTrainingRoute.Width do
           route_id: String.t() | nil,
           artcc: String.t() | nil,
           width_seq_no: integer() | nil,
-          width_text: String.t() | nil
+          width_text: String.t() | nil,
+          meta: map()
         }
 
   defstruct [
@@ -74,7 +75,8 @@ defmodule NASR.Entities.MilitaryTrainingRoute.Width do
     :route_id,
     :artcc,
     :width_seq_no,
-    :width_text
+    :width_text,
+    meta: %{}
   ]
 
   @spec type() :: String.t()

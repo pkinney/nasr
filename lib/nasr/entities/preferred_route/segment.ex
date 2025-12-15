@@ -69,7 +69,8 @@ defmodule NASR.Entities.PreferredRoute.Segment do
           country_code: String.t() | nil,
           icao_region_code: String.t() | nil,
           nav_type: atom() | nil,
-          next_seg: String.t() | nil
+          next_seg: String.t() | nil,
+          meta: map()
         }
 
   defstruct [
@@ -85,7 +86,8 @@ defmodule NASR.Entities.PreferredRoute.Segment do
     :country_code,
     :icao_region_code,
     :nav_type,
-    :next_seg
+    :next_seg,
+    meta: %{}
   ]
 
   @spec type() :: String.t()

@@ -20,16 +20,17 @@ defmodule NASR.Entities.Airway do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    regulatory
-    airway_designation
-    airway_location
-    airway_id
-    update_date
-    remark
-    airway_string
-  )a
+  defstruct [
+    :effective_date,
+    :regulatory,
+    :airway_designation,
+    :airway_location,
+    :airway_id,
+    :update_date,
+    :remark,
+    :airway_string,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -52,7 +53,8 @@ defmodule NASR.Entities.Airway do
           airway_id: String.t(),
           update_date: Date.t() | nil,
           remark: String.t(),
-          airway_string: String.t()
+          airway_string: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

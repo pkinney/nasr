@@ -22,14 +22,15 @@ defmodule NASR.Entities.MilitaryTrainingRoute do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    route_type_code
-    route_id
-    artcc
-    fss
-    time_of_use
-  )a
+  defstruct [
+    :effective_date,
+    :route_type_code,
+    :route_id,
+    :artcc,
+    :fss,
+    :time_of_use,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -37,7 +38,8 @@ defmodule NASR.Entities.MilitaryTrainingRoute do
           route_id: String.t(),
           artcc: String.t(),
           fss: String.t(),
-          time_of_use: String.t()
+          time_of_use: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

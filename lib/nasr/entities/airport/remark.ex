@@ -38,22 +38,23 @@ defmodule NASR.Entities.Airport.Remark do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    site_id
-    site_no
-    site_type
-    arpt_id
-    city
-    state_code
-    country_code
-    legacy_element_number
-    table_name
-    reference_column_name
-    element
-    reference_column_sequence_no
-    remark_text
-    effective_date
-  )a
+  defstruct [
+    :site_id,
+    :site_no,
+    :site_type,
+    :arpt_id,
+    :city,
+    :state_code,
+    :country_code,
+    :legacy_element_number,
+    :table_name,
+    :reference_column_name,
+    :element,
+    :reference_column_sequence_no,
+    :remark_text,
+    :effective_date,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           site_id: String.t(),
@@ -69,7 +70,8 @@ defmodule NASR.Entities.Airport.Remark do
           element: String.t(),
           reference_column_sequence_no: integer() | nil,
           remark_text: String.t(),
-          effective_date: Date.t() | nil
+          effective_date: Date.t() | nil,
+          meta: map()
         }
 
   @spec new(map()) :: t()

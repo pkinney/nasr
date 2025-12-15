@@ -41,38 +41,39 @@ defmodule NASR.Entities.ATC do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    site_number
-    site_type
-    facility_type
-    state_code
-    facility_id
-    city
-    country_code
-    icao_id
-    facility_name
-    region_code
-    tower_operator_code
-    tower_call
-    tower_hours
-    primary_approach_radio_call
-    approach_primary_provider
-    approach_primary_provider_type_code
-    secondary_approach_radio_call
-    approach_secondary_provider
-    approach_secondary_provider_type_code
-    primary_departure_radio_call
-    departure_primary_provider
-    departure_primary_provider_type_code
-    secondary_departure_radio_call
-    departure_secondary_provider
-    departure_secondary_provider_type_code
-    control_facility_approach_departure_calls
-    approach_departure_operator_code
-    control_providing_hours
-    secondary_control_providing_hours
-  )a
+  defstruct [
+    :effective_date,
+    :site_number,
+    :site_type,
+    :facility_type,
+    :state_code,
+    :facility_id,
+    :city,
+    :country_code,
+    :icao_id,
+    :facility_name,
+    :region_code,
+    :tower_operator_code,
+    :tower_call,
+    :tower_hours,
+    :primary_approach_radio_call,
+    :approach_primary_provider,
+    :approach_primary_provider_type_code,
+    :secondary_approach_radio_call,
+    :approach_secondary_provider,
+    :approach_secondary_provider_type_code,
+    :primary_departure_radio_call,
+    :departure_primary_provider,
+    :departure_primary_provider_type_code,
+    :secondary_departure_radio_call,
+    :departure_secondary_provider,
+    :departure_secondary_provider_type_code,
+    :control_facility_approach_departure_calls,
+    :approach_departure_operator_code,
+    :control_providing_hours,
+    :secondary_control_providing_hours,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -104,7 +105,8 @@ defmodule NASR.Entities.ATC do
           control_facility_approach_departure_calls: String.t(),
           approach_departure_operator_code: String.t(),
           control_providing_hours: String.t(),
-          secondary_control_providing_hours: String.t()
+          secondary_control_providing_hours: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

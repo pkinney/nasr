@@ -24,21 +24,22 @@ defmodule NASR.Entities.ATC.Remarks do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    site_number
-    site_type
-    facility_type
-    state_code
-    facility_id
-    city
-    country_code
-    legacy_element_number
-    table_name
-    reference_column_name
-    remark_number
-    remark_text
-  )a
+  defstruct [
+    :effective_date,
+    :site_number,
+    :site_type,
+    :facility_type,
+    :state_code,
+    :facility_id,
+    :city,
+    :country_code,
+    :legacy_element_number,
+    :table_name,
+    :reference_column_name,
+    :remark_number,
+    :remark_text,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -53,7 +54,8 @@ defmodule NASR.Entities.ATC.Remarks do
           table_name: String.t(),
           reference_column_name: String.t(),
           remark_number: integer() | nil,
-          remark_text: String.t()
+          remark_text: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

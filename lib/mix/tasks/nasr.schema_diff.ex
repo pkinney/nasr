@@ -1,4 +1,6 @@
 defmodule Mix.Tasks.Nasr.SchemaDiff do
+  @shortdoc "Diff NASR CSV headers between cycles"
+
   @moduledoc """
   Compare NASR CSV headers between the current cycle and a past cycle.
 
@@ -16,12 +18,10 @@ defmodule Mix.Tasks.Nasr.SchemaDiff do
   """
   use Mix.Task
 
-  alias NimbleCSV.RFC4180
   alias NASR.Utils
+  alias NimbleCSV.RFC4180
 
   @base_url "https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription/"
-  @shortdoc "Diff NASR CSV headers between cycles"
-
   @impl Mix.Task
   def run([cycles_back | rest]) do
     Mix.Task.run("app.start")
@@ -55,7 +55,8 @@ defmodule Mix.Tasks.Nasr.SchemaDiff do
     previous_headers = load_headers(previous_url, include)
 
     all_files =
-      Map.keys(current_headers)
+      current_headers
+      |> Map.keys()
       |> Enum.concat(Map.keys(previous_headers))
       |> Enum.uniq()
       |> Enum.sort()
@@ -93,8 +94,8 @@ defmodule Mix.Tasks.Nasr.SchemaDiff do
 
     doc
     |> Floki.find("a[href*='NASR_Subscription/']")
-    |> Enum.map(&Floki.attribute(&1, "href") |> List.first())
-    |> Enum.map(&URI.merge(@base_url, &1) |> URI.to_string())
+    |> Enum.map(&(&1 |> Floki.attribute("href") |> List.first()))
+    |> Enum.map(&(@base_url |> URI.merge(&1) |> URI.to_string()))
     |> Enum.map(&normalize_date_link/1)
     |> Enum.reject(&is_nil/1)
     |> Enum.map(&fetch_download_for_date/1)
@@ -119,8 +120,8 @@ defmodule Mix.Tasks.Nasr.SchemaDiff do
 
         doc
         |> Floki.find("a[href$='.zip']")
-        |> Enum.map(&Floki.attribute(&1, "href") |> List.first())
-        |> Enum.map(&URI.merge(url, &1) |> URI.to_string())
+        |> Enum.map(&(&1 |> Floki.attribute("href") |> List.first()))
+        |> Enum.map(&(url |> URI.merge(&1) |> URI.to_string()))
         |> Enum.find(fn href -> String.contains?(href, "28DaySubscription_Effective") end)
         |> case do
           nil -> nil
@@ -161,7 +162,7 @@ defmodule Mix.Tasks.Nasr.SchemaDiff do
     csv_zip
     |> list_csv_files(include)
     |> Map.new(fn file ->
-      {file, read_headers(csv_zip, file) |> MapSet.new()}
+      {file, csv_zip |> read_headers(file) |> MapSet.new()}
     end)
   end
 
@@ -229,8 +230,8 @@ defmodule Mix.Tasks.Nasr.SchemaDiff do
 
     %{
       file: file,
-      added: MapSet.difference(curr_headers, prev_headers) |> Enum.sort(),
-      removed: MapSet.difference(prev_headers, curr_headers) |> Enum.sort()
+      added: curr_headers |> MapSet.difference(prev_headers) |> Enum.sort(),
+      removed: prev_headers |> MapSet.difference(curr_headers) |> Enum.sort()
     }
   end
 

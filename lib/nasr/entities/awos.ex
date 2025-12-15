@@ -29,25 +29,26 @@ defmodule NASR.Entities.AWOS do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    asos_awos_id
-    asos_awos_type
-    state_code
-    city
-    country_code
-    commissioned_date
-    navaid_flag
-    latitude
-    longitude
-    elevation
-    survey_method_code
-    phone_no
-    second_phone_no
-    site_no
-    site_type
-    remark
-  )a
+  defstruct [
+    :effective_date,
+    :asos_awos_id,
+    :asos_awos_type,
+    :state_code,
+    :city,
+    :country_code,
+    :commissioned_date,
+    :navaid_flag,
+    :latitude,
+    :longitude,
+    :elevation,
+    :survey_method_code,
+    :phone_no,
+    :second_phone_no,
+    :site_no,
+    :site_type,
+    :remark,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -66,7 +67,8 @@ defmodule NASR.Entities.AWOS do
           second_phone_no: String.t(),
           site_no: String.t(),
           site_type: :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
-          remark: String.t()
+          remark: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

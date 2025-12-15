@@ -256,7 +256,7 @@ defmodule NASR.UtilsTest do
 
     case cycle do
       c when c > 1 ->
-        prev_cycle = Integer.to_string(c - 1) |> String.pad_leading(2, "0")
+        prev_cycle = (c - 1) |> Integer.to_string() |> String.pad_leading(2, "0")
         yy <> prev_cycle
 
       1 ->

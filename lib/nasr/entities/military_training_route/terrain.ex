@@ -60,7 +60,8 @@ defmodule NASR.Entities.MilitaryTrainingRoute.Terrain do
           route_id: String.t() | nil,
           artcc: String.t() | nil,
           terrain_seq_no: integer() | nil,
-          terrain_text: String.t() | nil
+          terrain_text: String.t() | nil,
+          meta: map()
         }
 
   defstruct [
@@ -69,7 +70,8 @@ defmodule NASR.Entities.MilitaryTrainingRoute.Terrain do
     :route_id,
     :artcc,
     :terrain_seq_no,
-    :terrain_text
+    :terrain_text,
+    meta: %{}
   ]
 
   @spec type() :: String.t()

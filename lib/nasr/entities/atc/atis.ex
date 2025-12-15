@@ -24,20 +24,21 @@ defmodule NASR.Entities.ATC.ATIS do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    site_number
-    site_type
-    facility_type
-    state_code
-    facility_id
-    city
-    country_code
-    atis_number
-    description
-    atis_hours
-    atis_phone_number
-  )a
+  defstruct [
+    :effective_date,
+    :site_number,
+    :site_type,
+    :facility_type,
+    :state_code,
+    :facility_id,
+    :city,
+    :country_code,
+    :atis_number,
+    :description,
+    :atis_hours,
+    :atis_phone_number,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -51,7 +52,8 @@ defmodule NASR.Entities.ATC.ATIS do
           atis_number: integer() | nil,
           description: String.t(),
           atis_hours: String.t(),
-          atis_phone_number: String.t()
+          atis_phone_number: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

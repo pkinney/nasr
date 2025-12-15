@@ -26,22 +26,23 @@ defmodule NASR.Entities.MilitaryTrainingRoute.Agency do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    route_type_code
-    route_id
-    artcc
-    agency_type
-    agency_name
-    station
-    address
-    city
-    state_code
-    zip_code
-    commercial_number
-    dsn_number
-    hours
-  )a
+  defstruct [
+    :effective_date,
+    :route_type_code,
+    :route_id,
+    :artcc,
+    :agency_type,
+    :agency_name,
+    :station,
+    :address,
+    :city,
+    :state_code,
+    :zip_code,
+    :commercial_number,
+    :dsn_number,
+    :hours,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -57,7 +58,8 @@ defmodule NASR.Entities.MilitaryTrainingRoute.Agency do
           zip_code: String.t(),
           commercial_number: String.t(),
           dsn_number: String.t(),
-          hours: String.t()
+          hours: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

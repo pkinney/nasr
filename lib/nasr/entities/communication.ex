@@ -41,36 +41,37 @@ defmodule NASR.Entities.Communication do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    comm_loc_id
-    comm_type
-    nav_id
-    nav_type
-    city
-    state_code
-    region_code
-    country_code
-    comm_outlet_name
-    lat_deg
-    lat_min
-    lat_sec
-    lat_hemis
-    latitude
-    long_deg
-    long_min
-    long_sec
-    long_hemis
-    longitude
-    facility_id
-    facility_name
-    alt_fss_id
-    alt_fss_name
-    oper_hours
-    comm_status_code
-    comm_status_date
-    remark
-  )a
+  defstruct [
+    :effective_date,
+    :comm_loc_id,
+    :comm_type,
+    :nav_id,
+    :nav_type,
+    :city,
+    :state_code,
+    :region_code,
+    :country_code,
+    :comm_outlet_name,
+    :lat_deg,
+    :lat_min,
+    :lat_sec,
+    :lat_hemis,
+    :latitude,
+    :long_deg,
+    :long_min,
+    :long_sec,
+    :long_hemis,
+    :longitude,
+    :facility_id,
+    :facility_name,
+    :alt_fss_id,
+    :alt_fss_name,
+    :oper_hours,
+    :comm_status_code,
+    :comm_status_date,
+    :remark,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -100,7 +101,8 @@ defmodule NASR.Entities.Communication do
           oper_hours: String.t(),
           comm_status_code: :active | :inactive | String.t() | nil,
           comm_status_date: String.t(),
-          remark: String.t()
+          remark: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

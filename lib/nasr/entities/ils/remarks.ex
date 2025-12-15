@@ -26,23 +26,24 @@ defmodule NASR.Entities.ILS.Remarks do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    site_number
-    site_type
-    state_code
-    airport_id
-    city
-    country_code
-    runway_end_id
-    ils_localizer_id
-    system_type_code
-    table_name
-    ils_component_type_code
-    reference_column_name
-    reference_column_sequence_no
-    remark_text
-  )a
+  defstruct [
+    :effective_date,
+    :site_number,
+    :site_type,
+    :state_code,
+    :airport_id,
+    :city,
+    :country_code,
+    :runway_end_id,
+    :ils_localizer_id,
+    :system_type_code,
+    :table_name,
+    :ils_component_type_code,
+    :reference_column_name,
+    :reference_column_sequence_no,
+    :remark_text,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -66,7 +67,8 @@ defmodule NASR.Entities.ILS.Remarks do
           ils_component_type_code: String.t(),
           reference_column_name: String.t(),
           reference_column_sequence_no: integer() | nil,
-          remark_text: String.t()
+          remark_text: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

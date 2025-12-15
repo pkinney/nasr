@@ -20,16 +20,17 @@ defmodule NASR.Entities.STAR do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    arrival_name
-    amendment_number
-    artcc
-    star_amendment_effective_date
-    rnav_flag
-    star_computer_code
-    served_airports
-  )a
+  defstruct [
+    :effective_date,
+    :arrival_name,
+    :amendment_number,
+    :artcc,
+    :star_amendment_effective_date,
+    :rnav_flag,
+    :star_computer_code,
+    :served_airports,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -39,7 +40,8 @@ defmodule NASR.Entities.STAR do
           star_amendment_effective_date: Date.t() | nil,
           rnav_flag: boolean() | nil,
           star_computer_code: String.t(),
-          served_airports: String.t()
+          served_airports: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

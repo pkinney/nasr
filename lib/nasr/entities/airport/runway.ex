@@ -36,34 +36,35 @@ defmodule NASR.Entities.Airport.Runway do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    site_id
-    site_no
-    site_type
-    arpt_id
-    city
-    state_code
-    country_code
-    runway_id
-    runway_length
-    runway_width
-    surface_type_code
-    surface_condition
-    surface_treatment
-    pavement_classification_number
-    pavement_type
-    subgrade_strength
-    tire_pressure_code
-    determination_method
-    runway_lights_edge_intensity
-    runway_length_source
-    runway_length_source_date
-    single_wheel_weight
-    dual_wheel_weight
-    dual_tandem_weight
-    double_dual_tandem_weight
-    effective_date
-  )a
+  defstruct [
+    :site_id,
+    :site_no,
+    :site_type,
+    :arpt_id,
+    :city,
+    :state_code,
+    :country_code,
+    :runway_id,
+    :runway_length,
+    :runway_width,
+    :surface_type_code,
+    :surface_condition,
+    :surface_treatment,
+    :pavement_classification_number,
+    :pavement_type,
+    :subgrade_strength,
+    :tire_pressure_code,
+    :determination_method,
+    :runway_lights_edge_intensity,
+    :runway_length_source,
+    :runway_length_source_date,
+    :single_wheel_weight,
+    :dual_wheel_weight,
+    :dual_tandem_weight,
+    :double_dual_tandem_weight,
+    :effective_date,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           site_id: String.t(),
@@ -114,7 +115,8 @@ defmodule NASR.Entities.Airport.Runway do
           dual_wheel_weight: integer() | nil,
           dual_tandem_weight: integer() | nil,
           double_dual_tandem_weight: integer() | nil,
-          effective_date: Date.t() | nil
+          effective_date: Date.t() | nil,
+          meta: map()
         }
 
   @spec new(map()) :: t()

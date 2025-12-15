@@ -20,18 +20,19 @@ defmodule NASR.Entities.Nav.Remarks do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    nav_id
-    nav_type
-    state_code
-    city
-    country_code
-    table_name
-    reference_column_name
-    reference_column_sequence_no
-    remark_text
-  )a
+  defstruct [
+    :effective_date,
+    :nav_id,
+    :nav_type,
+    :state_code,
+    :city,
+    :country_code,
+    :table_name,
+    :reference_column_name,
+    :reference_column_sequence_no,
+    :remark_text,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -43,7 +44,8 @@ defmodule NASR.Entities.Nav.Remarks do
           table_name: String.t(),
           reference_column_name: String.t(),
           reference_column_sequence_no: integer() | nil,
-          remark_text: String.t()
+          remark_text: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

@@ -41,27 +41,28 @@ defmodule NASR.Entities.AirRouteBoundary.Segment do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    record_id
-    location_id
-    location_name
-    altitude
-    boundary_type
-    point_sequence
-    latitude_degrees
-    latitude_minutes
-    latitude_seconds
-    latitude_hemisphere
-    latitude_decimal
-    longitude_degrees
-    longitude_minutes
-    longitude_seconds
-    longitude_hemisphere
-    longitude_decimal
-    boundary_point_description
-    nas_description_flag
-  )a
+  defstruct [
+    :effective_date,
+    :record_id,
+    :location_id,
+    :location_name,
+    :altitude,
+    :boundary_type,
+    :point_sequence,
+    :latitude_degrees,
+    :latitude_minutes,
+    :latitude_seconds,
+    :latitude_hemisphere,
+    :latitude_decimal,
+    :longitude_degrees,
+    :longitude_minutes,
+    :longitude_seconds,
+    :longitude_hemisphere,
+    :longitude_decimal,
+    :boundary_point_description,
+    :nas_description_flag,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -82,7 +83,8 @@ defmodule NASR.Entities.AirRouteBoundary.Segment do
           longitude_hemisphere: String.t(),
           longitude_decimal: float() | nil,
           boundary_point_description: String.t(),
-          nas_description_flag: String.t()
+          nas_description_flag: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

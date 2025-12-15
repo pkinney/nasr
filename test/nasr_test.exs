@@ -39,5 +39,14 @@ defmodule NasrTest do
     test "streams structs of specific types", %{nasr_file_path: path} do
       [file: path, include: ["FIX_BASE", "FIX_CHRT"]] |> NASR.stream_entities() |> Enum.to_list()
     end
+
+    test "assigns empty meta to all streamed entities", %{nasr_file_path: path} do
+      entities =
+        [file: path, include: ["FIX_BASE", "FIX_CHRT"]]
+        |> NASR.stream_entities()
+        |> Enum.take(50)
+
+      assert Enum.all?(entities, fn %{meta: meta} -> meta == %{} end)
+    end
   end
 end

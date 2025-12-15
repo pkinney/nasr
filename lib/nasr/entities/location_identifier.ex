@@ -52,20 +52,21 @@ defmodule NASR.Entities.LocationIdentifier do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    location_id
-    country_code
-    region_code
-    state
-    city
-    lid_group
-    facility_type
-    facility_name
-    responsible_artcc_id
-    artcc_computer_id
-    fss_id
-    effective_date
-  )a
+  defstruct [
+    :location_id,
+    :country_code,
+    :region_code,
+    :state,
+    :city,
+    :lid_group,
+    :facility_type,
+    :facility_name,
+    :responsible_artcc_id,
+    :artcc_computer_id,
+    :fss_id,
+    :effective_date,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           location_id: String.t(),
@@ -91,7 +92,8 @@ defmodule NASR.Entities.LocationIdentifier do
           responsible_artcc_id: String.t(),
           artcc_computer_id: String.t(),
           fss_id: String.t(),
-          effective_date: Date.t() | nil
+          effective_date: Date.t() | nil,
+          meta: map()
         }
 
   @spec type() :: String.t()

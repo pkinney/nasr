@@ -57,7 +57,8 @@ defmodule NASR.Entities.MilitaryTrainingRoute.StandardOperatingProcedure do
           route_id: String.t() | nil,
           artcc: String.t() | nil,
           sop_seq_no: integer() | nil,
-          sop_text: String.t() | nil
+          sop_text: String.t() | nil,
+          meta: map()
         }
 
   defstruct [
@@ -66,7 +67,8 @@ defmodule NASR.Entities.MilitaryTrainingRoute.StandardOperatingProcedure do
     :route_id,
     :artcc,
     :sop_seq_no,
-    :sop_text
+    :sop_text,
+    meta: %{}
   ]
 
   @spec type() :: String.t()

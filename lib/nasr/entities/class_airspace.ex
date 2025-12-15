@@ -32,21 +32,22 @@ defmodule NASR.Entities.ClassAirspace do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    site_no
-    site_type
-    state_code
-    arpt_id
-    city
-    country_code
-    class_b_airspace
-    class_c_airspace
-    class_d_airspace
-    class_e_airspace
-    airspace_hrs
-    remark
-  )a
+  defstruct [
+    :effective_date,
+    :site_no,
+    :site_type,
+    :state_code,
+    :arpt_id,
+    :city,
+    :country_code,
+    :class_b_airspace,
+    :class_c_airspace,
+    :class_d_airspace,
+    :class_e_airspace,
+    :airspace_hrs,
+    :remark,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -61,7 +62,8 @@ defmodule NASR.Entities.ClassAirspace do
           class_d_airspace: boolean() | nil,
           class_e_airspace: boolean() | nil,
           airspace_hrs: String.t(),
-          remark: String.t()
+          remark: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

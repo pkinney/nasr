@@ -25,21 +25,22 @@ defmodule NASR.Entities.MilitaryOperations do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    site_number
-    site_type
-    state_code
-    airport_id
-    city
-    country_code
-    military_operations_code
-    military_operations_call
-    military_operations_hours
-    amcp_hours
-    pmsv_hours
-    remark
-  )a
+  defstruct [
+    :effective_date,
+    :site_number,
+    :site_type,
+    :state_code,
+    :airport_id,
+    :city,
+    :country_code,
+    :military_operations_code,
+    :military_operations_call,
+    :military_operations_hours,
+    :amcp_hours,
+    :pmsv_hours,
+    :remark,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -54,7 +55,8 @@ defmodule NASR.Entities.MilitaryOperations do
           military_operations_hours: String.t(),
           amcp_hours: String.t(),
           pmsv_hours: String.t(),
-          remark: String.t()
+          remark: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

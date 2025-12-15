@@ -23,20 +23,21 @@ defmodule NASR.Entities.Airport.AttendanceSchedule do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    site_id
-    site_no
-    site_type
-    arpt_id
-    city
-    state_code
-    country_code
-    attendance_schedule_sequence_no
-    months_attended
-    days_attended
-    hours_attended
-    effective_date
-  )a
+  defstruct [
+    :site_id,
+    :site_no,
+    :site_type,
+    :arpt_id,
+    :city,
+    :state_code,
+    :country_code,
+    :attendance_schedule_sequence_no,
+    :months_attended,
+    :days_attended,
+    :hours_attended,
+    :effective_date,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           site_id: String.t(),
@@ -50,7 +51,8 @@ defmodule NASR.Entities.Airport.AttendanceSchedule do
           months_attended: String.t(),
           days_attended: String.t(),
           hours_attended: String.t(),
-          effective_date: Date.t() | nil
+          effective_date: Date.t() | nil,
+          meta: map()
         }
 
   @spec new(map()) :: t()

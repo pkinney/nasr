@@ -42,32 +42,33 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    maa_id
-    maa_type_name
-    nav_id
-    nav_type
-    nav_radial
-    nav_distance
-    state_code
-    city
-    latitude
-    longitude
-    arpt_ids
-    nearest_arpt
-    nearest_arpt_dist
-    nearest_arpt_dir
-    maa_name
-    max_alt
-    min_alt
-    maa_radius
-    description
-    maa_use
-    check_notams
-    time_of_use
-    user_group_name
-  )a
+  defstruct [
+    :effective_date,
+    :maa_id,
+    :maa_type_name,
+    :nav_id,
+    :nav_type,
+    :nav_radial,
+    :nav_distance,
+    :state_code,
+    :city,
+    :latitude,
+    :longitude,
+    :arpt_ids,
+    :nearest_arpt,
+    :nearest_arpt_dist,
+    :nearest_arpt_dir,
+    :maa_name,
+    :max_alt,
+    :min_alt,
+    :maa_radius,
+    :description,
+    :maa_use,
+    :check_notams,
+    :time_of_use,
+    :user_group_name,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -104,7 +105,8 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude do
           maa_use: :civil | :military | :joint | String.t() | nil,
           check_notams: String.t(),
           time_of_use: String.t(),
-          user_group_name: String.t()
+          user_group_name: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

@@ -53,38 +53,39 @@ defmodule NASR.Entities.ParachuteJumpingArea do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    pja_id
-    nav_id
-    nav_type
-    radial
-    distance
-    navaid_name
-    state_code
-    city
-    latitude
-    latitude_decimal
-    longitude
-    longitude_decimal
-    arpt_id
-    site_no
-    site_type
-    drop_zone_name
-    max_altitude
-    max_altitude_type
-    pja_radius
-    chart_request_flag
-    publish_criteria
-    description
-    time_of_use
-    fss_id
-    fss_name
-    pja_use
-    volume
-    pja_user
-    remark
-  )a
+  defstruct [
+    :effective_date,
+    :pja_id,
+    :nav_id,
+    :nav_type,
+    :radial,
+    :distance,
+    :navaid_name,
+    :state_code,
+    :city,
+    :latitude,
+    :latitude_decimal,
+    :longitude,
+    :longitude_decimal,
+    :arpt_id,
+    :site_no,
+    :site_type,
+    :drop_zone_name,
+    :max_altitude,
+    :max_altitude_type,
+    :pja_radius,
+    :chart_request_flag,
+    :publish_criteria,
+    :description,
+    :time_of_use,
+    :fss_id,
+    :fss_name,
+    :pja_use,
+    :volume,
+    :pja_user,
+    :remark,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -116,7 +117,8 @@ defmodule NASR.Entities.ParachuteJumpingArea do
           pja_use: :military | String.t() | nil,
           volume: String.t(),
           pja_user: String.t(),
-          remark: String.t()
+          remark: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

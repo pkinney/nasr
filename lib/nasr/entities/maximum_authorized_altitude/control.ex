@@ -26,17 +26,18 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.Control do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    maa_id
-    freq_seq
-    fac_id
-    fac_name
-    commercial_freq
-    commercial_chart_flag
-    mil_freq
-    mil_chart_flag
-  )a
+  defstruct [
+    :effective_date,
+    :maa_id,
+    :freq_seq,
+    :fac_id,
+    :fac_name,
+    :commercial_freq,
+    :commercial_chart_flag,
+    :mil_freq,
+    :mil_chart_flag,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -47,7 +48,8 @@ defmodule NASR.Entities.MaximumAuthorizedAltitude.Control do
           commercial_freq: float() | nil,
           commercial_chart_flag: :yes | :no | String.t() | nil,
           mil_freq: float() | nil,
-          mil_chart_flag: :yes | :no | String.t() | nil
+          mil_chart_flag: :yes | :no | String.t() | nil,
+          meta: map()
         }
 
   @spec type() :: String.t()

@@ -44,17 +44,18 @@ defmodule NASR.Entities.Radar do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    facility_id
-    facility_type
-    state_code
-    country_code
-    radar_type
-    radar_number
-    radar_hours
-    remark
-    effective_date
-  )a
+  defstruct [
+    :facility_id,
+    :facility_type,
+    :state_code,
+    :country_code,
+    :radar_type,
+    :radar_number,
+    :radar_hours,
+    :remark,
+    :effective_date,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           facility_id: String.t(),
@@ -65,7 +66,8 @@ defmodule NASR.Entities.Radar do
           radar_number: integer() | nil,
           radar_hours: String.t(),
           remark: String.t(),
-          effective_date: Date.t() | nil
+          effective_date: Date.t() | nil,
+          meta: map()
         }
 
   @spec type() :: String.t()

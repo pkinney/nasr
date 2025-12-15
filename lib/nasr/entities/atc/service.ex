@@ -20,17 +20,18 @@ defmodule NASR.Entities.ATC.Service do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    site_number
-    site_type
-    facility_type
-    state_code
-    facility_id
-    city
-    country_code
-    control_service
-  )a
+  defstruct [
+    :effective_date,
+    :site_number,
+    :site_type,
+    :facility_type,
+    :state_code,
+    :facility_id,
+    :city,
+    :country_code,
+    :control_service,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -41,7 +42,8 @@ defmodule NASR.Entities.ATC.Service do
           facility_id: String.t(),
           city: String.t(),
           country_code: String.t(),
-          control_service: String.t()
+          control_service: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

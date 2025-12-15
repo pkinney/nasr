@@ -29,25 +29,26 @@ defmodule NASR.Entities.WeatherLocation do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    weather_id
-    city
-    state_code
-    country_code
-    latitude_degrees
-    latitude_minutes
-    latitude_seconds
-    latitude_hemisphere
-    latitude
-    longitude_degrees
-    longitude_minutes
-    longitude_seconds
-    longitude_hemisphere
-    longitude
-    elevation
-    survey_method_code
-  )a
+  defstruct [
+    :effective_date,
+    :weather_id,
+    :city,
+    :state_code,
+    :country_code,
+    :latitude_degrees,
+    :latitude_minutes,
+    :latitude_seconds,
+    :latitude_hemisphere,
+    :latitude,
+    :longitude_degrees,
+    :longitude_minutes,
+    :longitude_seconds,
+    :longitude_hemisphere,
+    :longitude,
+    :elevation,
+    :survey_method_code,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -66,7 +67,8 @@ defmodule NASR.Entities.WeatherLocation do
           longitude_hemisphere: String.t(),
           longitude: float() | nil,
           elevation: integer() | nil,
-          survey_method_code: :estimated | :surveyed | String.t() | nil
+          survey_method_code: :estimated | :surveyed | String.t() | nil,
+          meta: map()
         }
 
   @spec type() :: String.t()

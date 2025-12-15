@@ -30,26 +30,27 @@ defmodule NASR.Entities.Fix do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    fix_id
-    fix_id_old
-    latitude
-    longitude
-    state_code
-    country_code
-    icao_region_code
-    fix_use_code
-    artcc_id_high
-    artcc_id_low
-    charting_remark
-    pitch_flag
-    catch_flag
-    sua_atcaa_flag
-    min_recep_alt
-    compulsory
-    charts
-    effective_date
-  )a
+  defstruct [
+    :fix_id,
+    :fix_id_old,
+    :latitude,
+    :longitude,
+    :state_code,
+    :country_code,
+    :icao_region_code,
+    :fix_use_code,
+    :artcc_id_high,
+    :artcc_id_low,
+    :charting_remark,
+    :pitch_flag,
+    :catch_flag,
+    :sua_atcaa_flag,
+    :min_recep_alt,
+    :compulsory,
+    :charts,
+    :effective_date,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           fix_id: String.t(),
@@ -79,7 +80,8 @@ defmodule NASR.Entities.Fix do
           min_recep_alt: integer() | nil,
           compulsory: :high | :low | :low_high | nil,
           charts: [String.t()],
-          effective_date: Date.t() | nil
+          effective_date: Date.t() | nil,
+          meta: map()
         }
 
   @spec type() :: String.t()

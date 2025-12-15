@@ -37,33 +37,34 @@ defmodule NASR.Entities.FlightServiceStation do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    fss_id
-    name
-    update_date
-    facility_type
-    voice_call
-    city
-    state_code
-    country_code
-    latitude_degrees
-    latitude_minutes
-    latitude_seconds
-    latitude_hemisphere
-    latitude
-    longitude_degrees
-    longitude_minutes
-    longitude_seconds
-    longitude_hemisphere
-    longitude
-    operating_hours
-    facility_status
-    alternate_fss
-    weather_radar_flag
-    phone_number
-    toll_free_number
-  )a
+  defstruct [
+    :effective_date,
+    :fss_id,
+    :name,
+    :update_date,
+    :facility_type,
+    :voice_call,
+    :city,
+    :state_code,
+    :country_code,
+    :latitude_degrees,
+    :latitude_minutes,
+    :latitude_seconds,
+    :latitude_hemisphere,
+    :latitude,
+    :longitude_degrees,
+    :longitude_minutes,
+    :longitude_seconds,
+    :longitude_hemisphere,
+    :longitude,
+    :operating_hours,
+    :facility_status,
+    :alternate_fss,
+    :weather_radar_flag,
+    :phone_number,
+    :toll_free_number,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -90,7 +91,8 @@ defmodule NASR.Entities.FlightServiceStation do
           alternate_fss: String.t(),
           weather_radar_flag: boolean() | nil,
           phone_number: String.t(),
-          toll_free_number: String.t()
+          toll_free_number: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

@@ -68,64 +68,65 @@ defmodule NASR.Entities.Nav do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    nav_id
-    nav_type
-    state_code
-    city
-    country_code
-    nav_status
-    name
-    state_name
-    region_code
-    country_name
-    fan_marker
-    owner
-    operator
-    nas_use_flag
-    public_use_flag
-    ndb_class_code
-    oper_hours
-    high_alt_artcc_id
-    high_artcc_name
-    low_alt_artcc_id
-    low_artcc_name
-    latitude
-    longitude
-    survey_accuracy_code
-    tacan_dme_status
-    tacan_dme_latitude
-    tacan_dme_longitude
-    elevation
-    magnetic_variation
-    magnetic_hemisphere
-    magnetic_variation_year
-    simul_voice_flag
-    power_output
-    auto_voice_id_flag
-    mnt_cat_code
-    voice_call
-    channel
-    frequency
-    marker_ident
-    marker_shape
-    marker_bearing
-    alt_code
-    dme_ssv
-    low_nav_on_high_chart_flag
-    z_marker_flag
-    fss_id
-    fss_name
-    fss_hours
-    notam_id
-    quad_ident
-    pitch_flag
-    catch_flag
-    sua_atcaa_flag
-    restriction_flag
-    hiwas_flag
-  )a
+  defstruct [
+    :effective_date,
+    :nav_id,
+    :nav_type,
+    :state_code,
+    :city,
+    :country_code,
+    :nav_status,
+    :name,
+    :state_name,
+    :region_code,
+    :country_name,
+    :fan_marker,
+    :owner,
+    :operator,
+    :nas_use_flag,
+    :public_use_flag,
+    :ndb_class_code,
+    :oper_hours,
+    :high_alt_artcc_id,
+    :high_artcc_name,
+    :low_alt_artcc_id,
+    :low_artcc_name,
+    :latitude,
+    :longitude,
+    :survey_accuracy_code,
+    :tacan_dme_status,
+    :tacan_dme_latitude,
+    :tacan_dme_longitude,
+    :elevation,
+    :magnetic_variation,
+    :magnetic_hemisphere,
+    :magnetic_variation_year,
+    :simul_voice_flag,
+    :power_output,
+    :auto_voice_id_flag,
+    :mnt_cat_code,
+    :voice_call,
+    :channel,
+    :frequency,
+    :marker_ident,
+    :marker_shape,
+    :marker_bearing,
+    :alt_code,
+    :dme_ssv,
+    :low_nav_on_high_chart_flag,
+    :z_marker_flag,
+    :fss_id,
+    :fss_name,
+    :fss_hours,
+    :notam_id,
+    :quad_ident,
+    :pitch_flag,
+    :catch_flag,
+    :sua_atcaa_flag,
+    :restriction_flag,
+    :hiwas_flag,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -208,7 +209,8 @@ defmodule NASR.Entities.Nav do
           catch_flag: boolean() | nil,
           sua_atcaa_flag: boolean() | nil,
           restriction_flag: String.t(),
-          hiwas_flag: String.t()
+          hiwas_flag: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

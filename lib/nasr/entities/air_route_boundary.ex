@@ -38,28 +38,29 @@ defmodule NASR.Entities.AirRouteBoundary do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    location_id
-    location_name
-    computer_id
-    icao_id
-    location_type
-    city
-    state
-    country_code
-    latitude_degrees
-    latitude_minutes
-    latitude_seconds
-    latitude_hemisphere
-    latitude_decimal
-    longitude_degrees
-    longitude_minutes
-    longitude_seconds
-    longitude_hemisphere
-    longitude_decimal
-    cross_reference
-  )a
+  defstruct [
+    :effective_date,
+    :location_id,
+    :location_name,
+    :computer_id,
+    :icao_id,
+    :location_type,
+    :city,
+    :state,
+    :country_code,
+    :latitude_degrees,
+    :latitude_minutes,
+    :latitude_seconds,
+    :latitude_hemisphere,
+    :latitude_decimal,
+    :longitude_degrees,
+    :longitude_minutes,
+    :longitude_seconds,
+    :longitude_hemisphere,
+    :longitude_decimal,
+    :cross_reference,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -81,7 +82,8 @@ defmodule NASR.Entities.AirRouteBoundary do
           longitude_seconds: float() | nil,
           longitude_hemisphere: String.t(),
           longitude_decimal: float() | nil,
-          cross_reference: String.t()
+          cross_reference: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

@@ -36,33 +36,34 @@ defmodule NASR.Entities.ILS.DME do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    site_number
-    site_type
-    state_code
-    airport_id
-    city
-    country_code
-    runway_end_id
-    ils_localizer_id
-    system_type_code
-    component_status
-    component_status_date
-    latitude_degrees
-    latitude_minutes
-    latitude_seconds
-    latitude_hemisphere
-    latitude_decimal
-    longitude_degrees
-    longitude_minutes
-    longitude_seconds
-    longitude_hemisphere
-    longitude_decimal
-    latitude_longitude_source_code
-    site_elevation
-    channel
-  )a
+  defstruct [
+    :effective_date,
+    :site_number,
+    :site_type,
+    :state_code,
+    :airport_id,
+    :city,
+    :country_code,
+    :runway_end_id,
+    :ils_localizer_id,
+    :system_type_code,
+    :component_status,
+    :component_status_date,
+    :latitude_degrees,
+    :latitude_minutes,
+    :latitude_seconds,
+    :latitude_hemisphere,
+    :latitude_decimal,
+    :longitude_degrees,
+    :longitude_minutes,
+    :longitude_seconds,
+    :longitude_hemisphere,
+    :longitude_decimal,
+    :latitude_longitude_source_code,
+    :site_elevation,
+    :channel,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -96,7 +97,8 @@ defmodule NASR.Entities.ILS.DME do
           longitude_decimal: float() | nil,
           latitude_longitude_source_code: String.t(),
           site_elevation: float() | nil,
-          channel: String.t()
+          channel: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

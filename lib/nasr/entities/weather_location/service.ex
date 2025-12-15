@@ -20,15 +20,16 @@ defmodule NASR.Entities.WeatherLocation.Service do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    weather_id
-    city
-    state_code
-    country_code
-    service_type
-    service_area
-  )a
+  defstruct [
+    :effective_date,
+    :weather_id,
+    :city,
+    :state_code,
+    :country_code,
+    :service_type,
+    :service_area,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -37,7 +38,8 @@ defmodule NASR.Entities.WeatherLocation.Service do
           state_code: String.t(),
           country_code: String.t(),
           service_type: :metar | :speci | :notam | :ua | :sa | :pirep | String.t() | nil,
-          service_area: String.t()
+          service_area: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

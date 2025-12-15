@@ -83,7 +83,8 @@ defmodule NASR.Entities.PreferredRoute do
           inland_fac_fix: String.t() | nil,
           coastal_fix: String.t() | nil,
           destination: String.t() | nil,
-          route_string: String.t() | nil
+          route_string: String.t() | nil,
+          meta: map()
         }
 
   defstruct [
@@ -108,7 +109,8 @@ defmodule NASR.Entities.PreferredRoute do
     :inland_fac_fix,
     :coastal_fix,
     :destination,
-    :route_string
+    :route_string,
+    meta: %{}
   ]
 
   @spec type() :: String.t()

@@ -30,19 +30,20 @@ defmodule NASR.Entities.Airport.ArrestingSystems do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    site_id
-    site_no
-    site_type
-    arpt_id
-    city
-    state_code
-    country_code
-    runway_id
-    runway_end_id
-    arresting_device_type
-    effective_date
-  )a
+  defstruct [
+    :site_id,
+    :site_no,
+    :site_type,
+    :arpt_id,
+    :city,
+    :state_code,
+    :country_code,
+    :runway_id,
+    :runway_end_id,
+    :arresting_device_type,
+    :effective_date,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           site_id: String.t(),
@@ -55,7 +56,8 @@ defmodule NASR.Entities.Airport.ArrestingSystems do
           runway_id: String.t(),
           runway_end_id: String.t(),
           arresting_device_type: String.t(),
-          effective_date: Date.t() | nil
+          effective_date: Date.t() | nil,
+          meta: map()
         }
 
   @spec new(map()) :: t()

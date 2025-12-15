@@ -23,20 +23,21 @@ defmodule NASR.Entities.Nav.Checkpoint do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    nav_id
-    nav_type
-    state_code
-    city
-    country_code
-    altitude
-    bearing
-    air_ground_code
-    checkpoint_description
-    airport_id
-    state_checkpoint_code
-  )a
+  defstruct [
+    :effective_date,
+    :nav_id,
+    :nav_type,
+    :state_code,
+    :city,
+    :country_code,
+    :altitude,
+    :bearing,
+    :air_ground_code,
+    :checkpoint_description,
+    :airport_id,
+    :state_checkpoint_code,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -50,7 +51,8 @@ defmodule NASR.Entities.Nav.Checkpoint do
           air_ground_code: :air | :ground | :ground_one | String.t() | nil,
           checkpoint_description: String.t(),
           airport_id: String.t(),
-          state_checkpoint_code: String.t()
+          state_checkpoint_code: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

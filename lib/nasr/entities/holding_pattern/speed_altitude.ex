@@ -24,15 +24,16 @@ defmodule NASR.Entities.HoldingPattern.SpeedAltitude do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    hp_name
-    hp_no
-    state_code
-    country_code
-    speed_range
-    altitude
-  )a
+  defstruct [
+    :effective_date,
+    :hp_name,
+    :hp_no,
+    :state_code,
+    :country_code,
+    :speed_range,
+    :altitude,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -41,7 +42,8 @@ defmodule NASR.Entities.HoldingPattern.SpeedAltitude do
           state_code: String.t(),
           country_code: String.t(),
           speed_range: integer() | nil,
-          altitude: String.t()
+          altitude: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

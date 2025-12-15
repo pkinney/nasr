@@ -64,7 +64,8 @@ defmodule NASR.Entities.PreferredRoute.RemoteFormat do
           direction: String.t() | nil,
           seq: integer() | nil,
           dcntr: String.t() | nil,
-          acntr: String.t() | nil
+          acntr: String.t() | nil,
+          meta: map()
         }
 
   defstruct [
@@ -79,7 +80,8 @@ defmodule NASR.Entities.PreferredRoute.RemoteFormat do
     :direction,
     :seq,
     :dcntr,
-    :acntr
+    :acntr,
+    meta: %{}
   ]
 
   @spec type() :: String.t()

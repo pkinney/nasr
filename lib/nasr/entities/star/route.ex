@@ -24,21 +24,22 @@ defmodule NASR.Entities.STAR.Route do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    star_computer_code
-    artcc
-    route_portion_type
-    route_name
-    body_sequence
-    transition_computer_code
-    point_sequence
-    point
-    icao_region_code
-    point_type
-    next_point
-    airport_runway_association
-  )a
+  defstruct [
+    :effective_date,
+    :star_computer_code,
+    :artcc,
+    :route_portion_type,
+    :route_name,
+    :body_sequence,
+    :transition_computer_code,
+    :point_sequence,
+    :point,
+    :icao_region_code,
+    :point_type,
+    :next_point,
+    :airport_runway_association,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -53,7 +54,8 @@ defmodule NASR.Entities.STAR.Route do
           icao_region_code: String.t(),
           point_type: String.t(),
           next_point: String.t(),
-          airport_runway_association: String.t()
+          airport_runway_association: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

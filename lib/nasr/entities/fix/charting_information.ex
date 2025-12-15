@@ -21,14 +21,15 @@ defmodule NASR.Entities.Fix.ChartingInformation do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    fix_id
-    icao_region_code
-    state_code
-    country_code
-    charting_type_desc
-    effective_date
-  )a
+  defstruct [
+    :fix_id,
+    :icao_region_code,
+    :state_code,
+    :country_code,
+    :charting_type_desc,
+    :effective_date,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           fix_id: String.t(),
@@ -36,7 +37,8 @@ defmodule NASR.Entities.Fix.ChartingInformation do
           state_code: String.t(),
           country_code: String.t(),
           charting_type_desc: String.t(),
-          effective_date: Date.t() | nil
+          effective_date: Date.t() | nil,
+          meta: map()
         }
 
   @spec new(map()) :: t()

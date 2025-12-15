@@ -48,44 +48,45 @@ defmodule NASR.Entities.ILS do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    site_number
-    site_type
-    state_code
-    airport_id
-    city
-    country_code
-    runway_end_id
-    ils_localizer_id
-    system_type_code
-    state_name
-    region_code
-    runway_length
-    runway_width
-    category
-    owner
-    operator
-    approach_bearing
-    magnetic_variation
-    magnetic_variation_hemisphere
-    component_status
-    component_status_date
-    latitude_degrees
-    latitude_minutes
-    latitude_seconds
-    latitude_hemisphere
-    latitude_decimal
-    longitude_degrees
-    longitude_minutes
-    longitude_seconds
-    longitude_hemisphere
-    longitude_decimal
-    latitude_longitude_source_code
-    site_elevation
-    localizer_frequency
-    back_course_status_code
-  )a
+  defstruct [
+    :effective_date,
+    :site_number,
+    :site_type,
+    :state_code,
+    :airport_id,
+    :city,
+    :country_code,
+    :runway_end_id,
+    :ils_localizer_id,
+    :system_type_code,
+    :state_name,
+    :region_code,
+    :runway_length,
+    :runway_width,
+    :category,
+    :owner,
+    :operator,
+    :approach_bearing,
+    :magnetic_variation,
+    :magnetic_variation_hemisphere,
+    :component_status,
+    :component_status_date,
+    :latitude_degrees,
+    :latitude_minutes,
+    :latitude_seconds,
+    :latitude_hemisphere,
+    :latitude_decimal,
+    :longitude_degrees,
+    :longitude_minutes,
+    :longitude_seconds,
+    :longitude_hemisphere,
+    :longitude_decimal,
+    :latitude_longitude_source_code,
+    :site_elevation,
+    :localizer_frequency,
+    :back_course_status_code,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -130,7 +131,8 @@ defmodule NASR.Entities.ILS do
           latitude_longitude_source_code: String.t(),
           site_elevation: float() | nil,
           localizer_frequency: float() | nil,
-          back_course_status_code: String.t()
+          back_course_status_code: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

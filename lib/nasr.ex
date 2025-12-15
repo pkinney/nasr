@@ -76,7 +76,7 @@ defmodule NASR do
   def from_raw(%{"__TYPE__" => type} = raw) do
     case module_for_type(type) do
       nil -> nil
-      module -> module.new(raw)
+      module -> raw |> module.new()
     end
   end
 

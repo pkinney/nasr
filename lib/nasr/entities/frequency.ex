@@ -33,29 +33,30 @@ defmodule NASR.Entities.Frequency do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    facility
-    fac_name
-    facility_type
-    artcc_or_fss_id
-    cpdlc
-    tower_hrs
-    serviced_facility
-    serviced_fac_name
-    serviced_site_type
-    latitude
-    longitude
-    serviced_city
-    serviced_state
-    serviced_country
-    tower_or_comm_call
-    primary_approach_radio_call
-    frequency
-    sectorization
-    freq_use
-    remark
-  )a
+  defstruct [
+    :effective_date,
+    :facility,
+    :fac_name,
+    :facility_type,
+    :artcc_or_fss_id,
+    :cpdlc,
+    :tower_hrs,
+    :serviced_facility,
+    :serviced_fac_name,
+    :serviced_site_type,
+    :latitude,
+    :longitude,
+    :serviced_city,
+    :serviced_state,
+    :serviced_country,
+    :tower_or_comm_call,
+    :primary_approach_radio_call,
+    :frequency,
+    :sectorization,
+    :freq_use,
+    :remark,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -107,7 +108,8 @@ defmodule NASR.Entities.Frequency do
             | :asos
             | String.t()
             | nil,
-          remark: String.t()
+          remark: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

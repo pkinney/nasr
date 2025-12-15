@@ -22,14 +22,15 @@ defmodule NASR.Entities.HoldingPattern.Charting do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    hp_name
-    hp_no
-    state_code
-    country_code
-    charting_type_desc
-  )a
+  defstruct [
+    :effective_date,
+    :hp_name,
+    :hp_no,
+    :state_code,
+    :country_code,
+    :charting_type_desc,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -46,7 +47,8 @@ defmodule NASR.Entities.HoldingPattern.Charting do
             | :star
             | :area_chart
             | String.t()
-            | nil
+            | nil,
+          meta: map()
         }
 
   @spec type() :: String.t()

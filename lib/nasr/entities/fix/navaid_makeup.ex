@@ -24,17 +24,18 @@ defmodule NASR.Entities.Fix.NavaidMakeup do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    fix_id
-    icao_region_code
-    state_code
-    country_code
-    nav_id
-    nav_type
-    bearing
-    distance
-    effective_date
-  )a
+  defstruct [
+    :fix_id,
+    :icao_region_code,
+    :state_code,
+    :country_code,
+    :nav_id,
+    :nav_type,
+    :bearing,
+    :distance,
+    :effective_date,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           fix_id: String.t(),
@@ -45,7 +46,8 @@ defmodule NASR.Entities.Fix.NavaidMakeup do
           nav_type: String.t(),
           bearing: float() | nil,
           distance: float() | nil,
-          effective_date: Date.t() | nil
+          effective_date: Date.t() | nil,
+          meta: map()
         }
 
   @spec new(map()) :: t()

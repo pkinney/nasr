@@ -18,15 +18,16 @@ defmodule NASR.Entities.STAR.Airport do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    star_computer_code
-    artcc
-    body_name
-    body_sequence
-    airport_id
-    runway_end_id
-  )a
+  defstruct [
+    :effective_date,
+    :star_computer_code,
+    :artcc,
+    :body_name,
+    :body_sequence,
+    :airport_id,
+    :runway_end_id,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -35,7 +36,8 @@ defmodule NASR.Entities.STAR.Airport do
           body_name: String.t(),
           body_sequence: integer() | nil,
           airport_id: String.t(),
-          runway_end_id: String.t()
+          runway_end_id: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

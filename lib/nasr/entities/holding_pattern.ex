@@ -32,23 +32,24 @@ defmodule NASR.Entities.HoldingPattern do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    hp_name
-    hp_no
-    state_code
-    country_code
-    fix_id
-    icao_region_code
-    nav_id
-    nav_type
-    hold_direction
-    hold_deg_or_crs
-    azimuth
-    course_inbound_deg
-    turn_direction
-    leg_length_dist
-  )a
+  defstruct [
+    :effective_date,
+    :hp_name,
+    :hp_no,
+    :state_code,
+    :country_code,
+    :fix_id,
+    :icao_region_code,
+    :nav_id,
+    :nav_type,
+    :hold_direction,
+    :hold_deg_or_crs,
+    :azimuth,
+    :course_inbound_deg,
+    :turn_direction,
+    :leg_length_dist,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -66,7 +67,8 @@ defmodule NASR.Entities.HoldingPattern do
           azimuth: :bearing | :course | :radial | :rnav | String.t() | nil,
           course_inbound_deg: integer() | nil,
           turn_direction: :left | :right | String.t() | nil,
-          leg_length_dist: integer() | nil
+          leg_length_dist: integer() | nil,
+          meta: map()
         }
 
   @spec type() :: String.t()

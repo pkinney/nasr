@@ -59,55 +59,56 @@ defmodule NASR.Entities.Airway.SegmentAltitude do
   """
   import NASR.Utils
 
-  defstruct ~w(
-    effective_date
-    regulatory
-    airway_location
-    airway_id
-    point_sequence
-    from_point
-    from_point_type
-    nav_name
-    nav_city
-    artcc
-    icao_region_code
-    state_code
-    country_code
-    to_point
-    magnetic_course
-    opposite_magnetic_course
-    magnetic_course_distance
-    changeover_point
-    changeover_point_name
-    changeover_point_distance
-    airway_segment_gap_flag
-    signal_gap_flag
-    dogleg
-    next_mea_point
-    minimum_enroute_altitude
-    minimum_enroute_altitude_direction
-    minimum_enroute_altitude_opposite
-    minimum_enroute_altitude_opposite_direction
-    gps_minimum_enroute_altitude
-    gps_minimum_enroute_altitude_direction
-    gps_minimum_enroute_altitude_opposite
-    gps_mea_opposite_direction
-    dd_iru_mea
-    dd_iru_mea_direction
-    dd_i_mea_opposite
-    dd_i_mea_opposite_direction
-    minimum_obstruction_clearance_altitude
-    minimum_crossing_altitude
-    minimum_crossing_altitude_direction
-    minimum_crossing_altitude_nav_point
-    minimum_crossing_altitude_opposite
-    minimum_crossing_altitude_opposite_direction
-    minimum_reception_altitude
-    maximum_authorized_altitude
-    mea_gap
-    required_navigation_performance
-    remark
-  )a
+  defstruct [
+    :effective_date,
+    :regulatory,
+    :airway_location,
+    :airway_id,
+    :point_sequence,
+    :from_point,
+    :from_point_type,
+    :nav_name,
+    :nav_city,
+    :artcc,
+    :icao_region_code,
+    :state_code,
+    :country_code,
+    :to_point,
+    :magnetic_course,
+    :opposite_magnetic_course,
+    :magnetic_course_distance,
+    :changeover_point,
+    :changeover_point_name,
+    :changeover_point_distance,
+    :airway_segment_gap_flag,
+    :signal_gap_flag,
+    :dogleg,
+    :next_mea_point,
+    :minimum_enroute_altitude,
+    :minimum_enroute_altitude_direction,
+    :minimum_enroute_altitude_opposite,
+    :minimum_enroute_altitude_opposite_direction,
+    :gps_minimum_enroute_altitude,
+    :gps_minimum_enroute_altitude_direction,
+    :gps_minimum_enroute_altitude_opposite,
+    :gps_mea_opposite_direction,
+    :dd_iru_mea,
+    :dd_iru_mea_direction,
+    :dd_i_mea_opposite,
+    :dd_i_mea_opposite_direction,
+    :minimum_obstruction_clearance_altitude,
+    :minimum_crossing_altitude,
+    :minimum_crossing_altitude_direction,
+    :minimum_crossing_altitude_nav_point,
+    :minimum_crossing_altitude_opposite,
+    :minimum_crossing_altitude_opposite_direction,
+    :minimum_reception_altitude,
+    :maximum_authorized_altitude,
+    :mea_gap,
+    :required_navigation_performance,
+    :remark,
+    meta: %{}
+  ]
 
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
@@ -156,7 +157,8 @@ defmodule NASR.Entities.Airway.SegmentAltitude do
           maximum_authorized_altitude: integer() | nil,
           mea_gap: String.t(),
           required_navigation_performance: String.t(),
-          remark: String.t()
+          remark: String.t(),
+          meta: map()
         }
 
   @spec type() :: String.t()

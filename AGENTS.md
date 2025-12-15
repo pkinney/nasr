@@ -8,7 +8,7 @@ NASR is an Elixir library for parsing and analyzing FAA National Airspace System
 
 The primary functionality of this module is the parsing and decode of FAA NASR data files into typed Elixir structs. The library supports streaming large data files efficiently, handling nested zip files, and converting raw CSV data into well-defined entities such as airports, fixes, navaids, and procedures.
 
-It's expected that users of this library will load a subset or all of the FAA NASR data into their applications once.
+It's expected that users of this library will load a subset or all of the FAA NASR data into their applications once and then use them to create their own structures.
 
 ## Development Commands
 
@@ -48,7 +48,6 @@ Located in `lib/nasr/entities/`, this follows a consistent pattern:
   - `new/1` - Takes raw CSV map, returns entity struct
   - `type/0` - Returns CSV file type (e.g., "APT_BASE")
 - **Naming convention**: `_BASE` CSV types become base modules (APT_BASE → Airport), others become submodules (APT_RWY → Airport.Runway)
-- **Heirarchical structure**: Entities can nest sub-entities as needed (i.e., Airport has Runways, Contacts, etc.). Each of these entities can stand on its own and be streamed independently. Calling `NASR.stream_entities/1` will yield all supported entities without this nesting. It's necessary to call a specific function like NASR.list_airports/1 to get the nested structure. Since the entities are streamed in an unknown order, the nesting must result in a single list instead of a stream.
 
 ### Data Processing Pipeline
 

@@ -205,6 +205,70 @@ defmodule NASR.Utils do
     end
   end
 
+  @doc """
+  Returns the effective (start) date for a given AIRAC cycle code (YYNN).
+
+  The reference cycle is 2001, which began on 2020-01-02. Results move in
+  28-day increments forward or backward from that reference.
+
+  ## Examples
+      iex> {:ok, date} = NASR.Utils.get_airac_start_date("2001")
+      iex> date
+      ~D[2020-01-02]
+  """
+  @spec get_airac_start_date(String.t()) :: {:ok, Date.t()} | {:error, term()}
+  def get_airac_start_date(cycle_code) when is_binary(cycle_code) do
+    code = String.trim(cycle_code)
+
+    with <<yy::binary-size(2), nn::binary-size(2)>> <- code,
+         {year, ""} <- Integer.parse(yy),
+         {cycle, ""} <- Integer.parse(nn) do
+      target_code = format_cycle_code(year, cycle)
+      reference_date = ~D[2020-01-02]
+      reference_code = get_airac_cycle_for_date(reference_date)
+
+      cond do
+        target_code == reference_code ->
+          {:ok, reference_date}
+
+        match = find_cycle(reference_date, target_code, :forward, 1500) ->
+          {:ok, match}
+
+        match = find_cycle(reference_date, target_code, :backward, 1500) ->
+          {:ok, match}
+
+        true ->
+          {:error, :not_found}
+      end
+    else
+      _ -> {:error, :invalid_cycle_code}
+    end
+  end
+
+  defp format_cycle_code(year, cycle) do
+    yy = year |> rem(100) |> Integer.to_string() |> String.pad_leading(2, "0")
+    nn = cycle |> Integer.to_string() |> String.pad_leading(2, "0")
+    yy <> nn
+  end
+
+  defp find_cycle(_date, _target_code, _direction, 0), do: nil
+
+  defp find_cycle(date, target_code, direction, remaining_steps) do
+    next_date =
+      case direction do
+        :forward -> Date.add(date, 28)
+        :backward -> Date.add(date, -28)
+      end
+
+    next_code = get_airac_cycle_for_date(next_date)
+
+    if next_code == target_code do
+      next_date
+    else
+      find_cycle(next_date, target_code, direction, remaining_steps - 1)
+    end
+  end
+
   # Helper function to find the cycle number when date is in previous year
   @spec find_previous_year_cycle(Date.t(), Date.t(), integer()) :: {integer(), Date.t()}
   defp find_previous_year_cycle(date, current_airac, cycle_num) when cycle_num > 0 do

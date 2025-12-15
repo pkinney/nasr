@@ -76,7 +76,7 @@ defmodule NASR do
   def from_raw(%{"__TYPE__" => type} = raw) do
     case module_for_type(type) do
       nil -> nil
-      module -> raw |> module.new()
+      module -> module.new(raw)
     end
   end
 
@@ -128,106 +128,6 @@ defmodule NASR do
       end
     end)
   end
-
-  #   @doc """
-  #   Creates a stream of NASR.Entities structs.
-
-  #   ## Options
-  #   - `:file` - Path to a local NASR zip file.
-  #   - `:url` - URL to a NASR zip file.
-  #   - `:entities` - List of entity types to include in the stream. Defaults to all entities.
-  #   """
-
-  #   def stream_structs(opts \\ []) do
-  #     {:ok, stream, file} = open_stream(opts)
-
-  #     classes = airport_classes(file: file)
-  #     # If entities are specified, filter the categories to only include those
-  #     entities = Keyword.get(opts, :entities, NASR.Entities.entity_modules())
-
-  #     categories =
-  #       entities
-  #       |> Enum.map(fn entity ->
-  #         entity
-  #         |> NASR.Entities.entity_to_category()
-  #         |> case do
-  #           nil ->
-  #             Logger.warning("[#{__MODULE__}] No category found for entity #{inspect(entity)}. Skipping...")
-  #             nil
-
-  #           cat ->
-  #             String.upcase(cat)
-  #         end
-  #       end)
-  #       |> IO.inspect()
-  #       |> Enum.reject(&is_nil/1)
-  #       |> Enum.map(&String.upcase/1)
-  #       |> Enum.uniq()
-
-  #     types =
-  #       entities
-  #       |> Enum.map(&NASR.Entities.entity_to_type/1)
-  #       |> Enum.reject(&is_nil/1)
-  #       |> Enum.uniq()
-  #       |> MapSet.new()
-
-  #     stream
-  #     |> raw_stream(categories)
-  #     |> Stream.filter(fn %{type: type} ->
-  #       MapSet.member?(types, type)
-  #     end)
-  #     |> Stream.map(&NASR.Entities.from_raw/1)
-  #     |> Stream.reject(&is_nil/1)
-  #     |> Stream.map(fn
-  #       %Airport{} = airport ->
-  #         Map.put(airport, :class, Map.get(classes, airport.nasr_id, :G))
-
-  #       entity ->
-  #         entity
-  #     end)
-  #   end
-
-  #   def stream_airports(opts \\ []) do
-  #     opts
-  #     |> Keyword.put(:entities, [
-  #       Airport,
-  #       NASR.Entities.AirportAttendance,
-  #       NASR.Entities.AirportRemark,
-  #       NASR.Entities.WxStation,
-  #       NASR.Entities.Runway
-  #     ])
-  #     |> stream_structs()
-  #   end
-
-  #   def load_layouts(opts \\ []) do
-  #     skip = ["fss_rf.txt", "Stardp_rf.txt", "lid_rf.txt", "com_rf.txt", "Wxl_rf.txt"]
-  #     {:ok, stream, _file} = open_stream(opts)
-
-  #     stream
-  #     |> Unzip.list_entries()
-  #     |> Enum.map(& &1.file_name)
-  #     |> Enum.filter(&String.starts_with?(&1, "Layout_Data"))
-  #     |> Enum.reject(fn filename ->
-  #       Enum.any?(skip, &String.ends_with?(filename, &1))
-  #     end)
-  #     |> Enum.map(fn filename ->
-  #       Logger.info("[#{__MODULE__}] Loading layout from #{filename}...")
-
-  #       category = filename |> Path.basename() |> String.replace("_rf.txt", "") |> String.upcase()
-
-  #       stream
-  #       |> Unzip.file_stream!(filename)
-  #       |> Enum.map_join(&IO.iodata_to_binary/1)
-  #       |> NASR.Layout.parse(category)
-  #     end)
-  #     |> List.flatten()
-
-  #     # Map.new(list_layouts(), fn {cat, layout_file, data_file} ->
-  #     #   Logger.info("[#{__MODULE__}] Loading layout for #{cat} from #{layout_file}...")
-  #     #   layout = NASR.Layout.load(layout_file)
-  #     #   {cat, layout, data_file}
-  #     # end)
-  #   end
 
   defp open_stream(opts) do
     cond do

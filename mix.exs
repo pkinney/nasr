@@ -11,7 +11,7 @@ defmodule NASR.MixProject do
       aliases: aliases(),
       elixirc_paths: elixirc_paths(Mix.env()),
       name: "NASR",
-      description: "A library for parsing and analyzing FAA NASR and dTPP data files",
+      description: "A library for parsing and analyzing FAA NASR data files",
       package: package(),
       preferred_cli_env: [
         "test.watch": :test

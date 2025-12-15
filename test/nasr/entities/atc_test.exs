@@ -11,7 +11,7 @@ defmodule NASR.Entities.ATCTest do
 
       assert result.effective_date == ~D[2025-08-07]
       assert result.site_number == "24226.1"
-      assert result.site_type_code == :airport
+      assert result.site_type == :airport
       assert result.facility_type == "NON-ATCT"
       assert result.state_code == "TX"
       assert result.facility_id == "00R"
@@ -55,7 +55,7 @@ defmodule NASR.Entities.ATCTest do
       for {input, expected} <- test_cases do
         sample_data = create_sample_data(%{"SITE_TYPE_CODE" => input})
         result = ATC.new(sample_data)
-        assert result.site_type_code == expected
+        assert result.site_type == expected
       end
     end
 

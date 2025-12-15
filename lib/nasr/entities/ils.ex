@@ -90,8 +90,7 @@ defmodule NASR.Entities.ILS do
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
           site_number: String.t(),
-          site_type:
-            :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
+          site_type: :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
           state_code: String.t(),
           airport_id: String.t(),
           city: String.t(),

@@ -42,8 +42,7 @@ defmodule NASR.Entities.ATC.ATIS do
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
           site_number: String.t(),
-          site_type:
-            :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
+          site_type: :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
           facility_type: String.t(),
           state_code: String.t(),
           facility_id: String.t(),

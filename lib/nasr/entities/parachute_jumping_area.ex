@@ -102,8 +102,7 @@ defmodule NASR.Entities.ParachuteJumpingArea do
           longitude_decimal: float() | nil,
           arpt_id: String.t(),
           site_no: String.t(),
-          site_type:
-            :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
+          site_type: :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
           drop_zone_name: String.t(),
           max_altitude: integer() | nil,
           max_altitude_type: :msl | :agl | String.t() | nil,

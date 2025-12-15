@@ -51,8 +51,7 @@ defmodule NASR.Entities.ClassAirspace do
   @type t() :: %__MODULE__{
           effective_date: Date.t() | nil,
           site_no: String.t(),
-          site_type:
-            :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
+          site_type: :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
           state_code: String.t(),
           arpt_id: String.t(),
           city: String.t(),

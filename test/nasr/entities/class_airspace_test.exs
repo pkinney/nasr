@@ -11,7 +11,7 @@ defmodule NASR.Entities.ClassAirspaceTest do
 
       assert result.effective_date == ~D[2025-08-07]
       assert result.site_no == "00164."
-      assert result.site_type_code == "A"
+      assert result.site_type == :airport
       assert result.state_code == "AL"
       assert result.arpt_id == "BHM"
       assert result.city == "BIRMINGHAM"
@@ -142,7 +142,7 @@ defmodule NASR.Entities.ClassAirspaceTest do
 
       result = ClassAirspace.new(airport_data)
       assert result.site_no == "00359.7"
-      assert result.site_type_code == "A"
+      assert result.site_type == :airport
       assert result.arpt_id == "JKA"
       assert result.city == "GULF SHORES"
     end

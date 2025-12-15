@@ -50,7 +50,7 @@ defmodule NASR.Entities.AWOSTest do
       assert awos.phone_no == "406-665-4241"
       assert awos.second_phone_no == ""
       assert awos.site_no == "12385.2"
-      assert awos.site_type_code == :airport
+      assert awos.site_type == :airport
       assert awos.remark == ""
     end
 
@@ -79,7 +79,7 @@ defmodule NASR.Entities.AWOSTest do
 
       assert awos.navaid_flag == true
       assert awos.survey_method_code == :estimated
-      assert awos.site_type_code == :heliport
+      assert awos.site_type == :heliport
       assert awos.remark == "Test remark"
     end
 
@@ -107,7 +107,7 @@ defmodule NASR.Entities.AWOSTest do
       awos = AWOS.new(raw_data)
 
       assert awos.survey_method_code == :surveyed
-      assert awos.site_type_code == :gliderport
+      assert awos.site_type == :gliderport
     end
 
     test "handles all site type codes" do
@@ -142,7 +142,7 @@ defmodule NASR.Entities.AWOSTest do
         }
 
         awos = AWOS.new(raw_data)
-        assert awos.site_type_code == expected_atom
+        assert awos.site_type == expected_atom
       end
     end
   end

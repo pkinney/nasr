@@ -118,6 +118,7 @@ defmodule NASR.Utils do
       "A" -> :airport
       "B" -> :balloonport
       "C" -> :seaplane_base
+      "S" -> :seaplane_base
       "G" -> :gliderport
       "H" -> :heliport
       "U" -> :ultralight

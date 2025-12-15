@@ -65,8 +65,7 @@ defmodule NASR.Entities.AWOS do
           phone_no: String.t(),
           second_phone_no: String.t(),
           site_no: String.t(),
-          site_type:
-            :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
+          site_type: :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
           remark: String.t()
         }
 

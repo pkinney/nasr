@@ -11,7 +11,7 @@ defmodule NASR.Entities.ATC.ATISTest do
 
       assert result.effective_date == ~D[2025-08-07]
       assert result.site_number == "00164."
-      assert result.site_type_code == :airport
+      assert result.site_type == :airport
       assert result.facility_type == "ATCT-TRACON"
       assert result.state_code == "AL"
       assert result.facility_id == "BHM"
@@ -36,7 +36,7 @@ defmodule NASR.Entities.ATC.ATISTest do
       for {input, expected} <- test_cases do
         sample_data = create_sample_data(%{"SITE_TYPE_CODE" => input})
         result = ATIS.new(sample_data)
-        assert result.site_type_code == expected
+        assert result.site_type == expected
       end
     end
 

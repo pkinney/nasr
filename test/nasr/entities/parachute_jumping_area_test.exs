@@ -24,7 +24,7 @@ defmodule NASR.Entities.ParachuteJumpingAreaTest do
       assert result.longitude_decimal == -146.96549241
       assert result.arpt_id == ""
       assert result.site_no == ""
-      assert result.site_type_code == ""
+      assert result.site_type == nil
       assert result.drop_zone_name == "HUSKY DROP ZONE"
       assert result.max_altitude == 3500
       assert result.max_altitude_type == :msl
@@ -133,7 +133,7 @@ defmodule NASR.Entities.ParachuteJumpingAreaTest do
       assert result.pja_id == "PAK006"
       assert result.arpt_id == "CSR"
       assert result.site_no == "50033."
-      assert result.site_type_code == "A"
+      assert result.site_type == :airport
       assert result.drop_zone_name == "CAMPBELL"
       assert result.max_altitude == 2000
       assert result.time_of_use == "SUNRISE-SUNSET; UNSCHULED"

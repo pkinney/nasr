@@ -11,7 +11,7 @@ defmodule NASR.Entities.ATC.ServiceTest do
 
       assert result.effective_date == ~D[2025-08-07]
       assert result.site_number == ""
-      assert result.site_type_code == nil
+      assert result.site_type == nil
       assert result.facility_type == "TRACON"
       assert result.state_code == "GA"
       assert result.facility_id == "A80"
@@ -34,7 +34,7 @@ defmodule NASR.Entities.ATC.ServiceTest do
       for {input, expected} <- test_cases do
         sample_data = create_sample_data(%{"SITE_TYPE_CODE" => input})
         result = Service.new(sample_data)
-        assert result.site_type_code == expected
+        assert result.site_type == expected
       end
     end
 
@@ -133,7 +133,7 @@ defmodule NASR.Entities.ATC.ServiceTest do
 
       assert result.effective_date == nil
       assert result.site_number == ""
-      assert result.site_type_code == nil
+      assert result.site_type == nil
       assert result.control_service == ""
     end
   end

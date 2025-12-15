@@ -11,7 +11,7 @@ defmodule NASR.Entities.MilitaryOperationsTest do
 
       assert result.effective_date == ~D[2025-08-07]
       assert result.site_number == "00124."
-      assert result.site_type_code == :airport
+      assert result.site_type == :airport
       assert result.state_code == "AL"
       assert result.airport_id == "79J"
       assert result.city == "ANDALUSIA"
@@ -37,7 +37,7 @@ defmodule NASR.Entities.MilitaryOperationsTest do
       for {input, expected} <- site_types do
         sample_data = create_sample_data(%{"SITE_TYPE_CODE" => input})
         result = MilitaryOperations.new(sample_data)
-        assert result.site_type_code == expected
+        assert result.site_type == expected
       end
     end
 
@@ -124,7 +124,7 @@ defmodule NASR.Entities.MilitaryOperationsTest do
         })
 
       result = MilitaryOperations.new(heliport_data)
-      assert result.site_type_code == :heliport
+      assert result.site_type == :heliport
       assert result.military_operations_code == :restricted
       assert result.military_operations_call == "ROBERTS OPNS"
       assert result.military_operations_hours == "0800-1700 EXC HOL"
@@ -175,7 +175,7 @@ defmodule NASR.Entities.MilitaryOperationsTest do
         })
 
       result = MilitaryOperations.new(unknown_data)
-      assert result.site_type_code == "X"
+      assert result.site_type == "X"
       assert result.military_operations_code == "Z"
     end
 

@@ -11,7 +11,7 @@ defmodule NASR.Entities.ILS.MarkerTest do
 
       assert result.effective_date == ~D[2025-08-07]
       assert result.site_number == "00128."
-      assert result.site_type_code == :airport
+      assert result.site_type == :airport
       assert result.state_code == "AL"
       assert result.airport_id == "ANB"
       assert result.city == "ANNISTON"
@@ -56,7 +56,7 @@ defmodule NASR.Entities.ILS.MarkerTest do
       for {input, expected} <- test_cases do
         sample_data = create_sample_data(%{"SITE_TYPE_CODE" => input})
         result = Marker.new(sample_data)
-        assert result.site_type_code == expected
+        assert result.site_type == expected
       end
     end
 

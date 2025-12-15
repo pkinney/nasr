@@ -47,8 +47,7 @@ defmodule NASR.Entities.Airport.ArrestingSystems do
   @type t() :: %__MODULE__{
           site_id: String.t(),
           site_no: String.t(),
-          site_type:
-            :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
+          site_type: :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
           arpt_id: String.t(),
           city: String.t(),
           state_code: String.t(),

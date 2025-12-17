@@ -1,6 +1,10 @@
 defmodule NasrTest do
   use ExUnit.Case
 
+  alias NASR.Entities.Airport.ArrestingSystems
+  alias NASR.Entities.Airport.Runway
+  alias NASR.Entities.Fix.NavaidMakeup
+
   setup_all do
     Application.ensure_all_started(:nasr)
     %{nasr_file_path: NASR.TestSetup.load_nasr_zip_if_needed()}
@@ -36,6 +40,24 @@ defmodule NasrTest do
       assert NASR.Entities.Fix.new(raw)
     end
 
+    test "stream a specific type of entity based on CSV file name", %{nasr_file_path: path} do
+      entities =
+        [file: path, include: ["APT_ARS"]]
+        |> NASR.stream_entities()
+        |> Enum.take(5)
+
+      assert Enum.all?(entities, fn e -> e.__struct__ == ArrestingSystems end)
+    end
+
+    test "stream specific types of entity based on Module", %{nasr_file_path: path} do
+      entities =
+        [file: path, include: [ArrestingSystems, NavaidMakeup]]
+        |> NASR.stream_entities()
+        |> Enum.take(5)
+
+      assert Enum.all?(entities, fn e -> e.__struct__ in [ArrestingSystems, NavaidMakeup] end)
+    end
+
     test "streams structs of specific types", %{nasr_file_path: path} do
       [file: path, include: ["FIX_BASE", "FIX_CHRT"]] |> NASR.stream_entities() |> Enum.to_list()
     end
@@ -47,6 +69,20 @@ defmodule NasrTest do
         |> Enum.take(50)
 
       assert Enum.all?(entities, fn %{meta: meta} -> meta == %{} end)
+    end
+  end
+
+  describe "special entities" do
+    test "handles all runway surface types", %{nasr_file_path: path} do
+      unknown_surfaces =
+        [include: [Runway], file: path]
+        |> NASR.stream_entities()
+        |> Enum.map(& &1.surface_type_code)
+        |> Enum.uniq()
+        |> Enum.sort()
+        |> Enum.reject(&is_atom(&1))
+
+      assert unknown_surfaces == []
     end
   end
 end

@@ -165,7 +165,7 @@ defmodule NASR.Entities.Airport.RunwayTest do
       sample_data =
         create_sample_data(%{
           "SURFACE_TYPE_CODE" => "",
-          "COND" => nil,
+          "COND" => "",
           "TREATMENT_CODE" => "",
           "PAVEMENT_TYPE_CODE" => nil,
           "DTRM_METHOD_CODE" => "",
@@ -175,7 +175,7 @@ defmodule NASR.Entities.Airport.RunwayTest do
       result = Runway.new(sample_data)
 
       assert result.surface_type_code == nil
-      assert result.surface_condition == nil
+      assert result.surface_condition == :unknown
       assert result.surface_treatment == nil
       assert result.pavement_type == nil
       assert result.determination_method == nil

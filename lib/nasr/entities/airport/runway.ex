@@ -17,7 +17,8 @@ defmodule NASR.Entities.Airport.Runway do
   * `:runway_id` - Runway Identification
   * `:runway_length` - Physical Runway Length (Nearest Foot)
   * `:runway_width` - Physical Runway Width (Nearest Foot)
-  * `:surface_type_code` - Runway Surface Type. Values: `:concrete`, `:asphalt`, `:snow`, `:ice`, `:mats`, `:treated`, `:gravel`, `:turf`, `:dirt`, `:pem`, `:roof_top`, `:water`
+  * `:surface_type_code` - Primary Runway Surface Type. Values: `:concrete`, `:asphalt`, `:snow`, `:ice`, `:mats`, `:treated`, `:gravel`, `:turf`, `:dirt`, `:pem`, `:roof_top`, `:water`
+  * `:secondary_surface_type_code` - Secondary Runway Surface Type (for hyphenated codes such as `CONC-ASPH`); same values as `:surface_type_code`
   * `:surface_condition` - Runway Surface Condition. Values: `:excellent`, `:good`, `:fair`, `:poor`, `:failed`
   * `:surface_treatment` - Runway Surface Treatment. Values: `:grooved`, `:porous_friction_course`, `:aggregate_friction_seal_coat`, `:rubberized_friction_seal_coat`, `:wire_comb`, `:none`
   * `:pavement_classification_number` - Pavement Classification Number (PCN) - See FAA Advisory Circular 150/5335-5 for Code Definitions and PCN Determination Formula
@@ -48,6 +49,7 @@ defmodule NASR.Entities.Airport.Runway do
     :runway_length,
     :runway_width,
     :surface_type_code,
+    :secondary_surface_type_code,
     :surface_condition,
     :surface_treatment,
     :pavement_classification_number,
@@ -92,6 +94,21 @@ defmodule NASR.Entities.Airport.Runway do
             | :water
             | String.t()
             | nil,
+          secondary_surface_type_code:
+            :concrete
+            | :asphalt
+            | :snow
+            | :ice
+            | :mats
+            | :treated
+            | :gravel
+            | :turf
+            | :dirt
+            | :pem
+            | :roof_top
+            | :water
+            | String.t()
+            | nil,
           surface_condition: :excellent | :good | :fair | :poor | :failed | String.t() | nil,
           surface_treatment:
             :grooved
@@ -121,6 +138,9 @@ defmodule NASR.Entities.Airport.Runway do
 
   @spec new(map()) :: t()
   def new(entity) do
+    {primary_surface, secondary_surface} =
+      parse_surface_type_code(Map.get(entity, "SURFACE_TYPE_CODE"))
+
     %__MODULE__{
       site_id: Map.get(entity, "SITE_NO") <> "*" <> Map.get(entity, "SITE_TYPE_CODE"),
       site_no: Map.get(entity, "SITE_NO"),
@@ -132,7 +152,8 @@ defmodule NASR.Entities.Airport.Runway do
       runway_id: Map.get(entity, "RWY_ID"),
       runway_length: safe_str_to_int(Map.get(entity, "RWY_LEN")),
       runway_width: safe_str_to_int(Map.get(entity, "RWY_WIDTH")),
-      surface_type_code: parse_surface_type_code(Map.get(entity, "SURFACE_TYPE_CODE")),
+      surface_type_code: primary_surface,
+      secondary_surface_type_code: secondary_surface,
       surface_condition: parse_surface_condition(Map.get(entity, "COND")),
       surface_treatment: parse_surface_treatment(Map.get(entity, "TREATMENT_CODE")),
       pavement_classification_number: Map.get(entity, "PCN"),
@@ -154,31 +175,70 @@ defmodule NASR.Entities.Airport.Runway do
   @spec type() :: String.t()
   def type, do: "APT_RWY"
 
-  defp parse_surface_type_code(nil), do: nil
-  defp parse_surface_type_code(""), do: nil
+  defp parse_surface_type_code(nil), do: {nil, nil}
+  defp parse_surface_type_code(""), do: {nil, nil}
 
   defp parse_surface_type_code(surface) when is_binary(surface) do
-    surface
-    |> String.trim()
-    |> case do
+    normalized = String.trim(surface)
+
+    cond do
+      normalized == "ROOF-TOP" ->
+        {:roof_top, nil}
+
+      String.contains?(normalized, "-") ->
+        [primary, secondary | _] = String.split(normalized, "-", parts: 2)
+        {map_surface_code(primary), map_surface_code(secondary)}
+
+      String.contains?(normalized, "/") ->
+        [primary, secondary | _] = String.split(normalized, "/", parts: 2)
+        {map_surface_code(primary), map_surface_code(secondary)}
+
+      true ->
+        {map_surface_code(normalized), nil}
+    end
+  end
+
+  defp map_surface_code(surface) do
+    case surface do
       "CONC" -> :concrete
       "ASPH" -> :asphalt
       "SNOW" -> :snow
       "ICE" -> :ice
+      "PSP" -> :mats
       "MATS" -> :mats
       "TREATED" -> :treated
+      "TRTD" -> :treated
       "GRAVEL" -> :gravel
+      "GRVL" -> :gravel
+      "SAND" -> :sand
       "TURF" -> :turf
       "DIRT" -> :dirt
       "PEM" -> :pem
+      "CALICHE" -> :caliche
       "ROOF-TOP" -> :roof_top
       "WATER" -> :water
+      "ALUM" -> :mats
+      "ALUMINUM" -> :mats
+      "BRICK" -> :brick
+      "CORAL" -> :gravel
+      "DECK" -> :deck
+      "GRASS" -> :turf
+      "GRE" -> :gre
+      "METAL" -> :metal
+      "OIL&CHIP" -> :oil_chip
+      "OR" -> :or
+      "PFC" -> :pfc
+      "ROOFTOP" -> :rooftop
+      "SOD" -> :grass
+      "STEEL" -> :mats
+      "WOOD" -> :mats
+      "T" -> :treated
       other -> other
     end
   end
 
-  defp parse_surface_condition(nil), do: nil
-  defp parse_surface_condition(""), do: nil
+  defp parse_surface_condition(nil), do: :unknown
+  defp parse_surface_condition(""), do: :unknown
 
   defp parse_surface_condition(condition) when is_binary(condition) do
     condition

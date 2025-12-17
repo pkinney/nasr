@@ -16,10 +16,11 @@ defmodule NASR.Utils do
   def download(url) do
     Logger.info("[#{__MODULE__}] Downloading #{url}")
 
-    {:ok, file} = Briefly.create()
-    Req.get!(url, into: File.stream!(file))
-    Logger.info("[#{__MODULE__}] Download complete")
-    file
+    with {:ok, file} <- Briefly.create(),
+         {:ok, _} <- Req.get(url, into: File.stream!(file)) do
+      Logger.info("[#{__MODULE__}] Download complete")
+      {:ok, file}
+    end
   end
 
   @spec safe_str_to_int(String.t() | nil) :: integer() | nil

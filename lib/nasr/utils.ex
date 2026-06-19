@@ -305,27 +305,28 @@ defmodule NASR.Utils do
 
       # NASR standard format: YYYY/MM/DD
       String.match?(date_str, ~r/^\d{4}\/\d{2}\/\d{2}$/) ->
-        case Timex.parse(date_str, "{YYYY}/{0M}/{0D}") do
-          {:ok, datetime} -> NaiveDateTime.to_date(datetime)
-          _ -> nil
-        end
+        [y, m, d] = String.split(date_str, "/")
+        build_date(y, m, d)
 
       # NASR activation/amendment format: YYYY/MM
       String.match?(date_str, ~r/^\d{4}\/\d{2}$/) ->
-        case Timex.parse(date_str, "{YYYY}/{0M}") do
-          {:ok, datetime} -> NaiveDateTime.to_date(datetime)
-          _ -> nil
-        end
+        [y, m] = String.split(date_str, "/")
+        build_date(y, m, "01")
 
       # US format: MM/DD/YYYY
       String.match?(date_str, ~r/^\d{2}\/\d{2}\/\d{4}$/) ->
-        case Timex.parse(date_str, "{0M}/{0D}/{YYYY}") do
-          {:ok, datetime} -> NaiveDateTime.to_date(datetime)
-          _ -> nil
-        end
+        [m, d, y] = String.split(date_str, "/")
+        build_date(y, m, d)
 
       true ->
         nil
+    end
+  end
+
+  defp build_date(y, m, d) do
+    case Date.new(String.to_integer(y), String.to_integer(m), String.to_integer(d)) do
+      {:ok, date} -> date
+      _ -> nil
     end
   end
 end

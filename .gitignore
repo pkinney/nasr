@@ -31,3 +31,5 @@ nasr-*.tar
 /output
 
 /.elixir_ls
+/.elixir-tools
+/_claude

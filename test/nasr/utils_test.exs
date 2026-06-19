@@ -226,4 +226,43 @@ defmodule NASR.UtilsTest do
       assert String.length(result) == 4
     end
   end
+
+  describe "get_airac_start_date/1" do
+    test "roundtrips with get_airac_cycle_for_date/1 for known cycles" do
+      for code <- ["2001", "2002", "2013", "2101", "2401", "2413", "2501", "2507"] do
+        assert {:ok, date} = NASR.Utils.get_airac_start_date(code)
+        assert NASR.Utils.get_airac_cycle_for_date(date) == code
+      end
+    end
+
+    test "previous cycle code when stepping back one day" do
+      for current <- ["2002", "2013", "2101", "2402", "2407", "2413", "2502", "2507"] do
+        assert {:ok, date} = NASR.Utils.get_airac_start_date(current)
+        prev_day = Date.add(date, -1)
+        assert NASR.Utils.get_airac_cycle_for_date(prev_day) == prev_cycle_code(current)
+      end
+    end
+
+    test "returns error for invalid codes" do
+      assert {:error, :invalid_cycle_code} = NASR.Utils.get_airac_start_date("20A1")
+      assert {:error, :invalid_cycle_code} = NASR.Utils.get_airac_start_date("201")
+      assert {:error, :invalid_cycle_code} = NASR.Utils.get_airac_start_date("abcd")
+    end
+  end
+
+  defp prev_cycle_code(<<yy::binary-size(2), nn::binary-size(2)>>) do
+    {year, ""} = Integer.parse(yy)
+    {cycle, ""} = Integer.parse(nn)
+
+    case cycle do
+      c when c > 1 ->
+        prev_cycle = (c - 1) |> Integer.to_string() |> String.pad_leading(2, "0")
+        yy <> prev_cycle
+
+      1 ->
+        prev_year = year - 1
+        prev_year_str = prev_year |> Integer.to_string() |> String.pad_leading(2, "0")
+        prev_year_str <> "13"
+    end
+  end
 end

@@ -1,0 +1,58 @@
+defmodule NASR.Entities.Fix.ChartingInformation do
+  @moduledoc """
+  Represents Fix Charting Information from the NASR FIX_CHRT data.
+
+  This entity contains information about which charts a specific fix appears on.
+  Each record represents one chart type that displays the fix.
+
+  ## Fields
+
+  * `:fix_id` - Fixed Geographical Position Identifier (5 characters)
+  * `:icao_region_code` - ICAO Code where first letter refers to country, second discerns region
+  * `:state_code` - Associated State Post Office Code (standard two letter abbreviation)
+  * `:country_code` - Country Post Office Code
+  * `:charting_type_desc` - Chart on which Fix is to be depicted (e.g., "CONTROLLER LOW", "ENROUTE LOW", "IAP", "STAR")
+  * `:effective_date` - The 28 Day NASR Subscription Effective Date
+
+  ## Data Source
+
+  This data comes from the FAA's National Airspace System Resources (NASR) subscription,
+  specifically from the FIX_CHRT.csv file. The data is updated on a 28-day cycle.
+  """
+  import NASR.Utils
+
+  defstruct [
+    :fix_id,
+    :icao_region_code,
+    :state_code,
+    :country_code,
+    :charting_type_desc,
+    :effective_date,
+    meta: %{}
+  ]
+
+  @type t() :: %__MODULE__{
+          fix_id: String.t(),
+          icao_region_code: String.t(),
+          state_code: String.t(),
+          country_code: String.t(),
+          charting_type_desc: String.t(),
+          effective_date: Date.t() | nil,
+          meta: map()
+        }
+
+  @spec new(map()) :: t()
+  def new(entity) do
+    %__MODULE__{
+      fix_id: Map.get(entity, "FIX_ID"),
+      icao_region_code: Map.get(entity, "ICAO_REGION_CODE"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      charting_type_desc: Map.get(entity, "CHARTING_TYPE_DESC"),
+      effective_date: parse_date(Map.get(entity, "EFF_DATE"))
+    }
+  end
+
+  @spec type() :: String.t()
+  def type, do: "FIX_CHRT"
+end

@@ -1,0 +1,70 @@
+defmodule NASR.Entities.Fix.NavaidMakeup do
+  @moduledoc """
+  Represents Fix NAVAID Makeup from the NASR FIX_NAV data.
+
+  This entity contains information about how a fix is defined in relation to navigation aids.
+  A fix can be defined by its bearing and distance from one or more NAVAIDs.
+
+  ## Fields
+
+  * `:fix_id` - Fixed Geographical Position Identifier (5 characters)
+  * `:icao_region_code` - ICAO Code where first letter refers to country, second discerns region
+  * `:state_code` - Associated State Post Office Code (standard two letter abbreviation)
+  * `:country_code` - Country Post Office Code
+  * `:nav_id` - NAVAID Identifier (the navigation aid used to define this fix)
+  * `:nav_type` - Facility Type of the NAVAID
+  * `:bearing` - Bearing, Radial, Direction or Course from the NAVAID (degrees)
+  * `:distance` - DME Distance from Facility (nautical miles)
+  * `:effective_date` - The 28 Day NASR Subscription Effective Date
+
+  ## Data Source
+
+  This data comes from the FAA's National Airspace System Resources (NASR) subscription,
+  specifically from the FIX_NAV.csv file. The data is updated on a 28-day cycle.
+  """
+  import NASR.Utils
+
+  defstruct [
+    :fix_id,
+    :icao_region_code,
+    :state_code,
+    :country_code,
+    :nav_id,
+    :nav_type,
+    :bearing,
+    :distance,
+    :effective_date,
+    meta: %{}
+  ]
+
+  @type t() :: %__MODULE__{
+          fix_id: String.t(),
+          icao_region_code: String.t(),
+          state_code: String.t(),
+          country_code: String.t(),
+          nav_id: String.t(),
+          nav_type: String.t(),
+          bearing: float() | nil,
+          distance: float() | nil,
+          effective_date: Date.t() | nil,
+          meta: map()
+        }
+
+  @spec new(map()) :: t()
+  def new(entity) do
+    %__MODULE__{
+      fix_id: Map.get(entity, "FIX_ID"),
+      icao_region_code: Map.get(entity, "ICAO_REGION_CODE"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      nav_id: Map.get(entity, "NAV_ID"),
+      nav_type: Map.get(entity, "NAV_TYPE"),
+      bearing: safe_str_to_float(Map.get(entity, "BEARING")),
+      distance: safe_str_to_float(Map.get(entity, "DISTANCE")),
+      effective_date: parse_date(Map.get(entity, "EFF_DATE"))
+    }
+  end
+
+  @spec type() :: String.t()
+  def type, do: "FIX_NAV"
+end

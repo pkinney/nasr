@@ -29,3 +29,7 @@ nasr-*.tar
 /priv/data
 /data
 /output
+
+/.elixir_ls
+/.elixir-tools
+/_claude

@@ -4,6 +4,7 @@ defmodule NASR.Utils do
 
   require Logger
 
+  @spec list_files(String.t()) :: [String.t()]
   def list_files(dir) do
     dir
     |> File.ls!()
@@ -11,16 +12,20 @@ defmodule NASR.Utils do
     |> Enum.map(fn file -> Path.join(dir, file) end)
   end
 
+  @spec download(String.t()) :: String.t()
   def download(url) do
     Logger.info("[#{__MODULE__}] Downloading #{url}")
 
-    {:ok, file} = Briefly.create()
-    Req.get!(url, into: File.stream!(file))
-    Logger.info("[#{__MODULE__}] Download complete")
-    file
+    with {:ok, file} <- Briefly.create(),
+         {:ok, _} <- Req.get(url, into: File.stream!(file)) do
+      Logger.info("[#{__MODULE__}] Download complete")
+      {:ok, file}
+    end
   end
 
+  @spec safe_str_to_int(String.t() | nil) :: integer() | nil
   def safe_str_to_int(""), do: nil
+  def safe_str_to_int(nil), do: nil
 
   def safe_str_to_int(str) do
     cond do
@@ -30,7 +35,9 @@ defmodule NASR.Utils do
     end
   end
 
+  @spec safe_str_to_float(String.t() | nil) :: float() | nil
   def safe_str_to_float(""), do: nil
+  def safe_str_to_float(nil), do: nil
 
   def safe_str_to_float(str) do
     cond do
@@ -40,6 +47,7 @@ defmodule NASR.Utils do
     end
   end
 
+  @spec convert_seconds_to_decimal(String.t()) :: float()
   def convert_seconds_to_decimal(seconds) do
     {seconds, dir} = Float.parse(seconds)
     deg = seconds / 3600.0
@@ -52,7 +60,9 @@ defmodule NASR.Utils do
     end
   end
 
+  @spec convert_dms_to_decimal(String.t() | nil) :: float() | nil
   def convert_dms_to_decimal(""), do: nil
+  def convert_dms_to_decimal(nil), do: nil
 
   def convert_dms_to_decimal(str) do
     [deg, min, sec] = String.split(str, "-")
@@ -71,10 +81,12 @@ defmodule NASR.Utils do
     end
   end
 
+  @spec convert_yn(String.t() | nil) :: boolean() | nil
   def convert_yn("Y"), do: true
   def convert_yn("N"), do: false
   def convert_yn(_), do: nil
 
+  @spec get_current_nasr_url() :: String.t()
   def get_current_nasr_url do
     url = "https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription/"
 
@@ -97,6 +109,22 @@ defmodule NASR.Utils do
     |> SweetXml.xpath(~x"//a[text()='Download']/@href"l)
     |> List.first()
     |> to_string()
+  end
+
+  def parse_site_type_code(nil), do: nil
+  def parse_site_type_code(""), do: nil
+
+  def parse_site_type_code(code) when is_binary(code) do
+    case String.trim(code) do
+      "A" -> :airport
+      "B" -> :balloonport
+      "C" -> :seaplane_base
+      "S" -> :seaplane_base
+      "G" -> :gliderport
+      "H" -> :heliport
+      "U" -> :ultralight
+      other -> other
+    end
   end
 
   @doc """
@@ -178,7 +206,72 @@ defmodule NASR.Utils do
     end
   end
 
+  @doc """
+  Returns the effective (start) date for a given AIRAC cycle code (YYNN).
+
+  The reference cycle is 2001, which began on 2020-01-02. Results move in
+  28-day increments forward or backward from that reference.
+
+  ## Examples
+      iex> {:ok, date} = NASR.Utils.get_airac_start_date("2001")
+      iex> date
+      ~D[2020-01-02]
+  """
+  @spec get_airac_start_date(String.t()) :: {:ok, Date.t()} | {:error, term()}
+  def get_airac_start_date(cycle_code) when is_binary(cycle_code) do
+    code = String.trim(cycle_code)
+
+    with <<yy::binary-size(2), nn::binary-size(2)>> <- code,
+         {year, ""} <- Integer.parse(yy),
+         {cycle, ""} <- Integer.parse(nn) do
+      target_code = format_cycle_code(year, cycle)
+      reference_date = ~D[2020-01-02]
+      reference_code = get_airac_cycle_for_date(reference_date)
+
+      cond do
+        target_code == reference_code ->
+          {:ok, reference_date}
+
+        match = find_cycle(reference_date, target_code, :forward, 1500) ->
+          {:ok, match}
+
+        match = find_cycle(reference_date, target_code, :backward, 1500) ->
+          {:ok, match}
+
+        true ->
+          {:error, :not_found}
+      end
+    else
+      _ -> {:error, :invalid_cycle_code}
+    end
+  end
+
+  defp format_cycle_code(year, cycle) do
+    yy = year |> rem(100) |> Integer.to_string() |> String.pad_leading(2, "0")
+    nn = cycle |> Integer.to_string() |> String.pad_leading(2, "0")
+    yy <> nn
+  end
+
+  defp find_cycle(_date, _target_code, _direction, 0), do: nil
+
+  defp find_cycle(date, target_code, direction, remaining_steps) do
+    next_date =
+      case direction do
+        :forward -> Date.add(date, 28)
+        :backward -> Date.add(date, -28)
+      end
+
+    next_code = get_airac_cycle_for_date(next_date)
+
+    if next_code == target_code do
+      next_date
+    else
+      find_cycle(next_date, target_code, direction, remaining_steps - 1)
+    end
+  end
+
   # Helper function to find the cycle number when date is in previous year
+  @spec find_previous_year_cycle(Date.t(), Date.t(), integer()) :: {integer(), Date.t()}
   defp find_previous_year_cycle(date, current_airac, cycle_num) when cycle_num > 0 do
     prev_airac = Date.add(current_airac, -28)
 
@@ -191,5 +284,49 @@ defmodule NASR.Utils do
 
   defp find_previous_year_cycle(_date, current_airac, cycle_num) do
     {cycle_num, current_airac}
+  end
+
+  @doc """
+  Parses dates in MM/DD/YYYY format or other common formats.
+  Returns nil for empty strings or invalid dates.
+  """
+  @spec parse_date(String.t() | nil) :: Date.t() | nil
+  def parse_date(""), do: nil
+  def parse_date(nil), do: nil
+
+  def parse_date(date_str) do
+    cond do
+      # ISO8601 format: YYYY-MM-DD
+      String.match?(date_str, ~r/^\d{4}-\d{2}-\d{2}$/) ->
+        case Date.from_iso8601(date_str) do
+          {:ok, date} -> date
+          _ -> nil
+        end
+
+      # NASR standard format: YYYY/MM/DD
+      String.match?(date_str, ~r/^\d{4}\/\d{2}\/\d{2}$/) ->
+        [y, m, d] = String.split(date_str, "/")
+        build_date(y, m, d)
+
+      # NASR activation/amendment format: YYYY/MM
+      String.match?(date_str, ~r/^\d{4}\/\d{2}$/) ->
+        [y, m] = String.split(date_str, "/")
+        build_date(y, m, "01")
+
+      # US format: MM/DD/YYYY
+      String.match?(date_str, ~r/^\d{2}\/\d{2}\/\d{4}$/) ->
+        [m, d, y] = String.split(date_str, "/")
+        build_date(y, m, d)
+
+      true ->
+        nil
+    end
+  end
+
+  defp build_date(y, m, d) do
+    case Date.new(String.to_integer(y), String.to_integer(m), String.to_integer(d)) do
+      {:ok, date} -> date
+      _ -> nil
+    end
   end
 end

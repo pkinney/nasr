@@ -1,0 +1,99 @@
+defmodule NASR.Entities.Airport.Remark do
+  @moduledoc """
+  Represents Airport Remarks from the NASR APT_RMK data.
+
+  This entity contains free-form text remarks that provide additional information
+  about specific aspects of airport facilities, operations, or conditions.
+
+  ## Fields
+
+  * `:site_id` - Landing Facility Site Number combined with the Site Type. A unique identifying number.
+  * `:site_no` - Landing Facility Site Number (unique identifying number)
+  * `:site_type` - Landing Facility Type. Values: `:airport`, `:balloonport`, `:seaplane_base`, `:gliderport`, `:heliport`, `:ultralight`
+  * `:arpt_id` - Location Identifier (unique 3-4 character alphanumeric identifier)
+  * `:city` - Airport Associated City Name
+  * `:state_code` - Associated State Post Office Code
+  * `:country_code` - Country Post Office Code
+  * `:legacy_element_number` - Legacy Remark Element Number (equivalent to legacy APT.txt element name)
+  * `:table_name` - NASR Table name associated with the remark
+  * `:reference_column_name` - NASR Column name associated with the remark (GENERAL_REMARK for non-specific remarks)
+  * `:element` - Specific element that the remark text pertains to
+  * `:reference_column_sequence_no` - Sequence number assigned to Reference Column Remark
+  * `:remark_text` - Free form text that further describes a specific information item
+  * `:effective_date` - The 28 Day NASR Subscription Effective Date
+
+  ## Remark Categories
+
+  The table_name and element fields help categorize remarks by their subject:
+  - AIRPORT ATTEND SCHED: SKED SEQ NO
+  - AIRPORT CONTACT: TITLE
+  - AIRPORT SERVICE: SERVICE TYPE CODE
+  - ARRESTING DEVICE: RWY END ID _ ARREST DEVICE CODE
+  - FUEL TYPE: FUEL TYPE
+  - RUNWAY: RWY ID
+  - RUNWAY END: RWY END ID
+  - RUNWAY END OBSTN: RWY END ID
+  - RUNWAY SURFACE TYPE: RWY ID
+
+  """
+  import NASR.Utils
+
+  defstruct [
+    :site_id,
+    :site_no,
+    :site_type,
+    :arpt_id,
+    :city,
+    :state_code,
+    :country_code,
+    :legacy_element_number,
+    :table_name,
+    :reference_column_name,
+    :element,
+    :reference_column_sequence_no,
+    :remark_text,
+    :effective_date,
+    meta: %{}
+  ]
+
+  @type t() :: %__MODULE__{
+          site_id: String.t(),
+          site_no: String.t(),
+          site_type: :airport | :balloonport | :seaplane_base | :gliderport | :heliport | :ultralight | String.t() | nil,
+          arpt_id: String.t(),
+          city: String.t(),
+          state_code: String.t(),
+          country_code: String.t(),
+          legacy_element_number: String.t(),
+          table_name: String.t(),
+          reference_column_name: String.t(),
+          element: String.t(),
+          reference_column_sequence_no: integer() | nil,
+          remark_text: String.t(),
+          effective_date: Date.t() | nil,
+          meta: map()
+        }
+
+  @spec new(map()) :: t()
+  def new(entity) do
+    %__MODULE__{
+      site_id: Map.get(entity, "SITE_NO") <> "*" <> Map.get(entity, "SITE_TYPE_CODE"),
+      site_no: Map.get(entity, "SITE_NO"),
+      site_type: parse_site_type_code(Map.get(entity, "SITE_TYPE_CODE")),
+      arpt_id: Map.get(entity, "ARPT_ID"),
+      city: Map.get(entity, "CITY"),
+      state_code: Map.get(entity, "STATE_CODE"),
+      country_code: Map.get(entity, "COUNTRY_CODE"),
+      legacy_element_number: Map.get(entity, "LEGACY_ELEMENT_NUMBER"),
+      table_name: Map.get(entity, "TAB_NAME"),
+      reference_column_name: Map.get(entity, "REF_COL_NAME"),
+      element: Map.get(entity, "ELEMENT"),
+      reference_column_sequence_no: safe_str_to_int(Map.get(entity, "REF_COL_SEQ_NO")),
+      remark_text: Map.get(entity, "REMARK"),
+      effective_date: parse_date(Map.get(entity, "EFF_DATE"))
+    }
+  end
+
+  @spec type() :: String.t()
+  def type, do: "APT_RMK"
+end
